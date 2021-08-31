@@ -42,7 +42,7 @@
                             <!--begin::Body-->
                             <div class="card-body">
                                 <i class="icon-xl fas fa-th-large"></i>
-                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">0</span>
+                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{overall_total_inventory.length}}</span>
                                 <span class="font-weight-bold text-muted font-size-sm">Overall Total Inventory</span>
                             </div>
                             <!--end::Body-->
@@ -55,7 +55,7 @@
                             <!--begin::Body-->
                             <div class="card-body">
                                 <i class="icon-xl fas fa-undo"></i>
-                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">0</span>
+                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{total_borrowed_items_today.length}}</span>
                                 <span class="font-weight-bold text-muted font-size-sm">Total Borrowed Items Today</span>
                             </div>
                             <!--end::Body-->
@@ -68,7 +68,7 @@
                             <!--begin::Body-->
                             <div class="card-body">
                                 <i class="icon-xl fas fas fa-redo"></i>
-                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">0</span>
+                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{total_returned_items_today.length}}</span>
                                 <span class="font-weight-bold text-muted font-size-sm">Total Return Items Today</span>
                             </div>
                             <!--end::Body-->
@@ -87,7 +87,33 @@
 
 <script>
     export default {
-        
+        data() {
+            return {
+                overall_total_inventory: '',
+                total_borrowed_items_today: '',
+                total_returned_items_today: '',
+            }
+        },
+        created () {
+            this.dashboardData();
+        },
+        methods: {
+            dashboardData() {
+                let v = this;
+                v.overall_total_inventory = '';
+                v.total_borrowed_items_today = '';
+                v.total_returned_items_today = '';
+                axios.get('/dashboard-data')
+                .then(response => { 
+                    v.overall_total_inventory = response.data.overall_total_inventory;
+                    v.total_borrowed_items_today = response.data.total_borrowed_items_today;
+                    v.total_returned_items_today = response.data.total_returned_items_today;
+                })
+                .catch(error => { 
+                    v.errors = error.response.data.error;
+                })
+            }
+        },
     }
 </script>
 

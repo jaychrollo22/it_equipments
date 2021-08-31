@@ -27,6 +27,13 @@
                             </a>
                         </li>
                         <li class="menu-item menu-item-submenu menu-item-rel">
+                            <a href="{{ url('items') }}" target="_blank" class="menu-link">
+                                <span class="menu-text">Items</span>
+                                <span class="menu-desc"></span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                        </li>
+                        <li class="menu-item menu-item-submenu menu-item-rel">
                             <a href="{{ url('inventories') }}" class="menu-link">
                                 <span class="menu-text">Inventories</span>
                                 <span class="menu-desc"></span>

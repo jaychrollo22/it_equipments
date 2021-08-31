@@ -30,6 +30,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@dashboard')->name('dashboard');
 
+Route::get('/dashboard-data','HomeController@dashboardData');
+
 //Inventories
 Route::get('/inventories', 'InventoryController@index')->name('inventories');
 Route::get('/inventories-data', 'InventoryController@indexData');
