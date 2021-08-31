@@ -80,6 +80,7 @@
                                        
                                        <td align="center">
                                           <span v-if="item.is_borrowed" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" @click="viewBorrowItem(item)">{{ item.is_borrowed.status }}</span>
+                                          <span v-else class="label label-success label-pill label-inline mr-2">Available</span>
                                         </td>
                                        <td align="center">
                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editInventory(item)">
