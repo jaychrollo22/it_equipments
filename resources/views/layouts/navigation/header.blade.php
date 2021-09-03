@@ -87,6 +87,28 @@
                                 <i class="menu-arrow"></i>
                             </a>
                         </li>
+                        <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+                            <a href="javascript:;" class="menu-link menu-toggle">
+                                <span class="menu-text">Reports</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                <ul class="menu-subnav">
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('reports-borrow-logs') }}" class="menu-link">
+                                            <span class="menu-text">Borrow Logs</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('reports-return-logs') }}" class="menu-link">
+                                            <span class="menu-text">Return Logs</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                         <li class="menu-item menu-item-submenu menu-item-rel">
                             <a href="{{ url('activity-logs') }}" class="menu-link">
                                 <span class="menu-text">Activity Logs</span>

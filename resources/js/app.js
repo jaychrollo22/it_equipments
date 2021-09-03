@@ -34,6 +34,10 @@ Vue.component('departments', require('./components/Settings/Departments.vue').de
 Vue.component('buildings', require('./components/Settings/Buildings.vue').default);
 Vue.component('types', require('./components/Settings/Types.vue').default);
 
+//Reports
+Vue.component('borrow-logs', require('./components/Reports/BorrowLogs.vue').default);
+Vue.component('return-logs', require('./components/Reports/ReturnLogs.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

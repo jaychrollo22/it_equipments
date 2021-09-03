@@ -41,7 +41,15 @@
                         </div>
                         <div class="card-toolbar">
                             <button class="btn btn-primary mr-2" @click="addInventory">New</button>
-                            <button class="btn btn-success mr-2" @click="getInventories">Refresh</button>
+                            <button class="btn btn-info mr-2" @click="uploadInventory">Upload Excel</button>
+                             <download-excel
+                                :data   = "filteredInventories"
+                                :fields = "exportInventories"
+                                class   = "btn btn-success mr-2"
+                                name    = "Inventories.xls">
+                                    Download Excel ({{ filteredInventories.length }})
+                            </download-excel>
+                            <button class="btn btn-warning mr-2" @click="getInventories">Refresh</button>
                         </div>
                     </div>
 
@@ -51,6 +59,16 @@
                                 <div class="form-group">
                                     <label>Search</label>
                                     <input type="text" class="form-control" placeholder="Input here..." v-model="keywords">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Filter</label>
+                                    <select class="form-control form-control-primary" v-model="filter_status">
+                                        <option value="">Choose Filter</option>
+                                        <option value="Available">Available</option>
+                                        <option value="Borrowed">Borrowed</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -281,6 +299,16 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
+                                <label for="role">Location</label> 
+                                <select class="form-control" v-model="inventory.location">
+                                    <option value="N/A">N/A</option>
+                                    <option v-for="(location,b) in locations" v-bind:key="b" :value="location.name"> {{ location.name }}</option>
+                                </select>
+                                <span class="text-danger" v-if="errors.location">{{ errors.location[0] }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
                                 <label for="role">Remarks</label> 
                                 <textarea name="" id="" cols="20" rows="3" class="form-control" placeholder="Remarks" v-model="inventory.remarks"></textarea>
                                 <span class="text-danger" v-if="errors.remarks">{{ errors.remarks[0] }}</span>
@@ -329,11 +357,45 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="upload-inventories-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
+            <div class="modal-content">
+                <div>
+                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> 
+                <div class="modal-header">
+                    <h2 class="col-12 modal-title text-center">Upload Inventories</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Upload Template (Excel File)*</label> 
+                                <input type="file" id="upload_inventory_file" class="form-control" ref="file" accept=".xlsx" v-on:change="inventoryFileUpload()"/>
+                                <span class="text-danger" v-if="errors.upload_inventory_file">{{ errors.upload_inventory_file[0] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-md" :disabled="uploadDisable" @click="saveUploadInventory">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </template>
 
 <script>
+import JsonExcel from 'vue-json-excel'
 export default {
+    components: {
+        'downloadExcel': JsonExcel
+    },
     data() {
         return {
             keywords: '',
@@ -360,6 +422,7 @@ export default {
                 'os_name_and_version' : 'N/A',
                 'tab_name' : 'N/A',
                 'area' : 'N/A',
+                'location' : 'N/A',
                 'remarks' : 'N/A'
             },
             action : '',
@@ -368,18 +431,103 @@ export default {
             currentPage: 0,
             itemsPerPage: 10,
             
-            //Types
+            //Settings Options
             types: [],
+            locations: [],
 
             //Borrower Information
             selectedItem : '',
+
+            filter_status : '',
+
+            //Upload Inventories
+            upload_inventory_file : '',
+            uploadDisable : false,
+
+
+            exportInventories : {
+                'TYPE' : 'type',
+                'OLD INVENTORY NUMBER' : 'old_inventory_number',
+                'NEW IT TAG QR CODE/BAR CODE' : 'new_it_tag_qr_code_bar_code',
+                'SERIAL NUMBER' : 'serial_number',
+                'MODEL' : 'model',
+                'PROCESSOR' : 'processor',
+                'MANUFACTURER' : 'manufacturer',
+                'SUPPLIER' : 'supplier',
+                'PURCHASE COMPANY' : 'purchase_company',
+                'DELIVERY DATE' : 'delivery_date',
+                'ORDER NUMBER' : 'order_number',
+                'RETIRED DATE' : 'retired_date',
+                'ESTIMATED RETIREMENT DATE' : 'estimated_retirement_date',
+                'WARRANTY PERIOD' : 'warranty_period',
+                'ASSET CODE' : 'asset_code',
+                'PURCHASE COST' : 'purchase_cost',
+                'INSURANCE DATE' : 'insurance_date',
+                'OS NAME AND VERSION' : 'os_name_and_version',
+                'TAB NAME' : 'tab_name',
+                'AREA' : 'area',
+                'LOCATION' : 'location',
+            }
         }
     },
     created () {
         this.getInventories();
         this.getTypes();
+        this.getLocations();
     },
     methods : {
+        saveUploadInventory(){
+            let v = this;
+            v.uploadDisable = true;
+            Swal.fire({
+            title: 'Are you sure you want to upload this Inventory?',
+            icon: 'question',
+            showDenyButton: true,
+            confirmButtonText: `Yes`,
+            denyButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                        let formData = new FormData();
+                        if(v.upload_inventory_file){
+                            formData.append('upload_inventory_file', v.upload_inventory_file);
+                        }
+                        axios.post(`/save-upload-inventories`, formData)
+                        .then(response =>{
+                            if(response.data > 0){
+                                v.getInventories();
+                                Swal.fire(response.data + ' inventories has been saved!', '', 'success');             
+                                v.performance_eval_file = '';
+                                document.getElementById("upload_inventory_file").value = '';
+                                $('#upload-inventories-modal').modal('hide');
+                                v.uploadDisable = false;
+                                
+                            }else{
+                                Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
+                                v.uploadDisable = false;
+                            }
+                        })
+                        .catch(error => {
+                            v.uploadDisable = false;
+                            this.errors = error.response.data.errors;
+                        })
+                }else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info');
+                    v.uploadDisable = false;
+                }
+            })    
+
+        },
+        inventoryFileUpload(){
+            var file = document.getElementById("upload_inventory_file");
+            this.upload_inventory_file = file.files[0];
+        },
+        uploadInventory(){
+            let v = this;
+            v.uploadDisable = false;
+            v.performance_eval_file = '';
+            document.getElementById("upload_inventory_file").value = '';
+            $('#upload-inventories-modal').modal('show');
+        },
         viewBorrowItem(item){
             this.selectedItem = item;
             $('#borrow-info-modal').modal('show');
@@ -409,9 +557,11 @@ export default {
             v.inventory.os_name_and_version = 'N/A';
             v.inventory.tab_name = 'N/A';
             v.inventory.area = 'N/A';
+            v.inventory.location = 'N/A';
             v.inventory.remarks = 'N/A';
             v.action = 'New';
             this.getTypes();
+            this.getLocations();
             $('#inventory-modal').modal('show');
         },
         editInventory(inventory){
@@ -439,9 +589,11 @@ export default {
             v.inventory.os_name_and_version = inventory.os_name_and_version;
             v.inventory.tab_name = inventory.tab_name;
             v.inventory.area = inventory.area;
+            v.inventory.location = inventory.location;
             v.inventory.remarks = inventory.remarks;
             v.action = 'Update';
             this.getTypes();
+            this.getLocations();
             $('#inventory-modal').modal('show');
         },
         saveInventory(){
@@ -481,6 +633,7 @@ export default {
                     formData.append('os_name_and_version', v.inventory.os_name_and_version ? v.inventory.os_name_and_version : "");
                     formData.append('tab_name', v.inventory.tab_name ? v.inventory.tab_name : "");
                     formData.append('area', v.inventory.area ? v.inventory.area : "");
+                    formData.append('location', v.inventory.location ? v.inventory.location : "");
                     formData.append('remarks', v.inventory.remarks ? v.inventory.remarks : "");
                     axios.post(postURL, formData)
                     .then(response =>{
@@ -520,6 +673,17 @@ export default {
                 v.errors = error.response.data.error;
             })
         },
+        getLocations() {
+            let v = this;
+            v.locations = [];
+            axios.get('/setting-locations-data')
+            .then(response => { 
+                v.locations = response.data;
+            })
+            .catch(error => { 
+                v.errors = error.response.data.error;
+            })
+        },
         setPage(pageNumber) {
             this.currentPage = pageNumber;
         },
@@ -538,7 +702,19 @@ export default {
             let self = this;
             if(self.inventories){
                 return Object.values(self.inventories).filter(item => {
-                    return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase())
+                    if(self.filter_status == 'Available'){
+                        if(item.is_borrowed == null){
+                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.manufacturer.toLowerCase().includes(this.keywords.toLowerCase()) || item.supplier.toLowerCase().includes(this.keywords.toLowerCase())
+                        }
+                    }else if(self.filter_status == 'Borrowed'){
+                        if(item.is_borrowed){
+                            if(item.is_borrowed.status == 'Borrowed'){
+                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.manufacturer.toLowerCase().includes(this.keywords.toLowerCase()) || item.supplier.toLowerCase().includes(this.keywords.toLowerCase())
+                            }
+                        }
+                    }else{
+                         return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())  || item.manufacturer.toLowerCase().includes(this.keywords.toLowerCase()) || item.supplier.toLowerCase().includes(this.keywords.toLowerCase())
+                    }
                 });
             }else{
                 return [];

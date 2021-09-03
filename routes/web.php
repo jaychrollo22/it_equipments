@@ -28,8 +28,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Dashboard
 Route::get('/home', 'HomeController@dashboard')->name('dashboard');
-
 Route::get('/dashboard-data','HomeController@dashboardData');
 
 //Inventories
@@ -37,6 +37,8 @@ Route::get('/inventories', 'InventoryController@index')->name('inventories');
 Route::get('/inventories-data', 'InventoryController@indexData');
 Route::post('/inventories-store', 'InventoryController@store');
 Route::post('/inventories-update', 'InventoryController@update');
+
+Route::post('/save-upload-inventories', 'InventoryController@uploadInventories');
 
 //Users
 Route::get('/users', 'UsersController@index')->name('users');
@@ -77,3 +79,8 @@ Route::get('/setting-types-data', 'SettingsTypeController@indexData');
 Route::post('/setting-types-store', 'SettingsTypeController@store');
 Route::post('/setting-types-update', 'SettingsTypeController@update');
 
+//Reports
+Route::get('/reports-borrow-logs', 'ReportsController@borrowLogs')->name('borrow-logs');
+Route::get('/reports-borrow-logs-data', 'ReportsController@borrowLogData');
+Route::get('/reports-return-logs', 'ReportsController@returnLogs')->name('return-logs');
+Route::get('/reports-return-logs-data', 'ReportsController@returnLogData');

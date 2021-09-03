@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Inventory;
+
+use App\Imports\InventoriesImport;
+
 use Illuminate\Http\Request;
 use DB;
+use Excel;
 
 class InventoryController extends Controller
 {
@@ -103,14 +107,55 @@ class InventoryController extends Controller
         } 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Inventory  $inventory
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Inventory $inventory)
-    {
-        //
+    public function uploadInventories(Request $request){
+
+        $this->validate($request, [
+            'upload_inventory_file' => 'required|mimes:xls,xlsx'
+        ]);
+        $data = $request->all();
+        $upload_inventory_file = Excel::toArray(new InventoriesImport, $request->file('upload_inventory_file'));
+        $save_count = 0;
+        if($upload_inventory_file){
+            // return count($upload_inventory_file[0]);
+            foreach($upload_inventory_file[0] as $k => $item){
+                if($item['serial_number']){
+                    $check_inventory_file = Inventory::where('serial_number',$item['serial_number'])->where('old_inventory_number',$item['old_inventory_number'])->first();
+                    $save_item = [
+                        'type'=> $item['type'],
+                        'old_inventory_number'=> $item['old_inventory_number'],
+                        'new_it_tag_qr_code_bar_code'=> $item['new_it_tag_qr_codebar_code'],
+                        'serial_number'=> $item['serial_number'],
+                        'model'=> $item['model'],
+                        'processor'=> $item['processor'],
+                        'manufacturer'=> $item['manufacturer'],
+                        'supplier'=> $item['supplier'],
+                        'delivery_date'=> $item['delivery_date'],
+                        'order_number'=> $item['order_number'],
+                        'retired_date'=> $item['retired_date'],
+                        'estimated_retirement_date'=> $item['estimated_retirement_date'],
+                        'warranty_period'=> $item['warranty_period'],
+                        'asset_code'=> $item['asset_code'],
+                        'purchase_cost'=> $item['purchase_cost'],
+                        'insurance_date'=> $item['insurance_date'],
+                        'os_name_and_version'=> $item['os_name_and_version'],
+                        'tab_name'=> $item['tab_name'],
+                        'area'=> $item['area'],
+                        'location'=> $item['location'],
+                    ];
+
+                    if(empty($check_inventory_file)){
+                        //Add
+                        Inventory::create($save_item);
+                        $save_count++;
+                    }else{
+                        //Update
+                        $check_inventory_file->update($save_item);
+                    }
+                }
+            }
+        }
+
+        return $save_count;
+
     }
 }

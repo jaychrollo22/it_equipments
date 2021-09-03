@@ -26,6 +26,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "v-mask": "^2.2.4"
+        "v-mask": "^2.2.4",
+        "vue-json-excel": "^0.3.0"
     }
 }
