@@ -141,6 +141,7 @@ class InventoryController extends Controller
                         'tab_name'=> $item['tab_name'],
                         'area'=> $item['area'],
                         'location'=> $item['location'],
+                        'building'=> $item['building'],
                     ];
 
                     if(empty($check_inventory_file)){
