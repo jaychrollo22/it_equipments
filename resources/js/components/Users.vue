@@ -134,7 +134,7 @@
                                 <select name="select" v-model="user.role" class="form-control">
                                     <option value="">Select Role</option>
                                     <option value="Administrator">Administrator</option>
-                                    <option value="President">President</option>
+                                    <option value="IT Support">IT Support</option>
                                     <option value="User">User</option>
                                 </select>
                                 <span class="text-danger" v-if="errors.role">{{ errors.role[0] }}</span>

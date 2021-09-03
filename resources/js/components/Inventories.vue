@@ -569,6 +569,7 @@ export default {
             v.inventory.tab_name = 'N/A';
             v.inventory.area = 'N/A';
             v.inventory.location = 'N/A';
+            v.inventory.building = 'N/A';
             v.inventory.remarks = 'N/A';
             v.action = 'New';
             this.getTypes();
@@ -602,6 +603,7 @@ export default {
             v.inventory.tab_name = inventory.tab_name;
             v.inventory.area = inventory.area;
             v.inventory.location = inventory.location;
+            v.inventory.building = inventory.building;
             v.inventory.remarks = inventory.remarks;
             v.action = 'Update';
             this.getTypes();
@@ -647,6 +649,7 @@ export default {
                     formData.append('tab_name', v.inventory.tab_name ? v.inventory.tab_name : "");
                     formData.append('area', v.inventory.area ? v.inventory.area : "");
                     formData.append('location', v.inventory.location ? v.inventory.location : "");
+                    formData.append('building', v.inventory.building ? v.inventory.building : "");
                     formData.append('remarks', v.inventory.remarks ? v.inventory.remarks : "");
                     axios.post(postURL, formData)
                     .then(response =>{
