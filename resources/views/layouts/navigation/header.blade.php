@@ -38,18 +38,18 @@
                                             <span class="menu-desc"></span>
                                         </a>
                                     </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('inventory-transfer') }}" class="menu-link">
+                                    {{-- <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('inventory-transfer') }}" class="menu-link" disabled>
                                             <span class="menu-text">Transfer</span>
                                             <span class="menu-desc"></span>
                                         </a>
                                     </li>
                                     <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('inventory-recieve') }}" class="menu-link">
+                                        <a href="{{ url('inventory-recieve') }}" class="menu-link" disabled>
                                             <span class="menu-text">Receive</span>
                                             <span class="menu-desc"></span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </div>
 
