@@ -158,4 +158,11 @@ class InventoryController extends Controller
         return $save_count;
 
     }
+
+    public function transfer(){
+        session([
+            'title' => 'Transfer'
+        ]);
+        return view('pages.inventory_transfer');
+    }
 }

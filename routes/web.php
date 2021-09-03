@@ -40,6 +40,10 @@ Route::post('/inventories-update', 'InventoryController@update');
 
 Route::post('/save-upload-inventories', 'InventoryController@uploadInventories');
 
+//Transfer Inventories
+Route::get('/inventory-transfer', 'InventoryController@transfer')->name('transfer');
+Route::get('/inventory-receive', 'InventoryController@receive')->name('transfer');
+
 //Users
 Route::get('/users', 'UsersController@index')->name('users');
 Route::get('/get-users-data', 'UsersController@getUsersData');

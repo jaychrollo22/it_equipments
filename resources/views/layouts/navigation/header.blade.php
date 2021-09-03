@@ -18,7 +18,6 @@
                 <div id="kt_header_menu" class="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
                     <!--begin::Header Nav-->
                     <ul class="menu-nav">
-
                         <li class="menu-item menu-item-submenu menu-item-rel">
                             <a href="{{ url('/home') }}" class="menu-link">
                                 <span class="menu-text">Dashboard</span>
@@ -26,19 +25,34 @@
                                 <i class="menu-arrow"></i>
                             </a>
                         </li>
-                        <li class="menu-item menu-item-submenu menu-item-rel">
-                            <a href="{{ url('items') }}" target="_blank" class="menu-link">
-                                <span class="menu-text">Items</span>
-                                <span class="menu-desc"></span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                        </li>
-                        <li class="menu-item menu-item-submenu menu-item-rel">
-                            <a href="{{ url('inventories') }}" class="menu-link">
+                        <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+                            <a href="javascript:;" class="menu-link menu-toggle">
                                 <span class="menu-text">Inventories</span>
-                                <span class="menu-desc"></span>
                                 <i class="menu-arrow"></i>
                             </a>
+                            <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                <ul class="menu-subnav">
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('inventories') }}" class="menu-link">
+                                            <span class="menu-text">Masterlist</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('inventory-transfer') }}" class="menu-link">
+                                            <span class="menu-text">Transfer</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('inventory-recieve') }}" class="menu-link">
+                                            <span class="menu-text">Receive</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
                         </li>
                         <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
                             <a href="javascript:;" class="menu-link menu-toggle">
@@ -112,6 +126,14 @@
                         <li class="menu-item menu-item-submenu menu-item-rel">
                             <a href="{{ url('activity-logs') }}" class="menu-link">
                                 <span class="menu-text">Activity Logs</span>
+                                <span class="menu-desc"></span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                        </li>
+
+                        <li class="menu-item menu-item-submenu menu-item-rel">
+                            <a href="{{ url('items') }}" target="_blank" class="menu-link">
+                                <span class="menu-text">Items</span>
                                 <span class="menu-desc"></span>
                                 <i class="menu-arrow"></i>
                             </a>

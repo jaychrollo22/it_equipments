@@ -477,6 +477,7 @@ export default {
                 'TAB NAME' : 'tab_name',
                 'AREA' : 'area',
                 'LOCATION' : 'location',
+                'BUILDING' : 'building',
             }
         }
     },
