@@ -39,10 +39,10 @@
                                 <div class="card-body d-flex p-0">
                                     <div class="flex-grow-1 p-20 pb-40 card-rounded flex-grow-1 bgi-no-repeat" style="background-color: #7889E8; background-position: calc(100% + 0.5rem) bottom; background-size: 50% auto; background-image: url(assets/media/svg/patterns/rhone.svg)">
                                         <h2 class="text-white pb-5 font-weight-bolder">Borrow Item</h2>
-                                        <p class="text-white pb-5 font-size-h5">With our responsive themes and mobile
-                                        <br>and desktop apps, enjoy a seamless
-                                        <br>experience on any device so will your
-                                        <br>blog's common visitors</p>
+                                        <p class="text-white pb-5 font-size-h5">1. Search or Scan Employee ID
+                                        <br>2. Search or Scan Items then tap "Select".
+                                        <br>3. Review and Submit
+                                        <br></p>
                                         <a href="#" class="btn btn-success font-weight-bold font-size-h3 px-12 py-5" @click="showBorrowScanItem">Click Here</a>
                                     </div>
                                 </div>
@@ -55,10 +55,10 @@
                                 <div class="card-body d-flex p-0">
                                     <div class="flex-grow-1 p-20 pb-40 bg-warning card-rounded flex-grow-1 bgi-no-repeat" style="background-position: calc(100% + 0.5rem) bottom; background-size: 50% auto; background-image: url(assets/media/svg/patterns/rhone.svg)">
                                         <h2 class="text-inverse-warning pb-5 font-weight-bolder">Return Item</h2>
-                                        <p class="text-inverse-warning pb-5 font-size-h5">With our responsive themes and mobile
-                                        <br>and desktop apps, enjoy a seamless
-                                        <br>experience on any device so will your
-                                        <br>blog's common visitors</p>
+                                        <p class="text-inverse-warning pb-5 font-size-h5">1. Search or Scan Employee ID
+                                        <br>2. Select Items then tap "Return" 
+                                        <br>3. Then click "Yes" to save.
+                                        <br></p>
                                         <a href="#" class="btn btn-danger font-weight-bold font-size-h3 px-12 py-5" @click="showReturnScanItem">Click Here</a>
                                     </div>
                                 </div>

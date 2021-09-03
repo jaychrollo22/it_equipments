@@ -97,8 +97,8 @@
                                        <td align="center"><small>{{item.supplier}}</small></td>
                                        
                                        <td align="center">
-                                          <span v-if="item.is_borrowed" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" @click="viewBorrowItem(item)">{{ item.is_borrowed.status }}</span>
-                                          <span v-else class="label label-success label-pill label-inline mr-2">Available</span>
+                                          <span v-if="item.is_borrowed" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" :title="item.is_borrowed.status" @click="viewBorrowItem(item)">{{ item.is_borrowed.status }}</span>
+                                          <span v-else class="label label-success label-pill label-inline mr-2" title="Available to Borrow">Available</span>
                                         </td>
                                        <td align="center">
                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editInventory(item)">
@@ -309,6 +309,16 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
+                                <label for="role">Building</label> 
+                                <select class="form-control" v-model="inventory.building">
+                                    <option value="N/A">N/A</option>
+                                    <option v-for="(building,b) in buildings" v-bind:key="b" :value="building.name"> {{ building.name }}</option>
+                                </select>
+                                <span class="text-danger" v-if="errors.location">{{ errors.building[0] }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
                                 <label for="role">Remarks</label> 
                                 <textarea name="" id="" cols="20" rows="3" class="form-control" placeholder="Remarks" v-model="inventory.remarks"></textarea>
                                 <span class="text-danger" v-if="errors.remarks">{{ errors.remarks[0] }}</span>
@@ -474,6 +484,7 @@ export default {
         this.getInventories();
         this.getTypes();
         this.getLocations();
+        this.getBuildings();
     },
     methods : {
         saveUploadInventory(){
@@ -494,12 +505,12 @@ export default {
                         axios.post(`/save-upload-inventories`, formData)
                         .then(response =>{
                             if(response.data > 0){
+                                $('#upload-inventories-modal').modal('hide');
                                 v.getInventories();
-                                Swal.fire(response.data + ' inventories has been saved!', '', 'success');             
                                 v.performance_eval_file = '';
                                 document.getElementById("upload_inventory_file").value = '';
-                                $('#upload-inventories-modal').modal('hide');
                                 v.uploadDisable = false;
+                                Swal.fire(response.data + ' inventories has been saved!', '', 'success');             
                                 
                             }else{
                                 Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
@@ -562,6 +573,7 @@ export default {
             v.action = 'New';
             this.getTypes();
             this.getLocations();
+            this.getBuildings();
             $('#inventory-modal').modal('show');
         },
         editInventory(inventory){
@@ -594,6 +606,7 @@ export default {
             v.action = 'Update';
             this.getTypes();
             this.getLocations();
+            this.getBuildings();
             $('#inventory-modal').modal('show');
         },
         saveInventory(){
@@ -679,6 +692,17 @@ export default {
             axios.get('/setting-locations-data')
             .then(response => { 
                 v.locations = response.data;
+            })
+            .catch(error => { 
+                v.errors = error.response.data.error;
+            })
+        },
+        getBuildings() {
+            let v = this;
+            v.buildings = [];
+            axios.get('/setting-buildings-data')
+            .then(response => { 
+                v.buildings = response.data;
             })
             .catch(error => { 
                 v.errors = error.response.data.error;
