@@ -359,6 +359,9 @@
                             <h4>Borrow Date : {{selectedItem.is_borrowed.borrow_date}}</h4>  
                         </div>
                         <div class="col-md-12">
+                            <h4>Ticket No. : {{selectedItem.is_borrowed.ticket_number}}</h4>  
+                        </div>
+                        <div class="col-md-12">
                             <h4>Status : {{selectedItem.is_borrowed.status}}</h4>  
                         </div>
                    </div>

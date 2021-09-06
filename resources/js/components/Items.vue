@@ -169,7 +169,19 @@
                         <div class="col-lg-12 mt-5">
                             <h5>Employee : {{ employee.first_name + ' ' + employee.last_name }}</h5>
                         </div>
-                        <div class="col-lg-12">
+
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                       <i class="fas fa-ticket-alt"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" v-model="itemTicketNumber" placeholder="Ticket No.">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 mt-4">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
@@ -184,6 +196,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-lg-12 mt-2" v-if="items">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-checkable" id="kt_datatable">
@@ -240,7 +253,8 @@
                         </div>
                         <div class="col-lg-12 mt-5">
                             <button type="button" class="btn btn-warning btn-md float-left" @click="previousStep1Borrow">Back</button>
-                            <button v-if="selectedItems.length > 0" type="button" class="btn btn-primary btn-md float-right" @click="nextStep3Borrow">Proceed</button>
+                            <button v-if="selectedItems.length > 0 && itemTicketNumber != ''" type="button" class="btn btn-primary btn-md float-right" @click="nextStep3Borrow">Proceed</button>
+                            <button v-else type="button" class="btn btn-primary btn-md float-right" disabled>Proceed</button>
                         </div>
                     </div>
                     <!-- Step 3 -->
@@ -250,6 +264,10 @@
                                 <tr>
                                     <td>Employee : </td>
                                     <td>{{ employee.first_name + ' ' + employee.last_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Ticket No. : </td>
+                                    <td>{{ itemTicketNumber }}</td>
                                 </tr>
                             </table>
                             <h5>Preview Items ({{selectedItems.length}})</h5>
@@ -375,6 +393,7 @@
                                             <th class="text-center">Type</th>
                                             <th class="text-center">Model</th>
                                             <th class="text-center">Serial No.</th>
+                                            <th class="text-center">Ticket No.</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -383,6 +402,7 @@
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.type}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.model}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.serial_number}}</small></td>
+                                            <td style="text-align: center; vertical-align: middle;"><small>{{item.ticket_number}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;">
                                                 <button v-if="item.status == 'Borrowed'" class="btn btn-md btn-primary" @click="returnItem(item)">Return</button>
                                                 <button v-else class="btn btn-md btn-primary" disabled>Returned</button>
@@ -430,6 +450,7 @@ export default {
             errors : [],
 
             //Items
+            itemTicketNumber : '',
             itemName : '',
             items : '',
             selectedItems : [],
@@ -546,6 +567,7 @@ export default {
                 if (result.isConfirmed) {
                     let formData = new FormData();
                     formData.append('employee_id', v.employee ? v.employee.id : "");
+                    formData.append('ticket_number', v.itemTicketNumber ? v.itemTicketNumber : "");
                     formData.append('user_inventories', v.selectedItems ? JSON.stringify(v.selectedItems) : "");
                     axios.post(`/save-borrow-item`, formData)
                     .then(response =>{

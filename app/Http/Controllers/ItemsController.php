@@ -66,6 +66,7 @@ class ItemsController extends Controller
                             'inventory_id' => $item['id'],
                             'borrow_date' => date('Y-m-d h:i:s'),
                             'status' => 'Borrowed',
+                            'ticket_number' => $data['ticket_number'],
                         ];
                         UserInventory::create($newData);
                         $save_count++;

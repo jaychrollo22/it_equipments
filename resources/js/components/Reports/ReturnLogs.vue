@@ -81,6 +81,7 @@
                                     <tr>
                                         <th class="text-center">Date</th>
                                         <th class="text-center">Employee Name</th>
+                                        <th class="text-center">Ticket No.</th>
                                         <th class="text-center">Series No.</th>
                                         <th class="text-center">Model</th>
                                         <th class="text-center">Type</th>
@@ -90,6 +91,7 @@
                                     <tr v-for="(item, i) in filteredReturnLogs" :key="i" >
                                        <td align="center"><small>{{item.return_date}}</small></td>
                                        <td align="center"><small>{{item.employee_info.first_name + ' ' + item.employee_info.last_name}}</small></td>
+                                       <td align="center"><small>{{item.ticket_number}}</small></td>
                                        <td align="center"><small>{{item.inventory_info.serial_number}}</small></td>
                                        <td align="center"><small>{{item.inventory_info.model}}</small></td>
                                        <td align="center"><small>{{item.inventory_info.type}}</small></td>
@@ -142,6 +144,7 @@
                             }
                         }
                     },
+                    'Ticket No.' : 'ticket_number',
                     'Serial No.' : {
                         callback: (value) => {
                             if(value.inventory_info){
