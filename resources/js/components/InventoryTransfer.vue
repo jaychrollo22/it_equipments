@@ -745,7 +745,7 @@
                 v.transfer.date_requested = '';
                 v.transfer.local_number = '';
                 v.transfer.date_of_transfer = '';
-                v.selectedItems = '';
+                v.selectedItems = [];
                 $('#transfer-modal').modal('show');
             },
 
