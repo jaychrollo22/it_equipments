@@ -18,4 +18,8 @@ class Inventory extends Model implements AuditableContract
     public function is_borrowed(){
         return $this->hasOne('App\UserInventory','inventory_id','id')->where('status','Borrowed');
     }
+
+    public function is_transfer(){
+        return $this->hasOne('App\InventoryTransferItem','inventory_id','id')->where('status','Pending');
+    }
 }

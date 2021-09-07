@@ -33,8 +33,9 @@ class ItemsController extends Controller
     public function itemSearch(Request $request){
         $data = $request->all();
 
-        $item = Inventory::select('id','model','serial_number','type')
+        $item = Inventory::select('id','model','serial_number','type','location')
                                 ->doesnthave('is_borrowed')
+                                ->doesnthave('is_transfer')
                                 ->where(function($q) use($data){
                                     $q->where('model', 'like','%'.$data['item_name'].'%')
                                         ->orWhere('serial_number', 'like','%'.$data['item_name'].'%')

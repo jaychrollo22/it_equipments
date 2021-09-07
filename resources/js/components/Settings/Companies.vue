@@ -107,7 +107,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="role">{{ action }} Company</label> 
-                                <input type="text" class="form-control" placeholder="Input here..." v-model="company.name">
+                                <input type="text" class="form-control" placeholder="Input here..." v-model="company.name" @keyup.enter="saveCompany">
                                 <span class="text-danger" v-if="errors.name">{{ errors.name[0] }}</span>
                             </div>
                         </div>

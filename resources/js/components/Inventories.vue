@@ -370,7 +370,6 @@
         </div>
     </div>
 
-
     <div class="modal fade" id="upload-inventories-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
             <div class="modal-content">

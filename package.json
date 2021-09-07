@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "v-mask": "^2.2.4",
-        "vue-json-excel": "^0.3.0"
+        "vue-json-excel": "^0.3.0",
+        "vue-multiselect": "^2.1.6"
     }
 }

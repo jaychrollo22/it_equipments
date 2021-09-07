@@ -42,6 +42,12 @@ Route::post('/save-upload-inventories', 'InventoryController@uploadInventories')
 
 //Transfer Inventories
 Route::get('/inventory-transfer', 'InventoryController@transfer')->name('transfer');
+Route::get('/inventory-transfer-data', 'InventoryController@transferData');
+Route::post('/save-inventory-transfer', 'InventoryController@saveTransfer');
+Route::post('/update-inventory-transfer', 'InventoryController@updateTransfer');
+
+Route::post('/remove-inventory-transfer-item', 'InventoryController@removeTransferItem');
+
 Route::get('/inventory-receive', 'InventoryController@receive')->name('transfer');
 
 //Users

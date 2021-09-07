@@ -532,9 +532,11 @@ export default {
             this.selectedItems.splice(item, 1);
         },
         validateBorrowItem(item){
-            var index = this.selectedItems.findIndex(selected_item => selected_item.id == item.id);
-            if(index === 0){
-                return false
+            var hasMatch = this.selectedItems.filter(function (val) {
+                return !!(val.id === item.id);                               
+            });
+            if(hasMatch.length > 0){
+                return false;
             }else{
                 return true;
             }

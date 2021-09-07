@@ -38,7 +38,7 @@
                                             <span class="menu-desc"></span>
                                         </a>
                                     </li>
-                                    {{-- <li class="menu-item" aria-haspopup="true">
+                                    <li class="menu-item" aria-haspopup="true">
                                         <a href="{{ url('inventory-transfer') }}" class="menu-link" disabled>
                                             <span class="menu-text">Transfer</span>
                                             <span class="menu-desc"></span>
@@ -49,7 +49,7 @@
                                             <span class="menu-text">Receive</span>
                                             <span class="menu-desc"></span>
                                         </a>
-                                    </li> --}}
+                                    </li>
                                 </ul>
                             </div>
 

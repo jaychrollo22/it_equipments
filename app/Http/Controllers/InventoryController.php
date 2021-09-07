@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Inventory;
+use App\InventoryTransfer;
+use App\InventoryTransferItem;
 
 use App\Imports\InventoriesImport;
 
@@ -165,5 +167,185 @@ class InventoryController extends Controller
             'title' => 'Transfer'
         ]);
         return view('pages.inventory_transfer');
+    }
+
+    public function transferData(Request $request){
+        return InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by')
+                                ->orderBy('created_at','DESC')
+                                // ->take(50)
+                                ->get();
+    }
+
+    public function saveTransfer(Request $request){
+
+        $this->validate($request, [
+            'requested_by' => 'required',
+            'transfer_department' => 'required',
+            'transfer_company' => 'required',
+            'local_number' => 'required',
+            'date_requested' => 'required',
+            'date_of_transfer' => 'required',
+            'transfer_inventories' => 'required',
+        ]);
+
+        $data = $request->all();
+
+        DB::beginTransaction();
+        try {
+            if($data['transfer_inventories']){
+
+                //Save Transfer Header
+                $transfer_data = [
+                    'requested_by' => $data['requested_by'],
+                    'transfer_department' => $data['transfer_department'],
+                    'transfer_company' => $data['transfer_company'],
+                    'local_number' => $data['local_number'],
+                    'date_requested' => $data['date_requested'],
+                    'date_of_transfer' => $data['date_of_transfer'],
+                    'transfer_location' => $data['transfer_location'],
+                    'status' => 'Pending',
+                ];
+
+                if($save_transfer = InventoryTransfer::create($transfer_data)){
+                    //Generate Transfer Code
+                    $date = date('Ymd');
+                    $transfer_code = $date .'-'. str_pad($save_transfer->id, 4, '0', STR_PAD_LEFT); ;
+                    $saveTransferCode = ['transfer_code'=>$transfer_code];
+                    $checkTransfer = InventoryTransfer::where('id',$save_transfer->id)->update($saveTransferCode);
+                    //Save Transfer Inventories
+                    $transfer_inventories = json_decode($data['transfer_inventories'], true);
+                    $save_count = 0;
+                    foreach($transfer_inventories as $item){
+                        $newData = [
+                            'inventory_transfer_id' => $save_transfer->id,
+                            'inventory_id' => $item['id'],
+                            'location_from' => $item['location'],
+                            'location_to' => $data['transfer_location'],
+                            'status' => 'Pending'
+                        ];
+                        InventoryTransferItem::create($newData);
+                        $save_count++;
+                    }
+                    if($save_count > 0){
+                        DB::commit();
+                        return $data = [
+                            'status'=>'success',
+                            'save_count'=>$save_count,
+                        ];
+                    }else{
+                        return $data = [
+                            'status'=>'error'
+                        ];     
+                    }
+                }
+            }else{
+                return $data = [
+                    'status'=>'error'
+                ];
+            }
+        }catch (Exception $e) {
+            DB::rollBack();
+            return $data = [
+                'status'=>'error'
+            ];
+        }
+    }
+
+    public function updateTransfer(Request $request){
+
+        $this->validate($request, [
+            'requested_by' => 'required',
+            'transfer_department' => 'required',
+            'transfer_company' => 'required',
+            'local_number' => 'required',
+            'date_requested' => 'required',
+            'date_of_transfer' => 'required',
+            'transfer_inventories' => 'required',
+        ]);
+
+        $data = $request->all();
+
+        DB::beginTransaction();
+        try {
+            if($data['transfer_inventories']){
+
+                $check_transfer = InventoryTransfer::where('id',$data['id'])->first();
+                if($check_transfer){
+                    //Save Transfer Header
+                    $transfer_data = [
+                        'requested_by' => $data['requested_by'],
+                        'transfer_department' => $data['transfer_department'],
+                        'transfer_company' => $data['transfer_company'],
+                        'local_number' => $data['local_number'],
+                        'date_requested' => $data['date_requested'],
+                        'date_of_transfer' => $data['date_of_transfer'],
+                        'transfer_location' => $data['transfer_location'],
+                    ];
+
+                    if($save_transfer = $check_transfer->update($transfer_data)){
+                        //Save Transfer Inventories
+                        $transfer_inventories = json_decode($data['transfer_inventories'], true);
+                        $save_count = 0;
+                        foreach($transfer_inventories as $item){
+                            
+                            $newData = [
+                                'inventory_transfer_id' => $check_transfer->id,
+                                'inventory_id' => $item['id'],
+                                'location_from' => $item['location'],
+                                'location_to' => $data['transfer_location'],
+                                'status' => 'Pending'
+                            ];
+
+                            $validate_if_exist = InventoryTransferItem::where('inventory_transfer_id',$check_transfer['id'])
+                                                                        ->where('inventory_id',$item['id'])
+                                                                        ->first();
+                            if(empty($validate_if_exist)){
+                                InventoryTransferItem::create($newData);
+                                $save_count++;
+                            }
+                        }
+                        
+                        DB::commit();
+                        return $data = [
+                            'status'=>'success',
+                            'save_count'=>$save_count,
+                        ];
+                       
+                    }
+                }
+                
+            }else{
+                return $data = [
+                    'status'=>'error'
+                ];
+            }
+        }catch (Exception $e) {
+            DB::rollBack();
+            return $data = [
+                'status'=>'error'
+            ];
+        }
+    }
+
+    public function removeTransferItem(Request $request){
+        $data = $request->all();
+        DB::beginTransaction();
+        try {
+            if(InventoryTransferItem::where('inventory_id',$data['inventory_id'])->where('inventory_transfer_id',$data['inventory_transfer_id'])->delete()){
+                DB::commit();
+                return $data = [
+                    'status'=>'success'
+                ];
+            }else{
+                return $data = [
+                    'status'=>'error'
+                ];
+            }
+        }catch (Exception $e) {
+            DB::rollBack();
+            return $data = [
+                'status'=>'error'
+            ];
+        }
     }
 }
