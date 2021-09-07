@@ -302,6 +302,9 @@ class InventoryController extends Controller
                             if(empty($validate_if_exist)){
                                 InventoryTransferItem::create($newData);
                                 $save_count++;
+                            }else{
+                                $validate_if_exist->update($newData);
+                                $save_count++;
                             }
                         }
                         
@@ -348,4 +351,67 @@ class InventoryController extends Controller
             ];
         }
     }
+
+    public function searchTransferCode(Request $request){
+        $data = $request->all();
+        $inventory_transfer = InventoryTransfer::with('inventory_transfer_items.inventory_info')->where('transfer_code',$data['transfer_code'])->first();
+        return $inventory_transfer;
+    }
+
+    public function receive(){
+        session([
+            'title' => 'Receive'
+        ]);
+        return view('pages.inventory_receive');
+    }
+
+    public function receiveData(Request $request){
+        $inventory_transfer = InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by')
+                                                ->whereHas('inventory_transfer_items',function ($q){
+                                                    $q->where('status', 'Received');
+                                                })
+                                                ->get();
+        return $inventory_transfer;
+    }
+
+    public function saveReceiveItem(Request $request){
+        $data = $request->all();
+        DB::beginTransaction();
+        try {
+            $inventory_transfer_item = InventoryTransferItem::where('id',$data['inventory_transfer_id'])->first();
+            if($inventory_transfer_item){
+                //Update Transfer to Received
+                $updateInventoryTransferItem = [
+                    'receive_date'=> date('Y-m-d h:i:s'),
+                    'status'=>'Received'
+                ];
+                $inventory_transfer_item->update($updateInventoryTransferItem);
+
+                //Update Location
+                $inventory = Inventory::where('id',$inventory_transfer_item['inventory_id'])->first();
+                $inventoryData = [
+                    'location'=> $inventory_transfer_item['location_to']
+                ];
+                $inventory->update($inventoryData);
+
+                DB::commit();
+                $item = InventoryTransferItem::with('inventory_info')->where('id',$data['inventory_transfer_id'])->first();
+                return $data = [
+                    'status'=>'success',
+                    'item'=>$item
+                ];
+            }else{
+                return $data = [
+                    'status'=>'error'
+                ];
+            }
+        }catch (Exception $e) {
+            DB::rollBack();
+            return $data = [
+                'status'=>'error'
+            ];
+        }
+    }
+
+    
 }

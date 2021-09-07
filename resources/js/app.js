@@ -24,6 +24,7 @@ Vue.component('items', require('./components/Items.vue').default);
 Vue.component('dashboard', require('./components/Dashboard.vue').default);
 Vue.component('inventories', require('./components/Inventories.vue').default);
 Vue.component('inventory-transfer', require('./components/InventoryTransfer.vue').default);
+Vue.component('inventory-receive', require('./components/InventoryReceive.vue').default);
 
 Vue.component('users', require('./components/Users.vue').default);
 Vue.component('activity-logs', require('./components/ActivityLogs.vue').default);

@@ -16,7 +16,7 @@ class InventoryTransfer extends Model implements AuditableContract
     protected $auditTimestamps = true;
 
     public function inventory_transfer_items(){
-        return $this->hasMany('App\InventoryTransferItem','inventory_transfer_id','id')->where('status','Pending');
+        return $this->hasMany('App\InventoryTransferItem','inventory_transfer_id','id');
     }
 
     public function requested_by(){

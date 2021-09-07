@@ -45,7 +45,7 @@
                                         </a>
                                     </li>
                                     <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('inventory-recieve') }}" class="menu-link" disabled>
+                                        <a href="{{ url('inventory-receive') }}" class="menu-link" disabled>
                                             <span class="menu-text">Receive</span>
                                             <span class="menu-desc"></span>
                                         </a>

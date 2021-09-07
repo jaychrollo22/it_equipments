@@ -45,10 +45,13 @@ Route::get('/inventory-transfer', 'InventoryController@transfer')->name('transfe
 Route::get('/inventory-transfer-data', 'InventoryController@transferData');
 Route::post('/save-inventory-transfer', 'InventoryController@saveTransfer');
 Route::post('/update-inventory-transfer', 'InventoryController@updateTransfer');
-
 Route::post('/remove-inventory-transfer-item', 'InventoryController@removeTransferItem');
 
-Route::get('/inventory-receive', 'InventoryController@receive')->name('transfer');
+//Receive Inventories
+Route::get('/inventory-receive', 'InventoryController@receive')->name('receive');
+Route::get('/search-transfer-code', 'InventoryController@searchTransferCode');
+Route::post('/save-receive-item', 'InventoryController@saveReceiveItem');
+Route::get('/inventory-receive-data', 'InventoryController@receiveData');
 
 //Users
 Route::get('/users', 'UsersController@index')->name('users');

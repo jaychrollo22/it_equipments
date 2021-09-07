@@ -84,6 +84,7 @@
                                         <th class="text-center">MANUFACTURER</th>
                                         <th class="text-center">SUPPLIER</th>
                                         <th class="text-center">STATUS</th>
+                                        <th class="text-center">LOCATION</th>
                                         <th class="text-center">ACTION</th>
                                     </tr>
                                 </thead>
@@ -100,6 +101,7 @@
                                           <span v-if="item.is_borrowed" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" :title="item.is_borrowed.status" @click="viewBorrowItem(item)">{{ item.is_borrowed.status }}</span>
                                           <span v-else class="label label-success label-pill label-inline mr-2" title="Available to Borrow">Available</span>
                                         </td>
+                                        <td align="center"><small>{{item.location}}</small></td>
                                        <td align="center">
                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editInventory(item)">
                                                 <i class="flaticon-edit"></i>
