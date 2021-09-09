@@ -81,7 +81,7 @@
                         <div class="card card-custom gutter-b">
                             <div class="card-header">
                                 <div class="card-title">
-                                    <h3 class="card-label">Per Location</h3>
+                                    <h3 class="card-label">Inventory Per Location</h3>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -93,7 +93,7 @@
                         <div class="card card-custom gutter-b">
                             <div class="card-header">
                                 <div class="card-title">
-                                    <h3 class="card-label">Per Type</h3>
+                                    <h3 class="card-label">Inventory Per Type</h3>
                                 </div>
                             </div>
                             <div class="card-body">
