@@ -15,6 +15,7 @@ class SettingLocation extends Model implements AuditableContract
     protected $auditTimestamps = true;
     
     protected $fillable = [
-        'name'
+        'name',
+        'color'
     ]; 
 }

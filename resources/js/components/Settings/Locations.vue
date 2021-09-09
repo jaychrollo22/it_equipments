@@ -59,12 +59,16 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">LOCATION</th>
+                                        <th class="text-center">COLOR</th>
                                         <th class="text-center">ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, i) in filteredLocationQueues" :key="i" >
                                        <td align="center"><small>{{item.name}}</small></td>
+                                       <td align="center">
+                                            <i class="fas fa-circle" :style="'color:'+item.color"></i>
+                                        </td>
                                        <td align="center">
                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editLocation(item)">
                                                 <i class="flaticon-edit"></i>
@@ -111,6 +115,13 @@
                                 <span class="text-danger" v-if="errors.name">{{ errors.name[0] }}</span>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Color</label> 
+                                <input type="color" class="form-control" v-model="location.color" @keyup.enter="saveLocation">
+                                <span class="text-danger" v-if="errors.color">{{ errors.color[0] }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -148,6 +159,7 @@ export default {
             v.errors = [];
             v.location.id = '';
             v.location.name = '';
+            v.location.color = '';
             v.action = 'New';
             $('#location-modal').modal('show');
         },
@@ -156,6 +168,7 @@ export default {
             v.errors = [];
             v.location.id = location.id;
             v.location.name = location.name;
+            v.location.color = location.color;
             v.action = 'Update';
             $('#location-modal').modal('show');
         },
@@ -176,6 +189,7 @@ export default {
                         postURL = `/setting-locations-update`;
                     }
                     formData.append('name', v.location.name ? v.location.name : "");
+                    formData.append('color', v.location.color ? v.location.color : "");
                     axios.post(postURL, formData)
                     .then(response =>{
                         if(response.data.status == "success"){
@@ -183,6 +197,7 @@ export default {
                             $('#location-modal').modal('hide');
                             v.location.id = '';
                             v.location.name = '';  
+                            v.location.color = '';  
                             this.getLocations();
                         }else{
                             Swal.fire('Error: Cannot changed. Please try again.', '', 'error');   

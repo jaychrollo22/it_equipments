@@ -76,6 +76,32 @@
                         <!--end::Stats Widget 22-->
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card card-custom gutter-b">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Per Location</h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                 <polar-chart :chart-data="location_chart" :height="200"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card card-custom gutter-b">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Per Type</h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                 <polar-chart :chart-data="type_chart" :height="200"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
          </div>
 
@@ -86,12 +112,45 @@
 </template>
 
 <script>
+    import BarChart from './Charts/BarChart.js'
+    import PolarChart from './Charts/PolarChart.js'
     export default {
+         components: {
+            BarChart,PolarChart
+        },
         data() {
             return {
                 overall_total_inventory: '',
                 total_borrowed_items_today: '',
                 total_returned_items_today: '',
+                location_chart: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Location',
+                            backgroundColor: [],
+                            pointBackgroundColor: 'white',
+                            borderWidth: 1,
+                            pointBorderColor: 'rgb(0,84,206)',
+                            data: []
+                        },
+                    ]
+                },
+                type_chart: {
+                    labels: [],
+                    datasets: [
+                        {
+                            // label: 'Type',
+                            backgroundColor: [],
+                            pointBackgroundColor: 'white',
+                            borderWidth: 1,
+                            // pointBorderColor: 'rgb(1,156,140)',
+                            data: []
+                        },
+                    ]
+                },
+
+
             }
         },
         created () {
@@ -102,18 +161,81 @@
                 let v = this;
                 v.overall_total_inventory = '';
                 v.total_borrowed_items_today = '';
-                v.total_returned_items_today = '';
+                v.total_returned_items_today = [];
+                v.per_location = [];
                 axios.get('/dashboard-data')
                 .then(response => { 
                     v.overall_total_inventory = response.data.overall_total_inventory;
                     v.total_borrowed_items_today = response.data.total_borrowed_items_today;
-                    v.total_returned_items_today = response.data.total_returned_items_today;
+                    if(response.data.per_location){
+                        v.perLocationData(response.data.per_location);
+                        v.perTypeData(response.data.per_type);
+                    }
+                    
                 })
                 .catch(error => { 
                     v.errors = error.response.data.error;
                 })
-            }
+            },
+            perLocationData(per_location){
+                let v = this;
+                var counts = [];
+                var names = [];
+                var bg_colors = [];
+                
+                per_location.forEach(entry => {
+                    names.push(entry.name + ' (' + entry.count + ')');
+                    counts.push(entry.count);
+                    bg_colors.push(entry.color);
+
+                });
+               
+
+                v.location_chart = {
+                    labels: names,
+                    datasets: [
+                        {
+                            label: 'Location',
+                            backgroundColor: bg_colors,
+                            pointBackgroundColor: 'white',
+                            borderWidth: 1,
+                            pointBorderColor: 'rgb(0,84,206)',
+                            data: counts
+                        },
+                    ]
+                };
+
+
+            },
+            perTypeData(per_type){
+                let v = this;
+                var counts = [];
+                var names = [];
+                var bg_colors = [];
+                per_type.forEach(entry => {
+                    names.push(entry.name + ' (' + entry.count + ')');
+                    counts.push(entry.count);
+                    bg_colors.push(entry.color);
+
+                });
+                v.type_chart = {
+                    labels: names,
+                    datasets: [
+                        {
+                            label: 'Type',
+                            backgroundColor: bg_colors,
+                            pointBackgroundColor: 'white',
+                            borderWidth: 1,
+                            pointBorderColor: 'rgb(0,84,206)',
+                            data: counts
+                        },
+                    ]
+                };
+
+
+            },
         },
+        
     }
 </script>
 

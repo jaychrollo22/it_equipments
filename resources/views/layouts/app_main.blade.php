@@ -91,7 +91,7 @@
             <!--end::Svg Icon-->
         </span>
     </div>
-   
+    <
     <script src="{{ asset('js/all.js') }}"></script>
 
 
@@ -111,6 +111,9 @@
     <script src="assets/js/pages/widgets.js"></script>
     <!--end::Page Scripts-->
 
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    {{-- <script src="assets/js/pages/features/charts/flotcharts.js"></script> --}}
     
     
 </body>

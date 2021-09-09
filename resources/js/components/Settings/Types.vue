@@ -59,12 +59,16 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">TYPE</th>
+                                        <th class="text-center">COLOR</th>
                                         <th class="text-center">ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, i) in filteredTypeQueues" :key="i" >
                                        <td align="center"><small>{{item.name}}</small></td>
+                                       <td align="center">
+                                            <i class="fas fa-circle" :style="'color:'+item.color"></i>
+                                        </td>
                                        <td align="center">
                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editType(item)">
                                                 <i class="flaticon-edit"></i>
@@ -111,6 +115,13 @@
                                 <span class="text-danger" v-if="errors.name">{{ errors.name[0] }}</span>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Color</label> 
+                                <input type="color" class="form-control" v-model="type.color" @keyup.enter="saveType">
+                                <span class="text-danger" v-if="errors.color">{{ errors.color[0] }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -130,7 +141,8 @@ export default {
             keywords: '',
             type : {
                 'id' : '',
-                'name' : ''
+                'name' : '',
+                'color' : '',
             },
             action : '',
             types : [],
@@ -148,6 +160,7 @@ export default {
             v.errors = [];
             v.type.id = '';
             v.type.name = '';
+            v.type.color = '';
             v.action = 'New';
             $('#type-modal').modal('show');
         },
@@ -156,6 +169,7 @@ export default {
             v.errors = [];
             v.type.id = type.id;
             v.type.name = type.name;
+            v.type.color = type.color;
             v.action = 'Update';
             $('#type-modal').modal('show');
         },
@@ -176,6 +190,7 @@ export default {
                         postURL = `/setting-types-update`;
                     }
                     formData.append('name', v.type.name ? v.type.name : "");
+                    formData.append('color', v.type.color ? v.type.color : "");
                     axios.post(postURL, formData)
                     .then(response =>{
                         if(response.data.status == "success"){
@@ -183,6 +198,7 @@ export default {
                             $('#type-modal').modal('hide');
                             v.type.id = '';
                             v.type.name = '';  
+                            v.type.color = '';  
                             this.getTypes();
                         }else{
                             Swal.fire('Error: Cannot changed. Please try again.', '', 'error');   
