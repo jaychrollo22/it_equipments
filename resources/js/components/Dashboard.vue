@@ -38,12 +38,12 @@
                 <div class="row">
                     <div class="col-xl-4">
                         <!--begin::Stats Widget 22-->
-                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
+                        <div class="card card-custom bg-success bg-hover-state-success bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
                             <!--begin::Body-->
                             <div class="card-body">
-                                <i class="icon-xl fas fa-th-large"></i>
-                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{overall_total_inventory.length}}</span>
-                                <span class="font-weight-bold text-muted font-size-sm">Overall Total Inventory</span>
+                                <i class="icon-xl fas fa-th-large text-inverse-success"></i>
+                                <span class="text-inverse-success card-title font-weight-bolder font-size-h2 mb-0 mt-6 d-block">{{overall_total_inventory.length}}</span>
+                                <span class="text-inverse-success font-weight-bold font-size-sm">Overall Total Inventory</span>
                             </div>
                             <!--end::Body-->
                         </div>
@@ -51,12 +51,12 @@
                     </div>
                     <div class="col-xl-4">
                         <!--begin::Stats Widget 22-->
-                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
+                        <div class="card card-custom bg-primary bg-hover-state-primary bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
                             <!--begin::Body-->
                             <div class="card-body">
-                                <i class="icon-xl fas fa-undo"></i>
-                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{total_borrowed_items_today.length}}</span>
-                                <span class="font-weight-bold text-muted font-size-sm">Total Borrowed Items Today</span>
+                                <i class="icon-xl fas fa-undo text-inverse-primary"></i>
+                                <span class="text-inverse-primary card-title font-weight-bolder font-size-h2 mb-0 mt-6 d-block">{{total_borrowed_items_today.length}}</span>
+                                <span class="text-inverse-primary font-weight-bold font-size-sm">Total Borrowed Items Today</span>
                             </div>
                             <!--end::Body-->
                         </div>
@@ -64,12 +64,12 @@
                     </div>
                     <div class="col-xl-4">
                         <!--begin::Stats Widget 22-->
-                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
+                        <div class="card card-custom bg-warning bg-hover-state-warning bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
                             <!--begin::Body-->
                             <div class="card-body">
-                                <i class="icon-xl fas fas fa-redo"></i>
-                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{total_returned_items_today.length}}</span>
-                                <span class="font-weight-bold text-muted font-size-sm">Total Return Items Today</span>
+                                <i class="icon-xl fas fas fa-redo text-inverse-warning"></i>
+                                <span class="text-inverse-warning card-title font-weight-bolder font-size-h2 mb-0 mt-6 d-block">{{total_returned_items_today.length}}</span>
+                                <span class="text-inverse-warning font-weight-bold font-size-sm">Total Return Items Today</span>
                             </div>
                             <!--end::Body-->
                         </div>
