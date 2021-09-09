@@ -292,14 +292,14 @@ class InventoryController extends Controller
                                 'inventory_transfer_id' => $check_transfer->id,
                                 'inventory_id' => $item['id'],
                                 'location_from' => $item['location'],
-                                'location_to' => $data['transfer_location'],
-                                'status' => 'Pending'
+                                'location_to' => $data['transfer_location']
                             ];
 
                             $validate_if_exist = InventoryTransferItem::where('inventory_transfer_id',$check_transfer['id'])
                                                                         ->where('inventory_id',$item['id'])
                                                                         ->first();
                             if(empty($validate_if_exist)){
+                                $newData['status'] = 'Pending';
                                 InventoryTransferItem::create($newData);
                                 $save_count++;
                             }else{
