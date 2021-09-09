@@ -401,7 +401,8 @@
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.location}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;">
-                                            <button class="btn btn-md btn-danger" @click="removeTransferRemoveItem(item)">Remove</button>
+                                            <button v-if="item.status == 'Received'" class="btn btn-md btn-danger" disabled>{{item.status}}</button>
+                                            <button v-else class="btn btn-md btn-danger"  @click="removeTransferRemoveItem(item)">Remove</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -547,7 +548,8 @@
                     serial_number : item.serial_number,
                     type : item.type,
                     location : item.location,
-                    tag : 'new'
+                    tag : 'new',
+                    status : 'Pending'
                 });
                 this.items.splice(item, 1);
             },
@@ -572,7 +574,8 @@
                             serial_number : item.inventory_info.serial_number,
                             type : item.inventory_info.type,
                             location : item.inventory_info.location,
-                            tag : 'edit'
+                            tag : 'edit',
+                            status : item.status
                         });
                     });
                 }
