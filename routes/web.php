@@ -97,3 +97,6 @@ Route::get('/reports-borrow-logs', 'ReportsController@borrowLogs')->name('borrow
 Route::get('/reports-borrow-logs-data', 'ReportsController@borrowLogData');
 Route::get('/reports-return-logs', 'ReportsController@returnLogs')->name('return-logs');
 Route::get('/reports-return-logs-data', 'ReportsController@returnLogData');
+
+Route::get('/reports-asset-logs', 'ReportsController@assetLogs')->name('asset-logs');
+Route::get('/reports-asset-logs-data', 'ReportsController@assetLogData');

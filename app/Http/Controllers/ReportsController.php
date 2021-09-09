@@ -20,8 +20,9 @@ class ReportsController extends Controller
                                 ->whereDate('borrow_date','<=',$request->date_to)
                                 ->orderBy('borrow_date','DESC')
                                 ->get();
-        }else{
-            return UserInventory::with('employee_info','inventory_info')->whereDate('borrow_date', date('Y-m-d'))->orderBy('borrow_date','DESC')->get();
+        } 
+        else{
+            return UserInventory::with('employee_info','inventory_info')->orderBy('borrow_date','DESC')->take(50)->get();
         }
     }
 
@@ -40,7 +41,23 @@ class ReportsController extends Controller
                                 ->orderBy('return_date','DESC')
                                 ->get();
         }else{
-            return UserInventory::with('employee_info','inventory_info')->whereDate('return_date', date('Y-m-d'))->orderBy('return_date','DESC')->get();
+            return UserInventory::with('employee_info','inventory_info')->orderBy('return_date','DESC')->take(50)->get();
         }
+    }
+
+    public function assetLogs(){
+        session([
+            'title' => 'Asset Logs',
+        ]);
+        return view('pages.reports.asset_logs');
+    }
+
+    public function assetLogData(Request $request){
+        return UserInventory::with('employee_info','inventory_info')
+                            ->where('status','Borrowed')
+                            ->whereNull('return_date')
+                            ->orderBy('employee_id','DESC')
+                            ->orderBy('created_at','DESC')
+                            ->get();
     }
 }

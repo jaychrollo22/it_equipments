@@ -109,6 +109,12 @@
                             <div class="menu-submenu menu-submenu-classic menu-submenu-left">
                                 <ul class="menu-subnav">
                                     <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('reports-asset-logs') }}" class="menu-link">
+                                            <span class="menu-text">Asset Logs</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item" aria-haspopup="true">
                                         <a href="{{ url('reports-borrow-logs') }}" class="menu-link">
                                             <span class="menu-text">Borrow Logs</span>
                                             <span class="menu-desc"></span>
