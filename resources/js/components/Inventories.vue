@@ -56,16 +56,19 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Search</label>
-                                    <input type="text" class="form-control" placeholder="Input here..." v-model="keywords">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="cursor:pointer" @click="showFilter">
+                                            <i class="fas fa-filter"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Search"  v-model="keywords">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Filter</label>
                                     <select class="form-control form-control-primary" v-model="filter_status">
-                                        <option value="">Choose Filter</option>
+                                        <option value="">Choose Availability</option>
                                         <option value="Available">Available</option>
                                         <option value="Borrowed">Borrowed</option>
                                     </select>
@@ -83,7 +86,7 @@
                                         <th class="text-center">MODEL</th>
                                         <th class="text-center">MANUFACTURER</th>
                                         <th class="text-center">SUPPLIER</th>
-                                        <th class="text-center">STATUS</th>
+                                        <th class="text-center">AVAILABILITY</th>
                                         <th class="text-center">LOCATION</th>
                                         <th class="text-center">ACTION</th>
                                     </tr>
@@ -423,6 +426,70 @@
         </div>
     </div>
 
+    <div class="modal fade" id="apply-filter-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
+            <div class="modal-content">
+                <div>
+                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> 
+                <div class="modal-header">
+                    <h2 class="col-12 modal-title text-center">Apply Filter</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="role">Type</label> 
+                                <select class="form-control" v-model="filter.type">
+                                    <option value="">Choose Type</option>
+                                    <option value="N/A">N/A</option>
+                                    <option v-for="(type,b) in types" v-bind:key="b" :value="type.name"> {{ type.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="role">Location</label> 
+                                <select class="form-control" v-model="filter.location">
+                                    <option value="">Choose Location</option>
+                                    <option value="N/A">N/A</option>
+                                    <option v-for="(location,b) in locations" v-bind:key="b" :value="location.name"> {{ location.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="role">Category</label> 
+                                <select class="form-control" v-model="filter.category">
+                                    <option value="">Choose Category</option>
+                                    <option value="N/A">N/A</option>
+                                    <option v-for="(category,b) in categories" v-bind:key="b" :value="category.name"> {{ category.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="role">Status</label> 
+                                <select class="form-control" v-model="filter.status">
+                                    <option value="">Choose Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="For Repair">For Repair</option>
+                                    <option value="Disposed">Disposed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-md" @click="getInventories">Apply Filter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </template>
 
@@ -510,6 +577,15 @@ export default {
                 'BUILDING' : 'building',
                 'CATEGORY' : 'category',
                 'STATUS' : 'status',
+            },
+
+            //Filter
+            filter : {
+                type: '',
+                location: '',
+                building: '',
+                category: '',
+                status: ''
             }
         }
     },
@@ -521,6 +597,9 @@ export default {
         this.getCategories();
     },
     methods : {
+        showFilter(){
+            $('#apply-filter-modal').modal('show');
+        },
         saveUploadInventory(){
             let v = this;
             v.uploadDisable = true;
@@ -712,9 +791,10 @@ export default {
         getInventories() {
             let v = this;
             v.inventories = [];
-            axios.get('/inventories-data')
+            axios.get('/inventories-data?type='+v.filter.type+'&location='+v.filter.location+'&category='+v.filter.category+'&status='+v.filter.status)
             .then(response => { 
                 v.inventories = response.data;
+                $('#apply-filter-modal').modal('hide');
             })
             .catch(error => { 
                 v.errors = error.response.data.error;
@@ -781,6 +861,7 @@ export default {
         filteredInventories(){
             let self = this;
             if(self.inventories){
+                self.resetStartRowUser();
                 return Object.values(self.inventories).filter(item => {
                     if(self.filter_status == 'Available'){
                         if(item.is_borrowed == null){

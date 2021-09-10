@@ -37,8 +37,23 @@ class InventoryController extends Controller
         return view('pages.inventories');
     }
 
-    public function indexData(){
-        return Inventory::with('is_borrowed.employee_info')->orderBy('type','ASC')->get();
+    public function indexData(Request $request){
+        $data = $request->all();
+        return Inventory::with('is_borrowed.employee_info')
+                            ->when(!empty($data['type']),function($q) use($data){
+                                $q->where('type','LIKE','%'.$data['type'].'%');
+                            })
+                            ->when(!empty($data['location']),function($q) use($data){
+                                $q->where('location','LIKE','%'.$data['location'].'%');
+                            })
+                            ->when(!empty($data['category']),function($q) use($data){
+                                $q->where('category','LIKE','%'.$data['category'].'%');
+                            })
+                            ->when(!empty($data['status']),function($q) use($data){
+                                $q->where('status','LIKE','%'.$data['status'].'%');
+                            })
+                            ->orderBy('type','ASC')
+                            ->get();
     }
 
     /**
