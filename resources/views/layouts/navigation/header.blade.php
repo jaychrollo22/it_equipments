@@ -19,6 +19,7 @@
                     <!--begin::Header Nav-->
                     <ul class="menu-nav">
                         {{-- Dashboard --}}
+                        @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
                         <li class="menu-item menu-item-submenu menu-item-rel">
                             <a href="{{ url('/home') }}" class="menu-link">
                                 <span class="menu-text">Dashboard</span>
@@ -26,7 +27,9 @@
                                 <i class="menu-arrow"></i>
                             </a>
                         </li>
+                        @endif
                         {{-- Inventories --}}
+                        @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
                         <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
                             <a href="javascript:;" class="menu-link menu-toggle">
                                 <span class="menu-text">Inventories</span>
@@ -59,6 +62,7 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
                         {{-- Settings --}}
                         @if(session('user_role') == "Administrator")
                             <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">

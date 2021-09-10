@@ -29,13 +29,21 @@ class HomeController extends Controller
                             ->with('user.user_role')
                             ->where('user_id',Auth::user()->id)
                             ->first();
-
-        session([
-            'title' => 'Dashboard',
-            'user' => $employee,
-            'user_role' => $employee->user->user_role ? $employee->user->user_role->role : "",
-        ]);
-        return view('pages.dashboard');
+        if($employee->user->user_role){
+            if($employee->user->user_role->role == 'Administrator' || $employee->user->user_role->role == 'IT Support'){
+                session([
+                    'title' => 'Dashboard',
+                    'user' => $employee,
+                    'user_role' => $employee->user->user_role->role,
+                ]);
+                return view('pages.dashboard');    
+            }else{
+                return view('pages.page_not_found');  
+            }
+        }else{
+            return view('pages.page_not_found');  
+        }
+       
     }
 
     public function dashboardData(){
