@@ -92,6 +92,12 @@ Route::get('/setting-types-data', 'SettingsTypeController@indexData');
 Route::post('/setting-types-store', 'SettingsTypeController@store');
 Route::post('/setting-types-update', 'SettingsTypeController@update');
 
+//Settings - Categories
+Route::get('/setting-categories', 'SettingsCategoryController@index')->name('settings-categories');
+Route::get('/setting-categories-data', 'SettingsCategoryController@indexData');
+Route::post('/setting-categories-store', 'SettingsCategoryController@store');
+Route::post('/setting-categories-update', 'SettingsCategoryController@update');
+
 //Reports
 Route::get('/reports-borrow-logs', 'ReportsController@borrowLogs')->name('borrow-logs');
 Route::get('/reports-borrow-logs-data', 'ReportsController@borrowLogData');

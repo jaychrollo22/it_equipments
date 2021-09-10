@@ -9,7 +9,7 @@
                     <!--begin::Heading-->
                     <div class="d-flex flex-column">
                         <!--begin::Title-->
-                        <h2 class="text-white font-weight-bold my-2 mr-5">Locations</h2>
+                        <h2 class="text-white font-weight-bold my-2 mr-5">Categories</h2>
                         <!--end::Title-->
                         <!--begin::Breadcrumb-->
                         <div class="d-flex align-items-center font-weight-bold my-2">
@@ -40,7 +40,7 @@
                             <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                         </div>
                         <div class="card-toolbar">
-                            <button class="btn btn-success mr-2" @click="addLocation">New</button>
+                            <button class="btn btn-success mr-2" @click="addCategory">New</button>
                         </div>
                     </div>
 
@@ -58,21 +58,19 @@
                             <table class="table table-checkable" id="kt_datatable">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">LOCATION</th>
-                                        <th class="text-center">ADDRESS</th>
+                                        <th class="text-center">CATEGORY</th>
                                         <th class="text-center">COLOR</th>
                                         <th class="text-center">ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, i) in filteredLocationQueues" :key="i" >
+                                    <tr v-for="(item, i) in filteredCategoryQueues" :key="i" >
                                        <td align="center"><small>{{item.name}}</small></td>
-                                       <td align="center"><small>{{item.address}}</small></td>
                                        <td align="center">
                                             <i class="fas fa-circle" :style="'color:'+item.color"></i>
                                         </td>
                                        <td align="center">
-                                           <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editLocation(item)">
+                                           <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editCategory(item)">
                                                 <i class="flaticon-edit"></i>
                                             </button>
                                        </td>
@@ -81,14 +79,14 @@
                             </table>
                         </div>
 
-                        <div class="row col-md-12" v-if="filteredLocationQueues.length">
+                        <div class="row col-md-12" v-if="filteredCategoryQueues.length">
                             <div class="col-6">
                                 <button :disabled="!showPreviousLink()" class="btn btn-default btn-sm btn-fill" v-on:click="setPage(currentPage - 1)"> Previous </button>
                                     <span class="text-dark">Page {{ currentPage + 1 }} of {{ totalPages }}</span>
                                 <button :disabled="!showNextLink()" class="btn btn-default btn-sm btn-fill" v-on:click="setPage(currentPage + 1)"> Next </button>
                             </div>
                             <div class="col-6 text-right">
-                                <span class="mr-2">Total Locations : {{ filteredLocations.length }} </span><br>
+                                <span class="mr-2">Total Categories : {{ filteredCategories.length }} </span><br>
                             </div>
                         </div>
                     </div>
@@ -97,7 +95,7 @@
         </div>  
     </div>
 
-    <div class="modal fade" id="location-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="category-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
             <div class="modal-content">
                 <div>
@@ -112,29 +110,22 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="role">{{ action }} Location</label> 
-                                <input type="text" class="form-control" placeholder="Input here..." v-model="location.name" @keyup.enter="saveLocation">
+                                <label for="role">{{ action }} Category</label> 
+                                <input type="text" class="form-control" placeholder="Input here..." v-model="category.name" @keyup.enter="saveCategory">
                                 <span class="text-danger" v-if="errors.name">{{ errors.name[0] }}</span>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="role">Address</label> 
-                                <textarea class="form-control" cols="30" rows="5" v-model="location.address" @keyup.enter="saveLocation">Address</textarea>
-                                <span class="text-danger" v-if="errors.address">{{ errors.address[0] }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
                                 <label for="role">Color</label> 
-                                <input type="color" class="form-control" v-model="location.color" @keyup.enter="saveLocation">
+                                <input type="color" class="form-control" v-model="category.color" @keyup.enter="saveCategory">
                                 <span class="text-danger" v-if="errors.color">{{ errors.color[0] }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary btn-md" @click="saveLocation">Save</button>
+                    <button class="btn btn-primary btn-md" @click="saveCategory">Save</button>
                 </div>
             </div>
         </div>
@@ -148,46 +139,44 @@ export default {
     data() {
         return {
             keywords: '',
-            location : {
+            category : {
                 'id' : '',
                 'name' : '',
-                'address' : '',
+                'color' : '',
             },
             action : '',
-            locations : [],
+            categories : [],
             errors : [],
             currentPage: 0,
             itemsPerPage: 10, 
         }
     },
     created () {
-        this.getLocations();
+        this.getCategories();
     },
     methods : {
-        addLocation(){
+        addCategory(){
             let v = this;
             v.errors = [];
-            v.location.id = '';
-            v.location.name = '';
-            v.location.address = '';
-            v.location.color = '';
+            v.category.id = '';
+            v.category.name = '';
+            v.category.color = '';
             v.action = 'New';
-            $('#location-modal').modal('show');
+            $('#category-modal').modal('show');
         },
-        editLocation(location){
+        editCategory(category){
             let v = this;
             v.errors = [];
-            v.location.id = location.id;
-            v.location.name = location.name;
-            v.location.address = location.address;
-            v.location.color = location.color;
+            v.category.id = category.id;
+            v.category.name = category.name;
+            v.category.color = category.color;
             v.action = 'Update';
-            $('#location-modal').modal('show');
+            $('#category-modal').modal('show');
         },
-        saveLocation(){
+        saveCategory(){
             let v = this;
             Swal.fire({
-                title: 'Are you sure you want to save this location?',
+                title: 'Are you sure you want to save this type?',
                 icon: 'question',
                 showDenyButton: true,
                 confirmButtonText: `Yes`,
@@ -195,24 +184,22 @@ export default {
                 }).then((result) => {
                 if (result.isConfirmed) {
                     let formData = new FormData();
-                    var postURL = `/setting-locations-store`;
+                    var postURL = `/setting-categories-store`;
                     if(v.action == "Update"){
-                        formData.append('id', v.location.id ? v.location.id : "");
-                        postURL = `/setting-locations-update`;
+                        formData.append('id', v.category.id ? v.category.id : "");
+                        postURL = `/setting-categories-update`;
                     }
-                    formData.append('name', v.location.name ? v.location.name : "");
-                    formData.append('address', v.location.address ? v.location.address : "");
-                    formData.append('color', v.location.color ? v.location.color : "");
+                    formData.append('name', v.category.name ? v.category.name : "");
+                    formData.append('color', v.category.color ? v.category.color : "");
                     axios.post(postURL, formData)
                     .then(response =>{
                         if(response.data.status == "success"){
-                            Swal.fire('Location has been saved!', '', 'success');        
-                            $('#location-modal').modal('hide');
-                            v.location.id = '';
-                            v.location.name = '';  
-                            v.location.address = '';  
-                            v.location.color = '';  
-                            this.getLocations();
+                            Swal.fire('Category has been saved!', '', 'success');        
+                            $('#category-modal').modal('hide');
+                            v.category.id = '';
+                            v.category.name = '';  
+                            v.category.color = '';  
+                            this.getCategories();
                         }else{
                             Swal.fire('Error: Cannot changed. Please try again.', '', 'error');   
                         }
@@ -223,12 +210,12 @@ export default {
                 }   
             })
         },
-        getLocations() {
+        getCategories() {
             let v = this;
-            v.locations = [];
-            axios.get('/setting-locations-data')
+            v.categories = [];
+            axios.get('/setting-categories-data')
             .then(response => { 
-                v.locations = response.data;
+                v.categories = response.data;
             })
             .catch(error => { 
                 v.errors = error.response.data.error;
@@ -248,10 +235,10 @@ export default {
         },
     },
     computed: {
-        filteredLocations(){
+        filteredCategories(){
             let self = this;
-            if(self.locations){
-                return Object.values(self.locations).filter(item => {
+            if(self.categories){
+                return Object.values(self.categories).filter(item => {
                     return item.name.toLowerCase().includes(this.keywords.toLowerCase())
                 });
             }else{
@@ -259,11 +246,11 @@ export default {
             }
         },
         totalPages() {
-            return Math.ceil(Object.values(this.filteredLocations).length / this.itemsPerPage)
+            return Math.ceil(Object.values(this.filteredCategories).length / this.itemsPerPage)
         },
-        filteredLocationQueues() {
+        filteredCategoryQueues() {
             var index = this.currentPage * this.itemsPerPage;
-            var queues_array = this.filteredLocations.slice(index, index + this.itemsPerPage);
+            var queues_array = this.filteredCategories.slice(index, index + this.itemsPerPage);
             if(this.currentPage >= this.totalPages) {
                 this.currentPage = this.totalPages - 1
             }

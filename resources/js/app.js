@@ -35,6 +35,7 @@ Vue.component('locations', require('./components/Settings/Locations.vue').defaul
 Vue.component('departments', require('./components/Settings/Departments.vue').default);
 Vue.component('buildings', require('./components/Settings/Buildings.vue').default);
 Vue.component('types', require('./components/Settings/Types.vue').default);
+Vue.component('categories', require('./components/Settings/Categories.vue').default);
 
 //Reports
 Vue.component('borrow-logs', require('./components/Reports/BorrowLogs.vue').default);

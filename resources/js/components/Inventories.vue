@@ -316,7 +316,29 @@
                                     <option value="N/A">N/A</option>
                                     <option v-for="(building,b) in buildings" v-bind:key="b" :value="building.name"> {{ building.name }}</option>
                                 </select>
-                                <span class="text-danger" v-if="errors.location">{{ errors.building[0] }}</span>
+                                <span class="text-danger" v-if="errors.building">{{ errors.building[0] }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="role">Category</label> 
+                                <select class="form-control" v-model="inventory.category">
+                                    <option value="N/A">N/A</option>
+                                    <option v-for="(category,b) in categories" v-bind:key="b" :value="category.name"> {{ category.name }}</option>
+                                </select>
+                                <span class="text-danger" v-if="errors.category">{{ errors.category[0] }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="role">Status</label> 
+                                <select class="form-control" v-model="inventory.status">
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="For Repair">For Repair</option>
+                                    <option value="Disposed">Disposed</option>
+                                </select>
+                                <span class="text-danger" v-if="errors.status">{{ errors.status[0] }}</span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -437,6 +459,8 @@ export default {
                 'tab_name' : 'N/A',
                 'area' : 'N/A',
                 'location' : 'N/A',
+                'category' : 'N/A',
+                'status' : 'N/A',
                 'remarks' : 'N/A'
             },
             action : '',
@@ -448,6 +472,8 @@ export default {
             //Settings Options
             types: [],
             locations: [],
+            buildings: [],
+            categories: [],
 
             //Borrower Information
             selectedItem : '',
@@ -482,6 +508,8 @@ export default {
                 'AREA' : 'area',
                 'LOCATION' : 'location',
                 'BUILDING' : 'building',
+                'CATEGORY' : 'category',
+                'STATUS' : 'status',
             }
         }
     },
@@ -490,6 +518,7 @@ export default {
         this.getTypes();
         this.getLocations();
         this.getBuildings();
+        this.getCategories();
     },
     methods : {
         saveUploadInventory(){
@@ -575,11 +604,14 @@ export default {
             v.inventory.area = 'N/A';
             v.inventory.location = 'N/A';
             v.inventory.building = 'N/A';
+            v.inventory.category = 'N/A';
+            v.inventory.status = 'N/A';
             v.inventory.remarks = 'N/A';
             v.action = 'New';
             this.getTypes();
             this.getLocations();
             this.getBuildings();
+            this.getCategories();
             $('#inventory-modal').modal('show');
         },
         editInventory(inventory){
@@ -609,11 +641,14 @@ export default {
             v.inventory.area = inventory.area;
             v.inventory.location = inventory.location;
             v.inventory.building = inventory.building;
+            v.inventory.category = inventory.category;
+            v.inventory.status = inventory.status;
             v.inventory.remarks = inventory.remarks;
             v.action = 'Update';
             this.getTypes();
             this.getLocations();
             this.getBuildings();
+            this.getCategories();
             $('#inventory-modal').modal('show');
         },
         saveInventory(){
@@ -655,6 +690,8 @@ export default {
                     formData.append('area', v.inventory.area ? v.inventory.area : "");
                     formData.append('location', v.inventory.location ? v.inventory.location : "");
                     formData.append('building', v.inventory.building ? v.inventory.building : "");
+                    formData.append('category', v.inventory.category ? v.inventory.category : "");
+                    formData.append('status', v.inventory.status ? v.inventory.status : "");
                     formData.append('remarks', v.inventory.remarks ? v.inventory.remarks : "");
                     axios.post(postURL, formData)
                     .then(response =>{
@@ -711,6 +748,17 @@ export default {
             axios.get('/setting-buildings-data')
             .then(response => { 
                 v.buildings = response.data;
+            })
+            .catch(error => { 
+                v.errors = error.response.data.error;
+            })
+        },
+        getCategories() {
+            let v = this;
+            v.categories = [];
+            axios.get('/setting-categories-data')
+            .then(response => { 
+                v.categories = response.data;
             })
             .catch(error => { 
                 v.errors = error.response.data.error;

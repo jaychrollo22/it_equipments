@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 use OwenIt\Auditing\Auditable;
 
-class SettingLocation extends Model implements AuditableContract
+class SettingCategory extends Model implements AuditableContract
 {
     protected $connection = 'mysql';
     
@@ -16,7 +16,6 @@ class SettingLocation extends Model implements AuditableContract
     
     protected $fillable = [
         'name',
-        'address',
         'color'
     ]; 
 }

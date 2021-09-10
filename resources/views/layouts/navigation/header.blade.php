@@ -62,6 +62,18 @@
                             <div class="menu-submenu menu-submenu-classic menu-submenu-left">
                                 <ul class="menu-subnav">
                                     <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('setting-buildings') }}" class="menu-link">
+                                            <span class="menu-text">Buildings</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('setting-categories') }}" class="menu-link">
+                                            <span class="menu-text">Categories</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item" aria-haspopup="true">
                                         <a href="{{ url('setting-companies') }}" class="menu-link">
                                             <span class="menu-text">Companies</span>
                                             <span class="menu-desc"></span>
@@ -76,12 +88,6 @@
                                     <li class="menu-item" aria-haspopup="true">
                                         <a href="{{ url('setting-locations') }}" class="menu-link">
                                             <span class="menu-text">Locations</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('setting-buildings') }}" class="menu-link">
-                                            <span class="menu-text">Buildings</span>
                                             <span class="menu-desc"></span>
                                         </a>
                                     </li>

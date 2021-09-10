@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\SettingBuilding;
+use App\SettingCategory;
 use DB;
-
-class SettingsBuildingController extends Controller
+class SettingsCategoryController extends Controller
 {
-    /**
+     /**
      * Create a new controller instance.
      *
      * @return void
@@ -17,19 +16,19 @@ class SettingsBuildingController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     public function index()
     {
         session([
-            'title' => 'Buildings'
+            'title' => 'Categories'
         ]);
 
-        return view('pages.settings.buildings');
+        return view('pages.settings.categories');
     }
 
     public function indexData()
     {
-        return SettingBuilding::orderBy('name','ASC')->get();
+        return SettingCategory::orderBy('name','ASC')->get();
     }
 
     public function store(Request $request)
@@ -40,11 +39,11 @@ class SettingsBuildingController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->all();
-            if($building = SettingBuilding::create($data)){
+            if($category = SettingCategory::create($data)){
                 DB::commit();
                 return $status_data = [
                     'status'=>'success',
-                    'building'=>$building,
+                    'category'=>$category,
                 ];
             }else{
                 return $status_data = [
@@ -66,14 +65,14 @@ class SettingsBuildingController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->all();
-            $building = SettingBuilding::where('id',$data['id'])->first();
-            if($building){
+            $category = SettingCategory::where('id',$data['id'])->first();
+            if($category){
                 unset($data['id']);
-                $building->update($data);
+                $category->update($data);
                 DB::commit();
                 return $status_data = [
                     'status'=>'success',
-                    'building'=>$building,
+                    'category'=>$category,
                 ];
             }else{
                 return $data = [
