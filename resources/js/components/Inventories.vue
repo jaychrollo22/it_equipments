@@ -59,7 +59,7 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="cursor:pointer" @click="showFilter">
-                                            <i class="fas fa-filter"></i>
+                                            <i class="fas fa-filter text-dark-50"></i>&nbsp;Filter
                                         </span>
                                     </div>
                                     <input type="text" class="form-control" placeholder="Search"  v-model="keywords">

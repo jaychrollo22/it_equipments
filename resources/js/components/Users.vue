@@ -58,7 +58,8 @@
                                     <select class="form-control form-control-primary" v-model="filterRole" id="filterRole">
                                         <option value="">Filter by Role</option>
                                         <option value="Administrator">Administrator</option>
-                                        <option value="">All</option>
+                                        <option value="IT Support">IT Support</option>
+                                        <option value="User">User</option>
                                     </select>
                                 </div>
                             </div>

@@ -33,6 +33,7 @@ class HomeController extends Controller
         session([
             'title' => 'Dashboard',
             'user' => $employee,
+            'user_role' => $employee->user->user_role ? $employee->user->user_role->role : "",
         ]);
         return view('pages.dashboard');
     }

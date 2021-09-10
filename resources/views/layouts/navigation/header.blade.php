@@ -18,6 +18,7 @@
                 <div id="kt_header_menu" class="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
                     <!--begin::Header Nav-->
                     <ul class="menu-nav">
+                        {{-- Dashboard --}}
                         <li class="menu-item menu-item-submenu menu-item-rel">
                             <a href="{{ url('/home') }}" class="menu-link">
                                 <span class="menu-text">Dashboard</span>
@@ -25,6 +26,7 @@
                                 <i class="menu-arrow"></i>
                             </a>
                         </li>
+                        {{-- Inventories --}}
                         <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
                             <a href="javascript:;" class="menu-link menu-toggle">
                                 <span class="menu-text">Inventories</span>
@@ -32,74 +34,82 @@
                             </a>
                             <div class="menu-submenu menu-submenu-classic menu-submenu-left">
                                 <ul class="menu-subnav">
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('inventories') }}" class="menu-link">
-                                            <span class="menu-text">Masterlist</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('inventory-transfer') }}" class="menu-link" disabled>
-                                            <span class="menu-text">Transfer</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
+                                    @if(session('user_role') == "Administrator")
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{{ url('inventories') }}" class="menu-link">
+                                                <span class="menu-text">Masterlist</span>
+                                                <span class="menu-desc"></span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{{ url('inventory-transfer') }}" class="menu-link" disabled>
+                                                <span class="menu-text">Transfer</span>
+                                                <span class="menu-desc"></span>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
                                     <li class="menu-item" aria-haspopup="true">
                                         <a href="{{ url('inventory-receive') }}" class="menu-link" disabled>
                                             <span class="menu-text">Receive</span>
                                             <span class="menu-desc"></span>
                                         </a>
                                     </li>
-                                </ul>
-                            </div>
-
-                        </li>
-                        <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
-                            <a href="javascript:;" class="menu-link menu-toggle">
-                                <span class="menu-text">Settings</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            <div class="menu-submenu menu-submenu-classic menu-submenu-left">
-                                <ul class="menu-subnav">
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('setting-buildings') }}" class="menu-link">
-                                            <span class="menu-text">Buildings</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('setting-categories') }}" class="menu-link">
-                                            <span class="menu-text">Categories</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('setting-companies') }}" class="menu-link">
-                                            <span class="menu-text">Companies</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('setting-departments') }}" class="menu-link">
-                                            <span class="menu-text">Departments</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('setting-locations') }}" class="menu-link">
-                                            <span class="menu-text">Locations</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('setting-types') }}" class="menu-link">
-                                            <span class="menu-text">Types</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
+                                    @endif
                                 </ul>
                             </div>
                         </li>
+                        {{-- Settings --}}
+                        @if(session('user_role') == "Administrator")
+                            <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="menu-text">Settings</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{{ url('setting-buildings') }}" class="menu-link">
+                                                <span class="menu-text">Buildings</span>
+                                                <span class="menu-desc"></span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{{ url('setting-categories') }}" class="menu-link">
+                                                <span class="menu-text">Categories</span>
+                                                <span class="menu-desc"></span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{{ url('setting-companies') }}" class="menu-link">
+                                                <span class="menu-text">Companies</span>
+                                                <span class="menu-desc"></span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{{ url('setting-departments') }}" class="menu-link">
+                                                <span class="menu-text">Departments</span>
+                                                <span class="menu-desc"></span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{{ url('setting-locations') }}" class="menu-link">
+                                                <span class="menu-text">Locations</span>
+                                                <span class="menu-desc"></span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{{ url('setting-types') }}" class="menu-link">
+                                                <span class="menu-text">Types</span>
+                                                <span class="menu-desc"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        @endif
+                        {{-- Users --}}
+                        @if(session('user_role') == "Administrator")
                         <li class="menu-item menu-item-submenu menu-item-rel">
                             <a href="{{ url('users') }}" class="menu-link">
                                 <span class="menu-text">Users</span>
@@ -107,6 +117,9 @@
                                 <i class="menu-arrow"></i>
                             </a>
                         </li>
+                        @endif
+                        {{-- Reports --}}
+                        @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
                         <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
                             <a href="javascript:;" class="menu-link menu-toggle">
                                 <span class="menu-text">Reports</span>
@@ -135,6 +148,9 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        {{-- Activity Logs --}}
+                        @if(session('user_role') == "Administrator")
                         <li class="menu-item menu-item-submenu menu-item-rel">
                             <a href="{{ url('activity-logs') }}" class="menu-link">
                                 <span class="menu-text">Activity Logs</span>
@@ -142,7 +158,9 @@
                                 <i class="menu-arrow"></i>
                             </a>
                         </li>
-
+                        @endif
+                        {{-- Items --}}
+                        @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
                         <li class="menu-item menu-item-submenu menu-item-rel">
                             <a href="{{ url('items') }}" target="_blank" class="menu-link">
                                 <span class="menu-text">Items</span>
@@ -150,7 +168,7 @@
                                 <i class="menu-arrow"></i>
                             </a>
                         </li>
-                        
+                        @endif
                     </ul>
                     <!--end::Header Nav-->
                 </div>
