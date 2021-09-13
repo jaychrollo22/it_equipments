@@ -22,6 +22,9 @@ Route::get('/item-search', 'ItemsController@itemSearch');
 Route::post('/save-borrow-item', 'ItemsController@saveBorrowItem');
 Route::post('/save-return-item', 'ItemsController@saveReturnItem');
 
+
+Route::post('/rfid-log', 'RfidController@store');
+
 Route::get('/', function () {
     return redirect('/login');
 });
