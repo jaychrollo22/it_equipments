@@ -22,10 +22,6 @@ Route::get('/item-search', 'ItemsController@itemSearch');
 Route::post('/save-borrow-item', 'ItemsController@saveBorrowItem');
 Route::post('/save-return-item', 'ItemsController@saveReturnItem');
 
-
-Route::get('/rfid-index', 'RfidController@index');
-Route::post('/rfid-log', 'RfidController@store');
-
 Route::get('/', function () {
     return redirect('/login');
 });
@@ -110,3 +106,9 @@ Route::get('/reports-return-logs-data', 'ReportsController@returnLogData');
 
 Route::get('/reports-asset-logs', 'ReportsController@assetLogs')->name('asset-logs');
 Route::get('/reports-asset-logs-data', 'ReportsController@assetLogData');
+
+//RFID Registration Device
+Route::get('/rfid-registration-devices', 'RfidRegistrationDeviceController@index')->name('rfid-registration-devices');
+Route::get('/rfid-registration-devices-data', 'RfidRegistrationDeviceController@indexData');
+Route::post('/rfid-registration-devices-store', 'RfidRegistrationDeviceController@store');
+Route::post('/rfid-registration-devices-update', 'RfidRegistrationDeviceController@update');

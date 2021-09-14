@@ -112,6 +112,25 @@
                                 </div>
                             </li>
                         @endif
+                        {{-- RFID --}}
+                        @if(session('user_role') == "Administrator")
+                            <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="menu-text">RFID</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{{ url('rfid-registration-devices') }}" class="menu-link">
+                                                <span class="menu-text">Registration Devices</span>
+                                                <span class="menu-desc"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        @endif
                         {{-- Users --}}
                         @if(session('user_role') == "Administrator")
                         <li class="menu-item menu-item-submenu menu-item-rel">

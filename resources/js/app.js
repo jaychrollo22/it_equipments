@@ -42,6 +42,9 @@ Vue.component('borrow-logs', require('./components/Reports/BorrowLogs.vue').defa
 Vue.component('return-logs', require('./components/Reports/ReturnLogs.vue').default);
 Vue.component('asset-logs', require('./components/Reports/AssetLogs.vue').default);
 
+//RFID Registration Device
+Vue.component('rfid-registration-device', require('./components/Rfid/RfidRegistrationDevice.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

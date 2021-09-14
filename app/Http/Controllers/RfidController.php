@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use App\RfidRegistrationDevice;
+use DB;
+
 use Log;
 class RfidController extends Controller
 {
@@ -34,10 +38,34 @@ class RfidController extends Controller
      */
     public function store(Request $request)
     {
-        // $tag_reads = $request->tag_reads;
-        // $stored_tags = array();
-        Log::info($request->all());
-        return $request->all();
+        // // $tag_reads = $request->tag_reads;
+        // // $stored_tags = array();
+        // Log::info($request->all());
+        // //
+        // return $request->all();
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+            if($data['reader_name']){
+                $reader = RfidRegistrationDevice::where('reader_name',$data['reader_name'])->first();
+                $saveDetails = [
+                    'reader_name' => $data['reader_name'],
+                    'rfid_log' => json_encode($data['tag_reads'],true),
+                    'mac_address' => $data['mac_address'],
+                ];
+                if(empty($reader)){
+                    RfidRegistrationDevice::create($saveDetails);
+                    DB::commit();
+                }else{
+                    $reader->update($saveDetails);
+                    DB::commit();
+                }
+            }
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+            return 'error';
+        } 
     }
 
     /**

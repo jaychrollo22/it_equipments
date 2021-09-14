@@ -143,16 +143,30 @@
                     <h2 class="col-12 modal-title text-center">{{ action }}</h2>
                 </div>
                 <div class="modal-body">
+                    <h5 class="mt-5 mb-3">RFID Registration</h5>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="role">RFID</label> 
-                                <input type="text" class="form-control" placeholder="Scan RFID" v-model="inventory.rfid_code" readonly>
-                                <span class="text-danger" v-if="errors.rfid_code">{{ errors.rfid_code[0] }}</span>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="cursor:pointer">
+                                        <i class="fas fa-credit-card text-dark-50"></i>&nbsp;Get EPC
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="SCAN EPC"  v-model="inventory.epc" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="cursor:pointer">
+                                        <i class="fas fa-credit-card text-dark-50"></i>&nbsp;Get TID
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="SCAN TID"  v-model="inventory.tid" readonly>
                             </div>
                         </div>
                     </div>
-                    <h5>Inventory Information</h5>
+                    <h5 class="mt-5">Inventory Information</h5>
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
@@ -505,6 +519,8 @@ export default {
             inventory : {
                 'id' : '',
                 'rfid_code' : '',
+                'epc' : '',
+                'tid' : '',
                 'type' : 'N/A',
                 'old_inventory_number' : 'N/A',
                 'new_it_tag_qr_code_bar_code' : 'N/A',
@@ -553,6 +569,8 @@ export default {
 
 
             exportInventories : {
+                'EPC' : 'epc',
+                'TID' : 'tid',
                 'TYPE' : 'type',
                 'OLD INVENTORY NUMBER' : 'old_inventory_number',
                 'NEW IT TAG QR CODE/BAR CODE' : 'new_it_tag_qr_code_bar_code',
@@ -661,6 +679,8 @@ export default {
             v.errors = [];
             v.inventory.id = '';
             v.inventory.rfid_code = '';
+            v.inventory.epc = '';
+            v.inventory.tid = '';
             v.inventory.type = 'N/A';
             v.inventory.old_inventory_number = 'N/A';
             v.inventory.new_it_tag_qr_code_bar_code = 'N/A';
@@ -698,6 +718,8 @@ export default {
             v.errors = [];
             v.inventory.id = inventory.id;
             v.inventory.rfid_code = inventory.rfid_code;
+            v.inventory.epc = inventory.epc;
+            v.inventory.tid = inventory.tid;
             v.inventory.type = inventory.type;
             v.inventory.old_inventory_number = inventory.old_inventory_number;
             v.inventory.new_it_tag_qr_code_bar_code = inventory.new_it_tag_qr_code_bar_code;
@@ -747,6 +769,8 @@ export default {
                         postURL = `/inventories-update`;
                     }
                     formData.append('rfid_code', v.inventory.rfid_code ? v.inventory.rfid_code : "");
+                    formData.append('epc', v.inventory.epc ? v.inventory.epc : "");
+                    formData.append('tid', v.inventory.tid ? v.inventory.tid : "");
                     formData.append('type', v.inventory.type ? v.inventory.type : "");
                     formData.append('old_inventory_number', v.inventory.old_inventory_number ? v.inventory.old_inventory_number : "");
                     formData.append('new_it_tag_qr_code_bar_code', v.inventory.new_it_tag_qr_code_bar_code ? v.inventory.new_it_tag_qr_code_bar_code : "");
