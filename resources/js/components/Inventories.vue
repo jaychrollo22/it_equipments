@@ -149,20 +149,15 @@
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" style="cursor:pointer">
-                                        <i class="fas fa-credit-card text-dark-50"></i>&nbsp;Get EPC
+                                        <i class="fas fa-credit-card text-dark-50"></i>&nbsp;&nbsp;Get RFID
                                     </span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="SCAN EPC"  v-model="inventory.epc" readonly>
+                                <input type="text" class="form-control" placeholder="EPC"  v-model="inventory.epc" readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" style="cursor:pointer">
-                                        <i class="fas fa-credit-card text-dark-50"></i>&nbsp;Get TID
-                                    </span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="SCAN TID"  v-model="inventory.tid" readonly>
+                                <input type="text" class="form-control" placeholder="TID"  v-model="inventory.tid" readonly>
                             </div>
                         </div>
                     </div>

@@ -59,12 +59,14 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">READER NAME</th>
+                                        <th class="text-center">MAC ADDRESS</th>
                                         <th class="text-center">ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, i) in filteredDeviceQueues" :key="i" >
                                        <td align="center"><small>{{item.reader_name}}</small></td>
+                                       <td align="center"><small>{{item.mac_address}}</small></td>
                                        <td align="center">
                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editDevice(item)">
                                                 <i class="flaticon-edit"></i>
