@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Log;
 class RfidController extends Controller
 {
     /**
@@ -13,7 +13,7 @@ class RfidController extends Controller
      */
     public function index()
     {
-        //
+        return 'x';
     }
 
     /**
@@ -34,9 +34,10 @@ class RfidController extends Controller
      */
     public function store(Request $request)
     {
-        $tag_reads = $request->tag_reads;
-        $stored_tags = array();
-        \Log::info($request->all());
+        // $tag_reads = $request->tag_reads;
+        // $stored_tags = array();
+        Log::info($request->all());
+        return $request->all();
     }
 
     /**
