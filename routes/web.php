@@ -24,7 +24,7 @@ Route::post('/save-return-item', 'ItemsController@saveReturnItem');
 
 
 Route::get('/rfid-index', 'RfidController@index');
-Route::get('/rfid-log', 'RfidController@store');
+Route::post('/rfid-log', 'RfidController@store');
 
 Route::get('/', function () {
     return redirect('/login');
