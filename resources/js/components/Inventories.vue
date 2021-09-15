@@ -131,11 +131,11 @@
         </div> 
     </div>
 
-    <div class="modal fade" id="inventory-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="inventory-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl modal-fixed" role="document">
             <div class="modal-content">
                 <div>
-                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close mt-2 mr-2"  @click="closeInventoryModal">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div> 
@@ -148,12 +148,13 @@
                         <div class="col-md-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" style="cursor:pointer">
+                                    <span class="input-group-text" style="cursor:pointer" @click="getRFID">
                                         <i class="fas fa-credit-card text-dark-50"></i>&nbsp;&nbsp;Get RFID
                                     </span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="EPC"  v-model="inventory.epc" readonly>
+                                <input type="text" class="form-control" placeholder="EPC"  v-model="inventory.epc" readonly><br>
                             </div>
+                            <small v-if="rfidDetails">Scanner : {{ rfidDetails.reader_name}} | Scan Date : {{ rfidDetails.last_scan_date}}</small>   
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
@@ -439,7 +440,7 @@
         <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
             <div class="modal-content">
                 <div>
-                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close mt-2 mr-2">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div> 
@@ -599,7 +600,13 @@ export default {
                 building: '',
                 category: '',
                 status: ''
-            }
+            },
+
+            //RFID
+            rfidDetails : '',
+
+            //RFID Scanner Timer
+            rfid_timer : '',
         }
     },
     created () {
@@ -608,8 +615,33 @@ export default {
         this.getLocations();
         this.getBuildings();
         this.getCategories();
+        // this.scanRFID();
     },
     methods : {
+        closeInventoryModal(){
+            $('#inventory-modal').modal('hide');
+            this.stopTimer();
+        },
+        stopTimer(){
+            clearInterval(this.rfid_timer);
+        },
+        scanRFID(){
+            this.rfid_timer = setInterval(this.getRFID, 3000)
+        },
+        getRFID(){
+            let v = this;
+            axios.get('/api/rfid-log-details')
+            .then(response => { 
+                if(response.data){
+                    v.rfidDetails = response.data;
+                    v.inventory.epc = response.data.epc ? response.data.epc : "No EPC Found";
+                    v.inventory.tid = response.data.tid ? response.data.tid : "No EPC Found";
+                }
+            })
+            .catch(error => { 
+                v.errors = error.response.data.error;
+            })
+        },
         showFilter(){
             $('#apply-filter-modal').modal('show');
         },
@@ -671,6 +703,7 @@ export default {
         },
         addInventory(){
             let v = this;
+            v.rfidDetails = '';
             v.errors = [];
             v.inventory.id = '';
             v.inventory.rfid_code = '';
@@ -707,9 +740,11 @@ export default {
             this.getBuildings();
             this.getCategories();
             $('#inventory-modal').modal('show');
+            this.scanRFID();
         },
         editInventory(inventory){
             let v = this;
+            v.rfidDetails = '';
             v.errors = [];
             v.inventory.id = inventory.id;
             v.inventory.rfid_code = inventory.rfid_code;
@@ -797,6 +832,7 @@ export default {
                             Swal.fire('Inventory has been saved!', '', 'success');        
                             $('#inventory-modal').modal('hide'); 
                             this.getInventories();
+                            this.stopTimer();
                         }else{
                             Swal.fire('Error: Cannot changed. Please try again.', '', 'error');   
                         }

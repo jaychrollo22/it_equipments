@@ -10,24 +10,32 @@ use DB;
 use Log;
 class RfidController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return 'x';
-    }
-
+    
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function rfid_log_details(Request $request)
     {
-        //
+        $reader_name = 'Impinj RFID Reader';
+        
+        $rfid_details = RfidRegistrationDevice::where('reader_name',$reader_name)->first();
+        if($rfid_details){
+            $rfid_logs = json_decode($rfid_details->rfid_log,true);
+            $x = count($rfid_logs) > 0 ? count($rfid_logs) - 1 :  "";
+            if(count($rfid_logs) > 0){
+                return $data = [
+                    'reader_name' => $rfid_details->reader_name,
+                    'epc' => $rfid_logs[$x]['epc'] ? $rfid_logs[$x]['epc'] : "",
+                    'tid' => $rfid_logs[$x]['tid'] ? $rfid_logs[$x]['tid'] : "",
+                    'last_scan_date' => $rfid_logs[$x]['firstSeenTimestamp'] ? date('Y-m-d h:i:s A',strtotime($rfid_details->updated_at)) : "",
+                ];
+            }else{
+                return [];
+            }
+           
+        }
     }
 
     /**
@@ -68,48 +76,4 @@ class RfidController extends Controller
         } 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
