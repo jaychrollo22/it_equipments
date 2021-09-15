@@ -60,6 +60,7 @@
                                     <tr>
                                         <th class="text-center">READER NAME</th>
                                         <th class="text-center">MAC ADDRESS</th>
+                                        <th class="text-center">TYPE</th>
                                         <th class="text-center">ACTION</th>
                                     </tr>
                                 </thead>
@@ -67,6 +68,7 @@
                                     <tr v-for="(item, i) in filteredDeviceQueues" :key="i" >
                                        <td align="center"><small>{{item.reader_name}}</small></td>
                                        <td align="center"><small>{{item.mac_address}}</small></td>
+                                       <td align="center"><small>{{item.type}}</small></td>
                                        <td align="center">
                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editDevice(item)">
                                                 <i class="flaticon-edit"></i>
@@ -113,6 +115,16 @@
                                 <span class="text-danger" v-if="errors.reader_name">{{ errors.reader_name[0] }}</span>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Type</label> 
+                               <select class="form-control" v-model="device.type">
+                                   <option value="Impinj">Impinj</option>
+                                   <option value="Geovision">Geovision</option>
+                               </select>
+                                <span class="text-danger" v-if="errors.type">{{ errors.type[0] }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -132,7 +144,8 @@
                 keywords: '',
                 device : {
                     'id' : '',
-                    'reader_name' : ''
+                    'reader_name' : '',
+                    'type' : ''
                 },
                 action : '',
                 devices : [],
@@ -150,6 +163,7 @@
                 v.errors = [];
                 v.device.id = '';
                 v.device.reader_name = '';
+                v.device.type = '';
                 v.action = 'New';
                 $('#device-modal').modal('show');
             },
@@ -158,6 +172,7 @@
                 v.errors = [];
                 v.device.id = device.id;
                 v.device.reader_name = device.reader_name;
+                v.device.type = device.type;
                 v.action = 'Update';
                 $('#device-modal').modal('show');
             },
@@ -178,6 +193,7 @@
                             postURL = `/rfid-registration-devices-update`;
                         }
                         formData.append('reader_name', v.device.reader_name ? v.device.reader_name : "");
+                        formData.append('type', v.device.type ? v.device.type : "");
                         axios.post(postURL, formData)
                         .then(response =>{
                             if(response.data.status == "success"){
@@ -185,6 +201,7 @@
                                 $('#device-modal').modal('hide');
                                 v.device.id = '';
                                 v.device.reader_name = '';  
+                                v.device.type = '';  
                                 this.getDevices();
                             }else{
                                 Swal.fire('Error: Cannot changed. Please try again.', '', 'error');   
