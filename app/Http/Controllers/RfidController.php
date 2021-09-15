@@ -25,12 +25,18 @@ class RfidController extends Controller
             $rfid_logs = json_decode($rfid_details->rfid_log,true);
             $x = count($rfid_logs) > 0 ? count($rfid_logs) - 1 :  "";
             if(count($rfid_logs) > 0){
-                return $data = [
-                    'reader_name' => $rfid_details->reader_name,
-                    'epc' => $rfid_logs[$x]['epc'] ? $rfid_logs[$x]['epc'] : "",
-                    'tid' => $rfid_logs[$x]['tid'] ? $rfid_logs[$x]['tid'] : "",
-                    'last_scan_date' => $rfid_logs[$x]['firstSeenTimestamp'] ? date('Y-m-d h:i:s A',strtotime($rfid_details->updated_at)) : "",
-                ];
+                $last_scan_date = date('Y-m-d h',strtotime($rfid_details->updated_at));
+                $current_date = date('Y-m-d h');
+                if($last_scan_date == $current_date){
+                    return $data = [
+                        'reader_name' => $rfid_details->reader_name,
+                        'epc' => $rfid_logs[$x]['epc'] ? $rfid_logs[$x]['epc'] : "",
+                        'tid' => $rfid_logs[$x]['tid'] ? $rfid_logs[$x]['tid'] : "",
+                        'last_scan_date' => $rfid_logs[$x]['firstSeenTimestamp'] ? date('Y-m-d h:i:s A',strtotime($rfid_details->updated_at)) : "",
+                    ];
+                }else{
+                    return [];
+                }
             }else{
                 return [];
             }
