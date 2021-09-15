@@ -155,7 +155,7 @@
                                         <i class="far fa-address-card"></i>
                                     </span>
                                 </div>
-                                <input id="borrow_id_number" type="text" class="form-control" v-mask="mask" v-model="employeeIDNumber" placeholder="ID Number (XX-XXXXX-XXXX)" @keyup.enter="searchEmployee('Borrow')">
+                                <input id="borrow_id_number" type="text" class="form-control" v-model="employeeSearch" placeholder="Search Employee | ID Number (XX-XXXXX-XXXX)" @keyup.enter="searchEmployee('Borrow')">
                                 <div class="input-group-append">
                                     <a href="#" @click="searchEmployee('Borrow')" class="btn font-weight-bold btn-success btn-icon">
                                         <i class="fas fa-search"></i>
@@ -370,7 +370,7 @@
                                         <i class="far fa-address-card"></i>
                                     </span>
                                 </div>
-                                <input id="return_id_number" type="text" class="form-control" v-mask="mask" v-model="employeeIDNumber" placeholder="ID Number (XX-XXXXX-XXXX)" @keyup.enter="searchEmployee('Return')">
+                                <input id="return_id_number" type="text" class="form-control" v-model="employeeSearch" placeholder="Search Employee | ID Number (XX-XXXXX-XXXX)" @keyup.enter="searchEmployee('Return')">
                                 <div class="input-group-append">
                                     <a href="#" @click="searchEmployee('Return')" class="btn font-weight-bold btn-success btn-icon">
                                         <i class="fas fa-search"></i>
@@ -445,7 +445,7 @@ export default {
             borrow_step_1 : 'current',
             borrow_step_2 : '',
             borrow_step_3 : '',
-            employeeIDNumber : '',
+            employeeSearch : '',
             employee : '',
             errors : [],
 
@@ -464,8 +464,8 @@ export default {
         searchEmployee(method){
             let v = this;
             v.employee = '';
-            if(v.employeeIDNumber){
-                axios.get('/item-search-employee?id_number=' + v.employeeIDNumber)
+            if(v.employeeSearch){
+                axios.get('/item-search-employee?search=' + v.employeeSearch)
                 .then(response => { 
                     v.employee = response.data;
                     if(v.employee){

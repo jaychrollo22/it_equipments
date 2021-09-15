@@ -20,13 +20,18 @@ class ItemsController extends Controller
     }
 
     public function itemSearchEmployee(Request $request){
-        $data = $request->all();
 
+        $search = $request->search;
         $employee = Employee::select('id','user_id','id_number','first_name','last_name')
                                 ->with('borrowed_items.inventory_info')
-                                ->where('id_number',$data['id_number'])
+                                ->where(function ($query) use ($search) {
+                                    $query->where('first_name', 'like' , '%' .  $search . '%')
+                                            ->orWhere('last_name', 'like' , '%' .  $search . '%')
+                                            ->orWhere('id_number', 'like' , '%' .  $search . '%');
+                                    $query->orWhereRaw("CONCAT(`first_name`, ' ', `last_name`) LIKE ?", ["%{$search}%"]);
+                                    $query->orWhereRaw("CONCAT(`last_name`, ' ', `first_name`) LIKE ?", ["%{$search}%"]);
+                                })
                                 ->first();
-
         return $employee;
     }
 

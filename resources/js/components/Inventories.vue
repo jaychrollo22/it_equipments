@@ -93,7 +93,9 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, i) in filteredInventoryQueues" :key="i" >
-                                       <td align="center"><small>{{item.rfid_code}}</small></td>
+                                       <td align="center">
+                                           <i class="fas fa-check text-success" v-if="item.epc" :title="item.epc"></i>
+                                        </td>
                                        <td align="center"><small>{{item.type}}</small></td>
                                        <td align="center"><small>{{item.serial_number}}</small></td>
                                        <td align="center"><small>{{item.model}}</small></td>
