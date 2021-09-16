@@ -447,7 +447,7 @@
         <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
             <div class="modal-content">
                 <div>
-                    <button type="button" class="close mt-2 mr-2">
+                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div> 
