@@ -16,7 +16,7 @@ class RfidController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function rfid_log_details(Request $request)
+    public function impinj_rfid_log_registration_details(Request $request)
     {
         $reader_name = 'Impinj RFID Reader';
         

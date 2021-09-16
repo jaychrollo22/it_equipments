@@ -150,17 +150,22 @@
                         <div class="col-md-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" style="cursor:pointer" @click="getRFID">
+                                    <span class="input-group-text" style="cursor:pointer" @click="getImpinjRFID">
                                         <i class="fas fa-credit-card text-dark-50"></i>&nbsp;&nbsp;Get RFID
                                     </span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="EPC"  v-model="inventory.epc" readonly><br>
+                                <input type="text" class="form-control" placeholder="EPC (Impinj RFID)"  v-model="inventory.epc" readonly><br>
                             </div>
                             <small v-if="rfidDetails">Scanner : {{ rfidDetails.reader_name}} | Scan Date : {{ rfidDetails.last_scan_date}}</small>   
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="TID"  v-model="inventory.tid" readonly>
+                                <input type="text" class="form-control" placeholder="TID (Impinj RFID)"  v-model="inventory.tid" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-5">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="RFID 64 (Geovision RFID)"  v-model="inventory.rfid_64" readonly>
                             </div>
                         </div>
                     </div>
@@ -174,7 +179,7 @@
                                     <option value="N/A">N/A</option>
                                     <option v-for="(type,b) in types" v-bind:key="b" :value="type.name"> {{ type.name }}</option>
                                 </select>
-                                <span class="text-danger" v-if="errors.rfid_code">{{ errors.rfid_code[0] }}</span>
+                                <span class="text-danger" v-if="errors.type">{{ errors.type[0] }}</span>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -516,9 +521,9 @@ export default {
             keywords: '',
             inventory : {
                 'id' : '',
-                'rfid_code' : '',
                 'epc' : '',
                 'tid' : '',
+                'rfid_64' : '',
                 'type' : 'N/A',
                 'old_inventory_number' : 'N/A',
                 'new_it_tag_qr_code_bar_code' : 'N/A',
@@ -569,6 +574,7 @@ export default {
             exportInventories : {
                 'EPC' : 'epc',
                 'TID' : 'tid',
+                'RFID 64' : 'rfid_64',
                 'TYPE' : 'type',
                 'OLD INVENTORY NUMBER' : 'old_inventory_number',
                 'NEW IT TAG QR CODE/BAR CODE' : 'new_it_tag_qr_code_bar_code',
@@ -628,11 +634,11 @@ export default {
             clearInterval(this.rfid_timer);
         },
         scanRFID(){
-            this.rfid_timer = setInterval(this.getRFID, 3000)
+            this.rfid_timer = setInterval(this.getImpinjRFID, 3000)
         },
-        getRFID(){
+        getImpinjRFID(){
             let v = this;
-            axios.get('/api/rfid-log-details')
+            axios.get('/api/impinj-rfid-log-registration-details')
             .then(response => { 
                 if(response.data){
                     v.rfidDetails = response.data;
@@ -708,9 +714,9 @@ export default {
             v.rfidDetails = '';
             v.errors = [];
             v.inventory.id = '';
-            v.inventory.rfid_code = '';
             v.inventory.epc = '';
             v.inventory.tid = '';
+            v.inventory.rfid_64 = '';
             v.inventory.type = 'N/A';
             v.inventory.old_inventory_number = 'N/A';
             v.inventory.new_it_tag_qr_code_bar_code = 'N/A';
@@ -749,9 +755,9 @@ export default {
             v.rfidDetails = '';
             v.errors = [];
             v.inventory.id = inventory.id;
-            v.inventory.rfid_code = inventory.rfid_code;
             v.inventory.epc = inventory.epc;
             v.inventory.tid = inventory.tid;
+            v.inventory.rfid_64 = inventory.rfid_64;
             v.inventory.type = inventory.type;
             v.inventory.old_inventory_number = inventory.old_inventory_number;
             v.inventory.new_it_tag_qr_code_bar_code = inventory.new_it_tag_qr_code_bar_code;
@@ -800,9 +806,9 @@ export default {
                         formData.append('id', v.inventory.id ? v.inventory.id : "");
                         postURL = `/inventories-update`;
                     }
-                    formData.append('rfid_code', v.inventory.rfid_code ? v.inventory.rfid_code : "");
                     formData.append('epc', v.inventory.epc ? v.inventory.epc : "");
                     formData.append('tid', v.inventory.tid ? v.inventory.tid : "");
+                    formData.append('rfid_64', v.inventory.rfid_64 ? v.inventory.rfid_64 : "");
                     formData.append('type', v.inventory.type ? v.inventory.type : "");
                     formData.append('old_inventory_number', v.inventory.old_inventory_number ? v.inventory.old_inventory_number : "");
                     formData.append('new_it_tag_qr_code_bar_code', v.inventory.new_it_tag_qr_code_bar_code ? v.inventory.new_it_tag_qr_code_bar_code : "");

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('rfid-logs', 'RfidController@store');
-Route::get('rfid-log-details', 'RfidController@rfid_log_details');
+Route::get('impinj-rfid-log-registration-details', 'RfidController@impinj_rfid_log_registration_details');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
