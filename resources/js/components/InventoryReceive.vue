@@ -266,7 +266,7 @@
                 let v = this;
                 var index = v.transferData.inventory_transfer_items.findIndex(selected_item => selected_item.id == item.id);
                 let formData = new FormData();
-                formData.append('inventory_transfer_id', item ? item.id : "");
+                formData.append('inventory_transfer_item_id', item ? item.id : "");
                 axios.post(`/save-receive-item`, formData)
                 .then(response =>{
                     if(response.data.status == "success"){

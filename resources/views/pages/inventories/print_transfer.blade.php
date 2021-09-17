@@ -120,7 +120,12 @@
                         <b>(IT Head)</b>
                     </td>
                     <td align="center">
-                        <u>_____________</u> <br>
+                        @if($transfer_data->received_by_info)
+                            <u>{{ $transfer_data->received_by_info->name }}</u> 
+                        @else 
+                            _____________
+                        @endif
+                        <br>
                         <b>Received By</b>
                     </td>
                 </tr>

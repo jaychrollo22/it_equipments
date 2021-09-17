@@ -22,4 +22,7 @@ class InventoryTransfer extends Model implements AuditableContract
     public function requested_by_info(){
         return $this->belongsTo('App\User','requested_by','id');
     }
+    public function received_by_info(){
+        return $this->belongsTo('App\User','received_by','id');
+    }
 }

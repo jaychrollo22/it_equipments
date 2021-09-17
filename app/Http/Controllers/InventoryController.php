@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use DB;
 use Excel;
 use PDF;
+use Auth;
 class InventoryController extends Controller
 {
     /**
@@ -373,7 +374,7 @@ class InventoryController extends Controller
 
     public function printTransfer(Request $request){
         $data = $request->all();
-        $transfer_data = InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by_info')->where('transfer_code',$data['transfer_code'])->first();
+        $transfer_data = InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by_info','received_by_info')->where('transfer_code',$data['transfer_code'])->first();
         $pdf = PDF::loadView('pages.inventories.print_transfer',array(
             'transfer_data' => $transfer_data,
         ))->setPaper('a4','portrait');
@@ -408,14 +409,22 @@ class InventoryController extends Controller
         $data = $request->all();
         DB::beginTransaction();
         try {
-            $inventory_transfer_item = InventoryTransferItem::where('id',$data['inventory_transfer_id'])->first();
+            $inventory_transfer_item = InventoryTransferItem::where('id',$data['inventory_transfer_item_id'])->first();
             if($inventory_transfer_item){
                 //Update Transfer to Received
                 $updateInventoryTransferItem = [
                     'receive_date'=> date('Y-m-d h:i:s'),
+                    'received_by'=> Auth::user()->id,
                     'status'=>'Received'
                 ];
                 $inventory_transfer_item->update($updateInventoryTransferItem);
+
+                //Update Location
+                $inventory_transfer = InventoryTransfer::where('id',$inventory_transfer_item['inventory_transfer_id'])->first();
+                $inventoryTransferData = [
+                    'received_by'=> Auth::user()->id
+                ];
+                $inventory_transfer->update($inventoryTransferData);
 
                 //Update Location
                 $inventory = Inventory::where('id',$inventory_transfer_item['inventory_id'])->first();
@@ -425,7 +434,7 @@ class InventoryController extends Controller
                 $inventory->update($inventoryData);
 
                 DB::commit();
-                $item = InventoryTransferItem::with('inventory_info')->where('id',$data['inventory_transfer_id'])->first();
+                $item = InventoryTransferItem::with('inventory_info')->where('id',$data['inventory_transfer_item_id'])->first();
                 return $data = [
                     'status'=>'success',
                     'item'=>$item

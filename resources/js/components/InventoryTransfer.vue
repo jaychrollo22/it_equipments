@@ -63,7 +63,7 @@
                                         <th class="text-center">Date of Transfer</th>
                                         <th class="text-center">Date Requested</th>
                                         <th class="text-center">Location</th>
-                                        <!-- <th class="text-center">Status</th> -->
+                                        <th class="text-center">Items</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -74,7 +74,7 @@
                                        <td class="text-center"><small>{{transfer.date_of_transfer}}</small></td>
                                        <td class="text-center"><small>{{transfer.date_requested}}</small></td>
                                        <td class="text-center"><small>{{transfer.transfer_location}}</small></td>
-                                       <!-- <td class="text-center"><small>{{transfer.status}}</small></td> -->
+                                       <td class="text-center"><small>{{transfer.inventory_transfer_items.length}}</small></td>
                                        <td class="text-center">
                                             <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editTransfer(transfer)" title="Update">
                                                 <i class="flaticon-edit"></i>
