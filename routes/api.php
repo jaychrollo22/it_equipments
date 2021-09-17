@@ -14,8 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('impinj-rfid-registration-logs', 'RfidController@store');
+//Impinj Devices
+Route::post('impinj-rfid-registration-logs', 'RfidController@storeImpinjRfid');
 Route::get('impinj-rfid-log-registration-details', 'RfidController@impinj_rfid_log_registration_details');
+
+//Geovision Device
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

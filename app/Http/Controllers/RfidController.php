@@ -62,7 +62,7 @@ class RfidController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeImpinjRfid(Request $request)
     {
         // // $tag_reads = $request->tag_reads;
         // // $stored_tags = array();
