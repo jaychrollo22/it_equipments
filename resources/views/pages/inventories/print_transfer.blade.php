@@ -19,7 +19,7 @@
         
         body{
             font-family: "Calibri", Helvetica, sans-serif;
-            font-size: 9px;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -41,8 +41,11 @@
                 <td align="center">{{ $transfer_data ? $transfer_data->effective_date : ""}}</td>
             </tr>
             <tr>
-                <td colspan='4'>
+                <td colspan='3'>
                     <strong style='margin-left:10px'>TRANSFER ASSET</strong> 
+                </td>
+                <td align="center">
+                    Transfer No.:<strong>{{ $transfer_data ? $transfer_data->transfer_code : ""}}</strong> 
                 </td>
             </tr>
         </table>
