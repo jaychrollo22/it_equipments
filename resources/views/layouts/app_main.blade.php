@@ -2,6 +2,7 @@
 	<!--begin::Head-->
 	<head><base href="">
 		<meta charset="utf-8" />
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 		<title>{{ session('title') }} | IT Equipments</title>
 		<meta name="description" content="IT Equipments" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
