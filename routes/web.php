@@ -112,3 +112,6 @@ Route::get('/rfid-registration-devices', 'RfidRegistrationDeviceController@index
 Route::get('/rfid-registration-devices-data', 'RfidRegistrationDeviceController@indexData');
 Route::post('/rfid-registration-devices-store', 'RfidRegistrationDeviceController@store');
 Route::post('/rfid-registration-devices-update', 'RfidRegistrationDeviceController@update');
+
+Route::get('/rfid-registration-impinj-devices-activated-data', 'RfidRegistrationDeviceController@activatedImpinjReaderData');
+Route::post('/rfid-registration-impinj-devices-activate', 'RfidRegistrationDeviceController@activateImpinjReader');

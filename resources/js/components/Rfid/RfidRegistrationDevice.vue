@@ -41,6 +41,7 @@
                         </div>
                         <div class="card-toolbar">
                             <button class="btn btn-success mr-2" @click="addDevice">New</button>
+                            <button class="btn btn-primary mr-2" @click="showActivateImpinjDevice">Activate Device</button>
                         </div>
                     </div>
 
@@ -95,7 +96,7 @@
         </div>  
     </div>
 
-     <div class="modal fade" id="device-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="device-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
             <div class="modal-content">
                 <div>
@@ -134,6 +135,37 @@
         </div>
     </div>
 
+    <div class="modal fade" id="activate-device-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
+            <div class="modal-content">
+                <div>
+                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> 
+                <div class="modal-header">
+                    <h2 class="col-12 modal-title text-center"></h2>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Activate Impinj Device</label> 
+                               <select class="form-control" v-model="activateImpinjDevice">
+                                   <option  v-for="(item, i) in impinj_devices" :key="i" :value="item.reader_name" >{{item.reader_name}}</option>
+                               </select>
+                                <span class="text-danger" v-if="errors.type">{{ errors.activateDevice[0] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-md" @click="saveActivateImpinjDevice">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </template>
 
@@ -142,6 +174,7 @@
         data() {
             return {
                 keywords: '',
+                activateImpinjDevice : '',
                 device : {
                     'id' : '',
                     'reader_name' : '',
@@ -149,6 +182,8 @@
                 },
                 action : '',
                 devices : [],
+                impinj_devices : [],
+                geovision_devices : [],
                 errors : [],
                 currentPage: 0,
                 itemsPerPage: 10, 
@@ -156,8 +191,42 @@
         },
         created () {
             this.getDevices();
+            this.getActivatedImpinjDevice();
         },
         methods : {
+            showActivateImpinjDevice(){
+                $('#activate-device-modal').modal('show');
+            },
+            getActivatedImpinjDevice(){
+                let v = this;
+                v.activateImpinjDevice = '';
+                axios.get('/rfid-registration-impinj-devices-activated-data')
+                .then(response => { 
+                    v.activateImpinjDevice = response.data.activate_impinj_device;
+                })
+                .catch(error => { 
+                    v.errors = error.response.data.error;
+                })
+            },
+            saveActivateImpinjDevice(){
+                let v = this;
+                let formData = new FormData();
+                formData.append('activate_impinj_device', v.activateImpinjDevice ? v.activateImpinjDevice : "");
+                axios.post(`/rfid-registration-impinj-devices-activate`, formData)
+                .then(response =>{
+                    if(response.data){
+                        Swal.fire('Device has been activated!', '', 'success');        
+                        $('#activate-device-modal').modal('hide');
+                        v.activateImpinjDevice = '';
+                        this.getActivatedImpinjDevice();
+                    }else{
+                        Swal.fire('Error: Cannot changed. Please try again.', '', 'error');   
+                    }
+                })
+                .catch(error => {
+                    this.errors = error.response.data.errors;
+                })
+            },
             addDevice(){
                 let v = this;
                 v.errors = [];
@@ -216,9 +285,18 @@
             getDevices() {
                 let v = this;
                 v.devices = [];
+                v.impinj_devices = [];
                 axios.get('/rfid-registration-devices-data')
                 .then(response => { 
                     v.devices = response.data;
+                    v.devices.forEach(e => {
+                        if(e.type == 'Impinj'){
+                            v.impinj_devices.push(e);
+                        }
+                        if(e.type == 'Geovision'){
+                            v.geovision_devices.push(e);
+                        }
+                    });
                 })
                 .catch(error => { 
                     v.errors = error.response.data.error;

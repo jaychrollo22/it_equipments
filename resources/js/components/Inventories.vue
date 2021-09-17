@@ -156,7 +156,10 @@
                                 </div>
                                 <input type="text" class="form-control" placeholder="EPC (Impinj RFID)"  v-model="inventory.epc" readonly><br>
                             </div>
-                            <small v-if="rfidDetails">Scanner : {{ rfidDetails.reader_name}} | Scan Date : {{ rfidDetails.last_scan_date}}</small>   
+                            <div v-if="rfidDetails">
+                                <small v-if="rfidDetails.status =='success'">Scanner : {{ rfidDetails.reader_name}} | Scan Date : {{ rfidDetails.last_scan_date}}</small>   
+                                <small v-else class="text-danger">{{rfidDetails.message}}</small>   
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
@@ -615,6 +618,8 @@ export default {
 
             //RFID Scanner Timer
             rfid_timer : '',
+
+            activateImpinjDevice : '',
         }
     },
     created () {
@@ -623,9 +628,21 @@ export default {
         this.getLocations();
         this.getBuildings();
         this.getCategories();
+        this.getActivatedImpinjDevice();
         // this.scanRFID();
     },
     methods : {
+        getActivatedImpinjDevice(){
+            let v = this;
+            v.activateImpinjDevice = '';
+            axios.get('/rfid-registration-impinj-devices-activated-data')
+            .then(response => { 
+                v.activateImpinjDevice = response.data.activate_impinj_device;
+            })
+            .catch(error => { 
+                v.errors = error.response.data.error;
+            })
+        },
         closeInventoryModal(){
             $('#inventory-modal').modal('hide');
             this.stopTimer();
@@ -638,7 +655,7 @@ export default {
         },
         getImpinjRFID(){
             let v = this;
-            axios.get('/api/impinj-rfid-log-registration-details')
+            axios.get('/api/impinj-rfid-log-registration-details?activate_impinj_device='+v.activateImpinjDevice)
             .then(response => { 
                 if(response.data){
                     v.rfidDetails = response.data;

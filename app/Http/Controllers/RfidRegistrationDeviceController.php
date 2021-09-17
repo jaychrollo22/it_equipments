@@ -94,5 +94,15 @@ class RfidRegistrationDeviceController extends Controller
         } 
     }
 
+    public function activateImpinjReader(Request $request){
+        session([
+            'activate_impinj_device' => $request->all()
+        ]);
+        return 'saved';
+    }
+    public function activatedImpinjReaderData(){
+       return session('activate_impinj_device');
+    }
+
 
 }

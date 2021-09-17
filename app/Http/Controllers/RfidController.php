@@ -18,7 +18,7 @@ class RfidController extends Controller
      */
     public function impinj_rfid_log_registration_details(Request $request)
     {
-        $reader_name = 'Impinj RFID Reader';
+        $reader_name = $request->activate_impinj_device;
         
         $rfid_details = RfidRegistrationDevice::where('reader_name',$reader_name)->first();
         if($rfid_details){
@@ -33,14 +33,26 @@ class RfidController extends Controller
                         'epc' => $rfid_logs[$x]['epc'] ? $rfid_logs[$x]['epc'] : "",
                         'tid' => $rfid_logs[$x]['tid'] ? $rfid_logs[$x]['tid'] : "",
                         'last_scan_date' => $rfid_logs[$x]['firstSeenTimestamp'] ? date('Y-m-d h:i:s A',strtotime($rfid_details->updated_at)) : "",
+                        'message'=> 'success',
+                        'status'=> 'success',
                     ];
                 }else{
-                    return [];
+                    return $data = [
+                        'message'=>'Please tap the item to scan',
+                        'status'=>'error'
+                    ];
                 }
             }else{
-                return [];
+                return $data = [
+                    'message'=>'Please tap the item to scan',
+                    'status'=>'error'
+                ];
             }
-           
+        }else{
+            return $data = [
+                'message'=>'Reader not found! Please try to activate rfid reader.',
+                'status'=>'error'
+            ];
         }
     }
 
