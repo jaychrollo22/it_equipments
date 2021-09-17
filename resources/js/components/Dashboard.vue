@@ -38,7 +38,7 @@
                 <div class="row">
                     <div class="col-xl-4">
                         <!--begin::Stats Widget 22-->
-                        <div class="card card-custom bg-success bg-hover-state-success bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
+                        <a href="/inventories" class="card card-custom bg-success bg-hover-state-success bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
                             <!--begin::Body-->
                             <div class="card-body">
                                 <i class="icon-xl fas fa-th-large text-inverse-success"></i>
@@ -46,12 +46,12 @@
                                 <span class="text-inverse-success font-weight-bold font-size-sm">Overall Total Inventory</span>
                             </div>
                             <!--end::Body-->
-                        </div>
+                        </a>
                         <!--end::Stats Widget 22-->
                     </div>
                     <div class="col-xl-4">
                         <!--begin::Stats Widget 22-->
-                        <div class="card card-custom bg-primary bg-hover-state-primary bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
+                        <a href="/reports-borrow-logs" class="card card-custom bg-primary bg-hover-state-primary bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
                             <!--begin::Body-->
                             <div class="card-body">
                                 <i class="icon-xl fas fa-undo text-inverse-primary"></i>
@@ -59,12 +59,12 @@
                                 <span class="text-inverse-primary font-weight-bold font-size-sm">Total Borrowed Items Today</span>
                             </div>
                             <!--end::Body-->
-                        </div>
+                        </a>
                         <!--end::Stats Widget 22-->
                     </div>
                     <div class="col-xl-4">
                         <!--begin::Stats Widget 22-->
-                        <div class="card card-custom bg-warning bg-hover-state-warning bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
+                        <a href="/reports-return-logs" class="card card-custom bg-warning bg-hover-state-warning bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
                             <!--begin::Body-->
                             <div class="card-body">
                                 <i class="icon-xl fas fas fa-redo text-inverse-warning"></i>
@@ -72,7 +72,7 @@
                                 <span class="text-inverse-warning font-weight-bold font-size-sm">Total Return Items Today</span>
                             </div>
                             <!--end::Body-->
-                        </div>
+                        </a>
                         <!--end::Stats Widget 22-->
                     </div>
                 </div>

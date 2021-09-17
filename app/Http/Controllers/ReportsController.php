@@ -16,13 +16,13 @@ class ReportsController extends Controller
     public function borrowLogData(Request $request){
         if($request->date_from && $request->date_to){
             return UserInventory::with('employee_info','inventory_info')
-                                ->where('borrow_date','>=',$request->date_from)
-                                ->whereDate('borrow_date','<=',$request->date_to)
+                                ->where('borrow_date','>=',$request->date_from ? $request->date_from : date('Y-m-d'))
+                                ->whereDate('borrow_date','<=',$request->date_to ? $request->date_to : date('Y-m-d'))
                                 ->orderBy('borrow_date','DESC')
                                 ->get();
         } 
         else{
-            return UserInventory::with('employee_info','inventory_info')->orderBy('borrow_date','DESC')->take(50)->get();
+            return UserInventory::with('employee_info','inventory_info')->where('borrow_date',date('Y-m-d'))->orderBy('borrow_date','DESC')->take(50)->get();
         }
     }
 
@@ -36,12 +36,12 @@ class ReportsController extends Controller
     public function returnLogData(Request $request){
         if($request->date_from && $request->date_to){
             return UserInventory::with('employee_info','inventory_info')
-                                ->where('return_date','>=',$request->date_from)
-                                ->whereDate('return_date','<=',$request->date_to)
+                                ->where('return_date','>=',$request->date_from ? $request->date_from : date('Y-m-d'))
+                                ->whereDate('return_date','<=',$request->date_to ? $request->date_to : date('Y-m-d'))
                                 ->orderBy('return_date','DESC')
                                 ->get();
         }else{
-            return UserInventory::with('employee_info','inventory_info')->orderBy('return_date','DESC')->take(50)->get();
+            return UserInventory::with('employee_info','inventory_info')->where('return_date',date('Y-m-d'))->orderBy('return_date','DESC')->take(50)->get();
         }
     }
 
