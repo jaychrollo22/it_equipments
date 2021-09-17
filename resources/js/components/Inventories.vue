@@ -71,6 +71,7 @@
                                         <option value="">Choose Availability</option>
                                         <option value="Available">Available</option>
                                         <option value="Borrowed">Borrowed</option>
+                                        <option value="For Transfer">For Transfer</option>
                                     </select>
                                 </div>
                             </div>
@@ -104,6 +105,7 @@
                                        
                                        <td align="center">
                                           <span v-if="item.is_borrowed" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" :title="item.is_borrowed.status" @click="viewBorrowItem(item)">{{ item.is_borrowed.status }}</span>
+                                          <span v-else-if="item.is_transfer" class="label label-primary label-pill label-inline mr-2" style="cursor:pointer">For Transfer</span>
                                           <span v-else class="label label-success label-pill label-inline mr-2" title="Available to Borrow">Available</span>
                                         </td>
                                         <td align="center"><small>{{item.location}}</small></td>
@@ -952,6 +954,10 @@ export default {
                             if(item.is_borrowed.status == 'Borrowed'){
                                 return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.manufacturer.toLowerCase().includes(this.keywords.toLowerCase()) || item.supplier.toLowerCase().includes(this.keywords.toLowerCase())
                             }
+                        }
+                    }else if(self.filter_status == 'For Transfer'){
+                        if(item.is_transfer){
+                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.manufacturer.toLowerCase().includes(this.keywords.toLowerCase()) || item.supplier.toLowerCase().includes(this.keywords.toLowerCase())
                         }
                     }else{
                          return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())  || item.manufacturer.toLowerCase().includes(this.keywords.toLowerCase()) || item.supplier.toLowerCase().includes(this.keywords.toLowerCase())

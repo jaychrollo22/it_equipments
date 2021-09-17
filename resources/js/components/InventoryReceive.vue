@@ -69,11 +69,11 @@
                                 <tbody>
                                     <tr v-for="(transfer, i) in filteredReceiveQueues" :key="i" >
                                        <td class="text-center"><small>{{transfer.transfer_code}}</small></td>
-                                       <td class="text-center"><small>{{transfer.requested_by.name}}</small></td>
+                                       <td class="text-center"><small>{{transfer.requested_by_info.name}}</small></td>
                                        <td class="text-center"><small>{{transfer.date_of_transfer}}</small></td>
                                        <td class="text-center"><small>{{transfer.date_requested}}</small></td>
                                        <td class="text-center"><small>{{transfer.transfer_location}}</small></td>
-                                       <td class="text-center"><a href="#" @click="viewReceiveItems(transfer)">{{transfer.inventory_transfer_items.length}}</a></td>
+                                       <td class="text-center"><a href="#" @click="viewReceiveItems(transfer)" title="View Items">{{transfer.inventory_transfer_items.length}}</a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -271,6 +271,7 @@
                 .then(response =>{
                     if(response.data.status == "success"){
                         v.transferData.inventory_transfer_items.splice(index,1,response.data.item);
+                        v.getInventoryTransferData();
                     }else{
                         Swal.fire('Error: Cannot returned. Please try again.', '', 'error');
                     }

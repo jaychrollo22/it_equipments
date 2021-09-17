@@ -47,6 +47,8 @@ Route::post('/save-inventory-transfer', 'InventoryController@saveTransfer');
 Route::post('/update-inventory-transfer', 'InventoryController@updateTransfer');
 Route::post('/remove-inventory-transfer-item', 'InventoryController@removeTransferItem');
 
+Route::get('/print-inventory-transfer', 'InventoryController@printTransfer');
+
 //Receive Inventories
 Route::get('/inventory-receive', 'InventoryController@receive')->name('receive');
 Route::get('/search-transfer-code', 'InventoryController@searchTransferCode');

@@ -19,7 +19,7 @@ class InventoryTransfer extends Model implements AuditableContract
         return $this->hasMany('App\InventoryTransferItem','inventory_transfer_id','id');
     }
 
-    public function requested_by(){
+    public function requested_by_info(){
         return $this->belongsTo('App\User','requested_by','id');
     }
 }

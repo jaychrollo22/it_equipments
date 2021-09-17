@@ -11,7 +11,7 @@ use App\Imports\InventoriesImport;
 use Illuminate\Http\Request;
 use DB;
 use Excel;
-
+use PDF;
 class InventoryController extends Controller
 {
     /**
@@ -34,12 +34,12 @@ class InventoryController extends Controller
         session([
             'title' => 'Inventories'
         ]);
-        return view('pages.inventories');
+        return view('pages.inventories.inventories');
     }
 
     public function indexData(Request $request){
         $data = $request->all();
-        return Inventory::with('is_borrowed.employee_info')
+        return Inventory::with('is_borrowed.employee_info','is_transfer')
                             ->when(!empty($data['type']),function($q) use($data){
                                 $q->where('type','LIKE','%'.$data['type'].'%');
                             })
@@ -183,11 +183,11 @@ class InventoryController extends Controller
         session([
             'title' => 'Transfer'
         ]);
-        return view('pages.inventory_transfer');
+        return view('pages.inventories.inventory_transfer');
     }
 
     public function transferData(Request $request){
-        return InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by')
+        return InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by_info')
                                 ->orderBy('created_at','DESC')
                                 // ->take(50)
                                 ->get();
@@ -297,6 +297,8 @@ class InventoryController extends Controller
                         'date_requested' => $data['date_requested'],
                         'date_of_transfer' => $data['date_of_transfer'],
                         'transfer_location' => $data['transfer_location'],
+                        'remarks' => $data['remarks'],
+                        'effective_date' => $data['effective_date'],
                     ];
 
                     if($save_transfer = $check_transfer->update($transfer_data)){
@@ -369,6 +371,16 @@ class InventoryController extends Controller
         }
     }
 
+    public function printTransfer(Request $request){
+        $data = $request->all();
+        $transfer_data = InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by_info')->where('transfer_code',$data['transfer_code'])->first();
+        $pdf = PDF::loadView('pages.inventories.print_transfer',array(
+            'transfer_data' => $transfer_data,
+        ))->setPaper('a4','portrait');
+
+        return $pdf->stream($transfer_data['transfer_code'] . '_' . date('Ymd') . '.pdf');
+    }
+
     public function searchTransferCode(Request $request){
         $data = $request->all();
         $inventory_transfer = InventoryTransfer::with('inventory_transfer_items.inventory_info')->where('transfer_code',$data['transfer_code'])->first();
@@ -379,14 +391,15 @@ class InventoryController extends Controller
         session([
             'title' => 'Receive'
         ]);
-        return view('pages.inventory_receive');
+        return view('pages.inventories.inventory_receive');
     }
 
     public function receiveData(Request $request){
-        $inventory_transfer = InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by')
+        $inventory_transfer = InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by_info')
                                                 ->whereHas('inventory_transfer_items',function ($q){
                                                     $q->where('status', 'Received');
                                                 })
+                                                ->orderBy('updated_at','DESC')
                                                 ->get();
         return $inventory_transfer;
     }

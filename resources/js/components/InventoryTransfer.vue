@@ -70,15 +70,18 @@
                                 <tbody>
                                     <tr v-for="(transfer, i) in filteredQueues" :key="i" >
                                        <td class="text-center"><small>{{transfer.transfer_code}}</small></td>
-                                       <td class="text-center"><small>{{transfer.requested_by.name}}</small></td>
+                                       <td class="text-center"><small>{{transfer.requested_by_info.name}}</small></td>
                                        <td class="text-center"><small>{{transfer.date_of_transfer}}</small></td>
                                        <td class="text-center"><small>{{transfer.date_requested}}</small></td>
                                        <td class="text-center"><small>{{transfer.transfer_location}}</small></td>
                                        <!-- <td class="text-center"><small>{{transfer.status}}</small></td> -->
                                        <td class="text-center">
-                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editTransfer(transfer)">
+                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editTransfer(transfer)" title="Update">
                                                 <i class="flaticon-edit"></i>
                                             </button>
+                                            <a :href="'print-inventory-transfer?transfer_code='+transfer.transfer_code" target="_blank" type="button" class="btn btn-light-primary btn-icon btn-sm" title="Print">
+                                                <i class="flaticon2-printer"></i>
+                                            </a>
                                        </td>
                                     </tr>
                                 </tbody>
@@ -324,7 +327,7 @@
                             </div>
                         </div>
 
-                         <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="role">Transfer Location</label> 
                                 <select class="form-control" v-model="transfer.transfer_location">
@@ -332,6 +335,20 @@
                                     <option v-for="(location,b) in locationOptions" v-bind:key="b" :value="location.name"> {{ location.name }}</option>
                                 </select>
                                 <span class="text-danger" v-if="errors.transfer_location">{{ errors.transfer_location[0] }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Remarks</label> 
+                                <textarea class="form-control" v-model="transfer.remarks" placeholder="Remarks"></textarea>
+                                <span class="text-danger" v-if="errors.remarks">{{ errors.remarks[0] }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="role">Effective Date</label> 
+                                <input type="date" class="form-control" placeholder="Date of Transfer" v-model="transfer.effective_date">
+                                <span class="text-danger" v-if="errors.effective_date">{{ errors.effective_date[0] }}</span>
                             </div>
                         </div>
                     </div>
@@ -417,6 +434,9 @@
         </div>
     </div>
 
+
+
+
 </div>
 </template>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
@@ -437,7 +457,9 @@
                     transfer_company : '',
                     date_requested : '',
                     local_number : '',
-                    date_of_transfer : ''
+                    date_of_transfer : '',
+                    remarks : '',
+                    effective_date : '',
                 },
                 errors : [],
                 selectedItems : [],
@@ -486,6 +508,8 @@
                         formData.append('date_of_transfer', v.transfer.date_of_transfer ? v.transfer.date_of_transfer : "");
                         formData.append('transfer_location', v.transfer.transfer_location ? v.transfer.transfer_location : "");
                         formData.append('transfer_inventories', v.selectedEditItems ? JSON.stringify(v.selectedEditItems) : "");
+                        formData.append('remarks', v.transfer.remarks ? v.transfer.remarks : "");
+                        formData.append('effective_date', v.transfer.effective_date ? v.transfer.effective_date : "");
                         axios.post(`/update-inventory-transfer`, formData)
                         .then(response =>{
                             if(response.data.status == "success"){
@@ -557,13 +581,15 @@
                 let v = this;
                 v.action = 'Edit';
                 v.transfer.id = transfer.id;
-                v.transfer.requested_by = transfer.requested_by;
+                v.transfer.requested_by = transfer.requested_by_info;
                 v.transfer.transfer_department = transfer.transfer_department;
                 v.transfer.transfer_company = transfer.transfer_company;
                 v.transfer.date_requested = transfer.date_requested;
                 v.transfer.local_number = transfer.local_number;
                 v.transfer.date_of_transfer = transfer.date_of_transfer;
                 v.transfer.transfer_location = transfer.transfer_location;
+                v.transfer.remarks = transfer.remarks;
+                v.transfer.effective_date = transfer.effective_date;
 
                 if(transfer.inventory_transfer_items){
                     v.selectedEditItems = [];
@@ -601,6 +627,8 @@
                         formData.append('date_of_transfer', v.transfer.date_of_transfer ? v.transfer.date_of_transfer : "");
                         formData.append('transfer_location', v.transfer.transfer_location ? v.transfer.transfer_location : "");
                         formData.append('transfer_inventories', v.selectedItems ? JSON.stringify(v.selectedItems) : "");
+                        formData.append('remarks', v.transfer.remarks ? v.transfer.remarks : "");
+                        formData.append('effective_date', v.transfer.effective_date ? v.transfer.effective_date : "");
                         axios.post(`/save-inventory-transfer`, formData)
                         .then(response =>{
                             if(response.data.status == "success"){
@@ -748,6 +776,8 @@
                 v.transfer.date_requested = '';
                 v.transfer.local_number = '';
                 v.transfer.date_of_transfer = '';
+                v.transfer.remarks = '';
+                v.transfer.effective_date = '';
                 v.selectedItems = [];
                 $('#transfer-modal').modal('show');
             },
