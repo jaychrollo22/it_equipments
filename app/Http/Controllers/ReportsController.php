@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\UserInventory;
+use App\Inventory;
 class ReportsController extends Controller
 {
     public function borrowLogs(){
@@ -59,5 +60,23 @@ class ReportsController extends Controller
                             ->orderBy('employee_id','DESC')
                             ->orderBy('created_at','DESC')
                             ->get();
+    }
+
+    public function disposedLogs(){
+        session([
+            'title' => 'Diposed Logs',
+        ]);
+        return view('pages.reports.disposed_logs');
+    }
+
+    public function disposedLogData(Request $request){
+        if($request->date_from && $request->date_to){
+            return Inventory::with('disposed_by_info')->where('disposal_date','>=',$request->date_from ? $request->date_from : date('Y-m-d'))
+                                ->whereDate('disposal_date','<=',$request->date_to ? $request->date_to : date('Y-m-d'))
+                                ->orderBy('disposal_date','DESC')
+                                ->get();
+        }else{
+            return Inventory::with('disposed_by_info')->where('disposal_date',date('Y-m-d'))->orderBy('disposal_date','DESC')->take(50)->get();
+        }
     }
 }

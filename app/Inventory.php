@@ -22,4 +22,8 @@ class Inventory extends Model implements AuditableContract
     public function is_transfer(){
         return $this->hasOne('App\InventoryTransferItem','inventory_id','id')->where('status','Pending');
     }
+
+    public function disposed_by_info(){
+        return $this->belongsTo('App\User','disposed_by','id')->select('id','name');
+    }
 }

@@ -168,6 +168,12 @@
                                             <span class="menu-desc"></span>
                                         </a>
                                     </li>
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('reports-disposed-logs') }}" class="menu-link">
+                                            <span class="menu-text">Disposed Logs</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>

@@ -41,6 +41,7 @@ Vue.component('categories', require('./components/Settings/Categories.vue').defa
 Vue.component('borrow-logs', require('./components/Reports/BorrowLogs.vue').default);
 Vue.component('return-logs', require('./components/Reports/ReturnLogs.vue').default);
 Vue.component('asset-logs', require('./components/Reports/AssetLogs.vue').default);
+Vue.component('disposed-logs', require('./components/Reports/DisposedLogs.vue').default);
 
 //RFID Registration Device
 Vue.component('rfid-registration-device', require('./components/Rfid/RfidRegistrationDevice.vue').default);

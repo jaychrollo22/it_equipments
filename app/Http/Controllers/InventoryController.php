@@ -40,21 +40,29 @@ class InventoryController extends Controller
 
     public function indexData(Request $request){
         $data = $request->all();
-        return Inventory::with('is_borrowed.employee_info','is_transfer')
-                            ->when(!empty($data['type']),function($q) use($data){
-                                $q->where('type','LIKE','%'.$data['type'].'%');
-                            })
-                            ->when(!empty($data['location']),function($q) use($data){
-                                $q->where('location','LIKE','%'.$data['location'].'%');
-                            })
-                            ->when(!empty($data['category']),function($q) use($data){
-                                $q->where('category','LIKE','%'.$data['category'].'%');
-                            })
-                            ->when(!empty($data['status']),function($q) use($data){
-                                $q->where('status','LIKE','%'.$data['status'].'%');
-                            })
-                            ->orderBy('type','ASC')
-                            ->get();
+        if($data['type'] || $data['location'] || $data['category'] || $data['status']){
+            return Inventory::with('is_borrowed.employee_info','is_transfer')
+                                ->when(!empty($data['type']),function($q) use($data){
+                                    $q->where('type','LIKE','%'.$data['type'].'%');
+                                })
+                                ->when(!empty($data['location']),function($q) use($data){
+                                    $q->where('location','LIKE','%'.$data['location'].'%');
+                                })
+                                ->when(!empty($data['category']),function($q) use($data){
+                                    $q->where('category','LIKE','%'.$data['category'].'%');
+                                })
+                                ->when(!empty($data['status']),function($q) use($data){
+                                    $q->where('status','LIKE','%'.$data['status'].'%');
+                                })
+                                ->orderBy('type','ASC')
+                                ->get();
+        }else{
+            return Inventory::with('is_borrowed.employee_info','is_transfer')
+                                ->where('status','!=','Disposed')
+                                ->orderBy('type','ASC')
+                                ->get();
+        }
+       
     }
 
     /**
@@ -71,6 +79,11 @@ class InventoryController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->all();
+            if($data['status'] == 'Disposed'){
+                $data['disposed_by'] = Auth::user()->id;
+            }else{
+                $data['disposal_date'] = null;
+            }
             if($inventory = Inventory::create($data)){
                 DB::commit();
                 return $status_data = [
@@ -107,6 +120,11 @@ class InventoryController extends Controller
             $inventory = Inventory::where('id',$data['id'])->first();
             if($inventory){
                 unset($data['id']);
+                if($data['status'] == 'Disposed'){
+                    $data['disposed_by'] = Auth::user()->id;
+                }else{
+                    $data['disposal_date'] = null;
+                }
                 $inventory->update($data);
                 DB::commit();
                 return $status_data = [
@@ -162,6 +180,7 @@ class InventoryController extends Controller
                         'building'=> isset($item['building']) ? $item['building'] : "",
                         'category'=> isset($item['category']) ? $item['category'] : "",
                         'status'=> isset($item['status']) ? $item['status'] : "",
+                        'disposal_date'=> isset($item['disposal_date']) ? $item['disposal_date'] : "",
                     ];
 
                     if(empty($check_inventory_file)){

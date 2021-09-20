@@ -366,7 +366,14 @@
                                 <span class="text-danger" v-if="errors.status">{{ errors.status[0] }}</span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6" v-if="inventory.status == 'Disposed'">
+                            <div class="form-group">
+                                <label for="role">Disposal Date</label> 
+                                <input type="date" class="form-control" v-model="inventory.disposal_date">
+                                <span class="text-danger" v-if="errors.disposal_date">{{ errors.disposal_date[0] }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="role">Remarks</label> 
                                 <textarea name="" id="" cols="20" rows="3" class="form-control" placeholder="Remarks" v-model="inventory.remarks"></textarea>
@@ -552,7 +559,8 @@ export default {
                 'location' : 'N/A',
                 'category' : 'N/A',
                 'status' : 'N/A',
-                'remarks' : 'N/A'
+                'remarks' : 'N/A',
+                'disposal_date' : 'N/A',
             },
             action : '',
             inventories : [],
@@ -604,6 +612,7 @@ export default {
                 'BUILDING' : 'building',
                 'CATEGORY' : 'category',
                 'STATUS' : 'status',
+                'DISPOSAL DATE' : 'disposal_date',
             },
 
             //Filter
@@ -761,6 +770,7 @@ export default {
             v.inventory.category = 'N/A';
             v.inventory.status = 'N/A';
             v.inventory.remarks = 'N/A';
+            v.inventory.disposal_date = '';
             v.action = 'New';
             this.getTypes();
             this.getLocations();
@@ -802,6 +812,7 @@ export default {
             v.inventory.category = inventory.category;
             v.inventory.status = inventory.status;
             v.inventory.remarks = inventory.remarks;
+            v.inventory.disposal_date = inventory.disposal_date;
             v.action = 'Update';
             this.getTypes();
             this.getLocations();
@@ -853,6 +864,7 @@ export default {
                     formData.append('category', v.inventory.category ? v.inventory.category : "");
                     formData.append('status', v.inventory.status ? v.inventory.status : "");
                     formData.append('remarks', v.inventory.remarks ? v.inventory.remarks : "");
+                    formData.append('disposal_date', v.inventory.disposal_date ? v.inventory.disposal_date : "");
                     axios.post(postURL, formData)
                     .then(response =>{
                         if(response.data.status == "success"){
