@@ -120,3 +120,5 @@ Route::post('/rfid-registration-devices-update', 'RfidRegistrationDeviceControll
 
 Route::get('/rfid-registration-impinj-devices-activated-data', 'RfidRegistrationDeviceController@activatedImpinjReaderData');
 Route::post('/rfid-registration-impinj-devices-activate', 'RfidRegistrationDeviceController@activateImpinjReader');
+
+Route::post('/clear-rfid-log-registration-device', 'RfidRegistrationDeviceController@clearRfidLogRegistrationDevice');

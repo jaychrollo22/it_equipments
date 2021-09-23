@@ -147,7 +147,9 @@
                     <h2 class="col-12 modal-title text-center">{{ action }}</h2>
                 </div>
                 <div class="modal-body">
-                    <h5 class="mt-5 mb-3">RFID Registration</h5>
+                    <h5 class="mt-5 mb-3">RFID Registration 
+                        <span v-if="activateImpinjDevice" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" title="Clear RFID" @click="clearRFID">Clear</span>
+                    </h5>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
@@ -643,6 +645,23 @@ export default {
         // this.scanRFID();
     },
     methods : {
+        clearRFID(){
+            let v = this;
+            if(v.activateImpinjDevice){
+                let formData = new FormData();
+                formData.append('reader_name', v.activateImpinjDevice );
+                axios.post(`/clear-rfid-log-registration-device`, formData)
+                .then(response =>{
+                    v.inventory.epc = '';
+                    v.inventory.tid = '';
+                    v.inventory.rfid_64 = '';
+                })
+                .catch(error => {
+                    this.errors = error.response.data.errors;
+                })
+            }
+            
+        },
         getActivatedImpinjDevice(){
             let v = this;
             v.activateImpinjDevice = '';

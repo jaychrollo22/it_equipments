@@ -104,5 +104,32 @@ class RfidRegistrationDeviceController extends Controller
        return session('activate_impinj_device');
     }
 
+    public function clearRfidLogRegistrationDevice(Request $request){
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+            $device = RfidRegistrationDevice::where('reader_name',$data['reader_name'])->first();
+            if($device){
+                $updateRfidLog = [
+                    'rfid_log' => ''
+                ];
+                $device->update($updateRfidLog);
+                DB::commit();
+                return $status_data = [
+                    'status'=>'success',
+                    'device'=>$device,
+                ];
+            }else{
+                return $data = [
+                    'status'=>'error'
+                ];
+            }
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+            return 'error';
+        }
+    }
+
 
 }
