@@ -165,14 +165,14 @@ class InventoryController extends Controller
                         'processor'=> isset($item['processor']) ? $item['processor'] : "",
                         'manufacturer'=> isset($item['manufacturer']) ? $item['manufacturer'] : "",
                         'supplier'=> isset($item['supplier']) ? $item['supplier'] : "",
-                        'delivery_date'=> isset($item['delivery_date']) ? $item['delivery_date'] : "",
+                        'delivery_date'=> isset($item['delivery_date']) ? $item['delivery_date'] : null,
                         'order_number'=> isset($item['order_number']) ? $item['order_number'] : "",
                         'retired_date'=> isset($item['retired_date']) ? $item['retired_date'] : "",
                         'estimated_retirement_date'=> isset($item['estimated_retirement_date']) ? $item['estimated_retirement_date'] : "",
                         'warranty_period'=> isset($item['warranty_period']) ? $item['warranty_period'] : "",
                         'asset_code'=> isset($item['asset_code']) ? $item['asset_code'] : "",
                         'purchase_cost'=> isset($item['purchase_cost']) ? $item['purchase_cost'] : "",
-                        'insurance_date'=> isset($item['insurance_date']) ? $item['insurance_date'] : "",
+                        'insurance_date'=> isset($item['insurance_date']) ? $item['insurance_date'] : null,
                         'os_name_and_version'=> isset($item['os_name_and_version']) ? $item['os_name_and_version'] : "",
                         'tab_name'=>  isset($item['tab_name']) ? $item['tab_name'] : "",
                         'area'=> isset($item['area']) ? $item['area'] : "",
@@ -180,7 +180,7 @@ class InventoryController extends Controller
                         'building'=> isset($item['building']) ? $item['building'] : "",
                         'category'=> isset($item['category']) ? $item['category'] : "",
                         'status'=> isset($item['status']) ? $item['status'] : "",
-                        'disposal_date'=> isset($item['disposal_date']) ? $item['disposal_date'] : "",
+                        'disposal_date'=> isset($item['disposal_date']) ? $item['disposal_date'] : null,
                     ];
 
                     if(empty($check_inventory_file)){
