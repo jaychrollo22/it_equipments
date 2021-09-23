@@ -165,6 +165,7 @@ class InventoryController extends Controller
                         'processor'=> isset($item['processor']) ? $item['processor'] : "",
                         'manufacturer'=> isset($item['manufacturer']) ? $item['manufacturer'] : "",
                         'supplier'=> isset($item['supplier']) ? $item['supplier'] : "",
+                        'purchase_company'=> isset($item['purchase_company']) ? $item['purchase_company'] : "",
                         'delivery_date'=> isset($item['delivery_date']) ? $item['delivery_date'] : null,
                         'order_number'=> isset($item['order_number']) ? $item['order_number'] : "",
                         'retired_date'=> isset($item['retired_date']) ? $item['retired_date'] : "",
