@@ -190,6 +190,7 @@ class InventoryController extends Controller
                     }else{
                         //Update
                         $check_inventory_file->update($save_item);
+                        $save_count++;
                     }
                 }
             }
