@@ -74,7 +74,10 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'type' => 'required'
+            'serial_number' => 'required',
+            'model' => 'required',
+            'type' => 'required',
+            'status' => 'required',
         ]);
         DB::beginTransaction();
         try {
@@ -112,8 +115,12 @@ class InventoryController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'type' => 'required'
+            'serial_number' => 'required',
+            'model' => 'required',
+            'type' => 'required',
+            'status' => 'required',
         ]);
+
         DB::beginTransaction();
         try {
             $data = $request->all();

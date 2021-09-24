@@ -538,11 +538,11 @@ export default {
                 'epc' : '',
                 'tid' : '',
                 'rfid_64' : '',
-                'type' : 'N/A',
+                'type' : '',
                 'old_inventory_number' : 'N/A',
                 'new_it_tag_qr_code_bar_code' : 'N/A',
-                'serial_number' : 'N/A',
-                'model' : 'N/A',
+                'serial_number' : '',
+                'model' : '',
                 'processor' : 'N/A',
                 'manufacturer' : 'N/A',
                 'supplier' : 'N/A',
@@ -560,7 +560,7 @@ export default {
                 'area' : 'N/A',
                 'location' : 'N/A',
                 'category' : 'N/A',
-                'status' : 'N/A',
+                'status' : '',
                 'remarks' : 'N/A',
                 'disposal_date' : 'N/A',
             },
@@ -764,11 +764,11 @@ export default {
             v.inventory.epc = '';
             v.inventory.tid = '';
             v.inventory.rfid_64 = '';
-            v.inventory.type = 'N/A';
+            v.inventory.type = '';
             v.inventory.old_inventory_number = 'N/A';
             v.inventory.new_it_tag_qr_code_bar_code = 'N/A';
-            v.inventory.serial_number = 'N/A';
-            v.inventory.model = 'N/A';
+            v.inventory.serial_number = '';
+            v.inventory.model = '';
             v.inventory.processor = 'N/A';
             v.inventory.manufacturer = 'N/A';
             v.inventory.supplier = 'N/A';
@@ -787,7 +787,7 @@ export default {
             v.inventory.location = 'N/A';
             v.inventory.building = 'N/A';
             v.inventory.category = 'N/A';
-            v.inventory.status = 'N/A';
+            v.inventory.status = '';
             v.inventory.remarks = 'N/A';
             v.inventory.disposal_date = '';
             v.action = 'New';
