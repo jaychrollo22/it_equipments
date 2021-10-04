@@ -168,6 +168,7 @@
                     <div v-if="borrow_step_2 == 'current'" class="row" >
                         <div class="col-lg-12 mt-5">
                             <h5>Employee : {{ employee.first_name + ' ' + employee.last_name }}</h5>
+                            <h5>ID Number : {{ employee.id_number }}</h5>
                         </div>
 
                         <div class="col-lg-6">
@@ -383,6 +384,7 @@
                     <div v-if="return_step_2 == 'current'" class="row" >
                         <div class="col-lg-12 mt-5">
                             <h5>Employee : {{ employee.first_name + ' ' + employee.last_name }}</h5>
+                            <h5>ID Number : {{ employee.id_number }}</h5>
                             <button class="btn btn-md btn-success float-right" @click="searchEmployee('Return')">Refresh</button>
                         </div>
                         <div class="col-lg-12 mt-2">
