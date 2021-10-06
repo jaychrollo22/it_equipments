@@ -5285,6 +5285,291 @@ Vue.use(v_mask__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/dist/vue-json-excel.esm.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    'downloadExcel': vue_json_excel__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      keywords: '',
+      date_from: '',
+      date_to: '',
+      assetHandoverForms: [],
+      errors: [],
+      currentPage: 0,
+      itemsPerPage: 10,
+      exportAssetHandoverForms: {
+        'Employee Name': {
+          callback: function callback(value) {
+            if (value.employee_info) {
+              return value.employee_info.first_name + ' ' + value.employee_info.last_name;
+            } else {
+              return '';
+            }
+          }
+        },
+        'Serial No.': {
+          callback: function callback(value) {
+            if (value.inventory_info) {
+              return value.inventory_info.serial_number;
+            } else {
+              return '';
+            }
+          }
+        },
+        'Model': {
+          callback: function callback(value) {
+            if (value.inventory_info) {
+              return value.inventory_info.model;
+            } else {
+              return '';
+            }
+          }
+        },
+        'Type': {
+          callback: function callback(value) {
+            if (value.inventory_info) {
+              return value.inventory_info.type;
+            } else {
+              return '';
+            }
+          }
+        },
+        'Date': 'borrow_date'
+      },
+      selectedassetHandoverForms: '',
+      selectedassetHandoverFormsDetails: ''
+    };
+  },
+  created: function created() {
+    this.getAssetHandoverForms();
+  },
+  methods: {
+    showDetails: function showDetails(asset_handover_form) {
+      var v = this;
+      v.selectedassetHandoverForms = asset_handover_form;
+      v.selectedassetHandoverFormsDetails = JSON.parse(asset_handover_form.details);
+      $('#asset-handover-form-details-modal').modal('show');
+    },
+    getAssetHandoverForms: function getAssetHandoverForms() {
+      var v = this;
+      v.assetHandoverForms = [];
+      axios.get('/reports-asset-handover-forms-data?date_from=' + v.date_from + '&date_to=' + v.date_to).then(function (response) {
+        v.assetHandoverForms = response.data;
+      })["catch"](function (error) {
+        v.errors = error.response.data.error;
+      });
+    },
+    setPage: function setPage(pageNumber) {
+      this.currentPage = pageNumber;
+    },
+    resetStartRow: function resetStartRow() {
+      this.currentPage = 0;
+    },
+    showPreviousLink: function showPreviousLink() {
+      return this.currentPage == 0 ? false : true;
+    },
+    showNextLink: function showNextLink() {
+      return this.currentPage == this.totalPages - 1 ? false : true;
+    }
+  },
+  computed: {
+    filteredAssetHandoverForms: function filteredAssetHandoverForms() {
+      var _this = this;
+
+      var self = this;
+      return Object.values(self.assetHandoverForms).filter(function (item) {
+        if (item.employee_info) {
+          var full_name = item.employee_info.first_name + ' ' + item.employee_info.last_name;
+          return item.employee_info.first_name.toLowerCase().includes(_this.keywords.toLowerCase()) || item.employee_info.last_name.toLowerCase().includes(_this.keywords.toLowerCase()) || full_name.toLowerCase().includes(_this.keywords.toLowerCase());
+        }
+      });
+    },
+    totalPages: function totalPages() {
+      return Math.ceil(Object.values(this.filteredAssetHandoverForms).length / this.itemsPerPage);
+    },
+    filteredQueues: function filteredQueues() {
+      var index = this.currentPage * this.itemsPerPage;
+      var queues_array = this.filteredAssetHandoverForms.slice(index, index + this.itemsPerPage);
+
+      if (this.currentPage >= this.totalPages) {
+        this.currentPage = this.totalPages - 1;
+      }
+
+      if (this.currentPage == -1) {
+        this.currentPage = 0;
+      }
+
+      return queues_array;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports/AssetLogs.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Reports/AssetLogs.vue?vue&type=script&lang=js& ***!
@@ -92113,6 +92398,492 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=template&id=cfaf6b92&scoped=true&":
+/*!*****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=template&id=cfaf6b92&scoped=true& ***!
+  \*****************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass: "content d-flex flex-column flex-column-fluid",
+        attrs: { id: "kt_content" }
+      },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-column-fluid" }, [
+          _c("div", { staticClass: "container reports-container" }, [
+            _c("div", { staticClass: "card card-custom gutter-b" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-3" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Search")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.keywords,
+                            expression: "keywords"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", placeholder: "Input here..." },
+                        domProps: { value: _vm.keywords },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.keywords = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-3" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Date From")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.date_from,
+                            expression: "date_from"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "date" },
+                        domProps: { value: _vm.date_from },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.date_from = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-3" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Date To")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.date_to,
+                            expression: "date_to"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "date" },
+                        domProps: { value: _vm.date_to },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.date_to = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-3" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-md btn-primary",
+                        on: { click: _vm.getAssetHandoverForms }
+                      },
+                      [_vm._v("Apply Filter")]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table table-checkable",
+                      attrs: { id: "kt_datatable" }
+                    },
+                    [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.filteredAssetHandoverForms, function(
+                          item,
+                          i
+                        ) {
+                          return _c("tr", { key: i }, [
+                            _c("td", { attrs: { align: "left" } }, [
+                              _c("small", [
+                                _vm._v(
+                                  _vm._s(
+                                    item.employee_info.first_name +
+                                      " " +
+                                      item.employee_info.last_name
+                                  )
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { align: "left" } }, [
+                              _c("small", [_vm._v(_vm._s(item.hof_date))])
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { align: "left" } }, [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.showDetails(item)
+                                    }
+                                  }
+                                },
+                                [_vm._v("View Details")]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { align: "left" } }, [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-sm btn-primary",
+                                  attrs: {
+                                    href:
+                                      "print-asset-handover-form?id=" + item.id,
+                                    target: "_blank"
+                                  }
+                                },
+                                [_vm._v("Print")]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm.filteredQueues.length
+                  ? _c("div", { staticClass: "row col-md-12" }, [
+                      _c("div", { staticClass: "col-6" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-default btn-sm btn-fill",
+                            attrs: { disabled: !_vm.showPreviousLink() },
+                            on: {
+                              click: function($event) {
+                                return _vm.setPage(_vm.currentPage - 1)
+                              }
+                            }
+                          },
+                          [_vm._v(" Previous ")]
+                        ),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "text-dark" }, [
+                          _vm._v(
+                            "Page " +
+                              _vm._s(_vm.currentPage + 1) +
+                              " of " +
+                              _vm._s(_vm.totalPages)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-default btn-sm btn-fill",
+                            attrs: { disabled: !_vm.showNextLink() },
+                            on: {
+                              click: function($event) {
+                                return _vm.setPage(_vm.currentPage + 1)
+                              }
+                            }
+                          },
+                          [_vm._v(" Next ")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-6 text-right" }, [
+                        _c("span", { staticClass: "mr-2" }, [
+                          _vm._v(
+                            "Total Asset Handover Forms Logs : " +
+                              _vm._s(_vm.filteredAssetHandoverForms.length) +
+                              " "
+                          )
+                        ]),
+                        _c("br")
+                      ])
+                    ])
+                  : _vm._e()
+              ])
+            ])
+          ])
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "asset-handover-form-details-modal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalLabel",
+          "aria-hidden": "true",
+          "data-backdrop": "static"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "modal-dialog modal-dialog-centered modal-md modal-fixed",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _vm._m(4),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _vm.selectedassetHandoverFormsDetails
+                  ? _c("div", { staticClass: "row" }, [
+                      _c(
+                        "table",
+                        {
+                          staticClass: "table table-checkable",
+                          attrs: { id: "kt_datatable" }
+                        },
+                        [
+                          _vm._m(5),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(
+                              _vm.selectedassetHandoverFormsDetails,
+                              function(item, i) {
+                                return _c("tr", { key: i }, [
+                                  _c("td", { attrs: { align: "left" } }, [
+                                    _c("small", [_vm._v(_vm._s(item.model))])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", { attrs: { align: "left" } }, [
+                                    _c("small", [
+                                      _vm._v(_vm._s(item.serial_number))
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", { attrs: { align: "left" } }, [
+                                    _c("small", [_vm._v(_vm._s(item.type))])
+                                  ])
+                                ])
+                              }
+                            ),
+                            0
+                          )
+                        ]
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "subheader py-2 py-lg-12 subheader-transparent",
+        attrs: { id: "kt_subheader" }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap reports-container"
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "d-flex align-items-center flex-wrap mr-1" },
+              [
+                _c("div", { staticClass: "d-flex flex-column" }, [
+                  _c(
+                    "h2",
+                    { staticClass: "text-white font-weight-bold my-2 mr-5" },
+                    [_vm._v("Reports")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex align-items-center font-weight-bold my-2"
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "opacity-75 hover-opacity-100",
+                          attrs: { href: "#" }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "flaticon2-shelter text-white icon-1x"
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("span", {
+                        staticClass:
+                          "label label-dot label-sm bg-white opacity-75 mx-3"
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "text-white text-hover-white opacity-75 hover-opacity-100",
+                          attrs: { href: "" }
+                        },
+                        [_vm._v("Asset Handover Forms")]
+                      )
+                    ]
+                  )
+                ])
+              ]
+            )
+          ]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header flex-wrap py-3" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [
+          _vm._v("Asset Handover Forms\r\n                            "),
+          _c("span", { staticClass: "d-block text-muted pt-2 font-size-sm" })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticClass: "text-left" }, [_vm._v("Employee Name")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-left" }, [_vm._v("Handover Date")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-left" }, [_vm._v("Details")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-left" }, [_vm._v("Action")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c(
+        "button",
+        {
+          staticClass: "close mt-2 mr-2",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h2", { staticClass: "col-12 modal-title text-center" }, [
+        _vm._v("Details")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticClass: "text-left" }, [_vm._v("Model")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-left" }, [_vm._v("Serial Number")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-left" }, [_vm._v("Type")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports/AssetLogs.vue?vue&type=template&id=03048df4&scoped=true&":
 /*!********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Reports/AssetLogs.vue?vue&type=template&id=03048df4&scoped=true& ***!
@@ -109632,7 +110403,8 @@ Vue.component('categories', __webpack_require__(/*! ./components/Settings/Catego
 Vue.component('borrow-logs', __webpack_require__(/*! ./components/Reports/BorrowLogs.vue */ "./resources/js/components/Reports/BorrowLogs.vue")["default"]);
 Vue.component('return-logs', __webpack_require__(/*! ./components/Reports/ReturnLogs.vue */ "./resources/js/components/Reports/ReturnLogs.vue")["default"]);
 Vue.component('asset-logs', __webpack_require__(/*! ./components/Reports/AssetLogs.vue */ "./resources/js/components/Reports/AssetLogs.vue")["default"]);
-Vue.component('disposed-logs', __webpack_require__(/*! ./components/Reports/DisposedLogs.vue */ "./resources/js/components/Reports/DisposedLogs.vue")["default"]); //RFID Registration Device
+Vue.component('disposed-logs', __webpack_require__(/*! ./components/Reports/DisposedLogs.vue */ "./resources/js/components/Reports/DisposedLogs.vue")["default"]);
+Vue.component('asset-handover-forms', __webpack_require__(/*! ./components/Reports/AssetHandoverForms.vue */ "./resources/js/components/Reports/AssetHandoverForms.vue")["default"]); //RFID Registration Device
 
 Vue.component('rfid-registration-device', __webpack_require__(/*! ./components/Rfid/RfidRegistrationDevice.vue */ "./resources/js/components/Rfid/RfidRegistrationDevice.vue")["default"]);
 /**
@@ -110272,6 +111044,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Items_vue_vue_type_template_id_53c28065_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Items_vue_vue_type_template_id_53c28065_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Reports/AssetHandoverForms.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/Reports/AssetHandoverForms.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AssetHandoverForms_vue_vue_type_template_id_cfaf6b92_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AssetHandoverForms.vue?vue&type=template&id=cfaf6b92&scoped=true& */ "./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=template&id=cfaf6b92&scoped=true&");
+/* harmony import */ var _AssetHandoverForms_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AssetHandoverForms.vue?vue&type=script&lang=js& */ "./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AssetHandoverForms_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AssetHandoverForms_vue_vue_type_template_id_cfaf6b92_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AssetHandoverForms_vue_vue_type_template_id_cfaf6b92_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "cfaf6b92",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Reports/AssetHandoverForms.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AssetHandoverForms_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AssetHandoverForms.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AssetHandoverForms_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=template&id=cfaf6b92&scoped=true&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=template&id=cfaf6b92&scoped=true& ***!
+  \***********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AssetHandoverForms_vue_vue_type_template_id_cfaf6b92_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AssetHandoverForms.vue?vue&type=template&id=cfaf6b92&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports/AssetHandoverForms.vue?vue&type=template&id=cfaf6b92&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AssetHandoverForms_vue_vue_type_template_id_cfaf6b92_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AssetHandoverForms_vue_vue_type_template_id_cfaf6b92_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

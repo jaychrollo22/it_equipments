@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Employee;
 use App\Inventory;
 use App\UserInventory;
+use App\AssetHandoverForm;
 
 use DB;
 
@@ -59,7 +60,6 @@ class ItemsController extends Controller
         try {
             if($data['user_inventories']){
                 $user_inventories = json_decode($data['user_inventories'], true);
-
                 $save_count = 0;
                 foreach($user_inventories as $item){
                     $user_inventory = UserInventory::where('employee_id',$data['employee_id'])
@@ -79,6 +79,14 @@ class ItemsController extends Controller
                     }
                 }
                 if($save_count > 0){
+                    $asset_handover_form = [
+                        'employee_id'=>$data['employee_id'],
+                        'hof_date'=>date('Y-m-d'),
+                        'details'=>$data['user_inventories'],
+                    ];
+                    //Save Handover Form
+                    AssetHandoverForm::create($asset_handover_form);
+
                     DB::commit();
                     return $data = [
                         'status'=>'success',

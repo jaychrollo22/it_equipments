@@ -16,5 +16,15 @@ class Employee extends Model
     public function borrowed_items(){
         return $this->hasMany('App\UserInventory','employee_id','id')->where('status','Borrowed')->orderBy('borrow_date','DESC');
     }
+
+    public function companies()
+    {
+        return $this->belongsToMany('App\Company')->withTimestamps();
+    }
+
+    public function departments()
+    {
+        return $this->belongsToMany('App\Department')->withTimestamps();
+    }
     
 }

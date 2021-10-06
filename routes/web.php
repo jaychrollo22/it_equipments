@@ -112,6 +112,11 @@ Route::get('/reports-asset-logs-data', 'ReportsController@assetLogData');
 Route::get('/reports-disposed-logs', 'ReportsController@disposedLogs')->name('disposed-logs');
 Route::get('/reports-disposed-logs-data', 'ReportsController@disposedLogData');
 
+Route::get('/reports-asset-handover-forms', 'ReportsController@assetHandoverForms')->name('asset-handover-forms');
+Route::get('/reports-asset-handover-forms-data', 'ReportsController@assetHandoverFormsData');
+
+Route::get('/print-asset-handover-form', 'ReportsController@printAssetHandoverForm');
+
 //RFID Registration Device
 Route::get('/rfid-registration-devices', 'RfidRegistrationDeviceController@index')->name('rfid-registration-devices');
 Route::get('/rfid-registration-devices-data', 'RfidRegistrationDeviceController@indexData');
