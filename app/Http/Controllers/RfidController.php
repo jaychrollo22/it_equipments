@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\RfidRegistrationGeovision;
 use App\RfidRegistrationDevice;
 use App\RfidItemsDevice;
 use DB;
@@ -172,6 +173,11 @@ class RfidController extends Controller
             DB::rollBack();
             return 'error';
         } 
+    }
+
+    //Geovision
+    public function geovision_rfid_log_registration_details(Request $request){
+        return RfidRegistrationGeovision::all();
     }
 
 }

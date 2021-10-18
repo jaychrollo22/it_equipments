@@ -53,7 +53,7 @@
         </span>
     </div>
    
-    <script src="{{ asset('js/all.js') }}"></script>
+    <script src="{{ asset('js/all.js?v='.rand(10,100)) }}"></script>
 
 
     <!--begin::Global Theme Bundle(used by all pages)-->

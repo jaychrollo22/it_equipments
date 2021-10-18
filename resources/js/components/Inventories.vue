@@ -385,7 +385,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary btn-md" @click="saveInventory">Save</button>
+                    <button class="btn btn-primary btn-md" :disabled="savingDisable" @click="saveInventory">Save</button>
                 </div>
             </div>
         </div>
@@ -633,6 +633,9 @@ export default {
             rfid_timer : '',
 
             activateImpinjDevice : '',
+
+            //Inventory
+            savingDisable : false,
         }
     },
     created () {
@@ -841,6 +844,7 @@ export default {
         },
         saveInventory(){
             let v = this;
+            this.savingDisable = true;
             Swal.fire({
                 title: 'Are you sure you want to save this inventory?',
                 icon: 'question',
@@ -891,6 +895,7 @@ export default {
                             $('#inventory-modal').modal('hide'); 
                             this.getInventories();
                             this.stopTimer();
+                            this.savingDisable = false;
                         }else{
                             Swal.fire('Error: Cannot changed. Please try again.', '', 'error');   
                         }
@@ -898,6 +903,8 @@ export default {
                     .catch(error => {
                         this.errors = error.response.data.errors;
                     })
+                }else{
+                    this.savingDisable = false;
                 }   
             })
         },

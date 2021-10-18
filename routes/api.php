@@ -23,6 +23,7 @@ Route::post('impinj-rfid-item-logs', 'RfidController@storeImpinjRfidItem');
 Route::get('impinj-rfid-log-item-details', 'RfidController@impinj_rfid_log_item_details');
 
 //Geovision Device
+Route::get('geovision-rfid-log-item-details', 'RfidController@geovision_rfid_log_registration_details');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
