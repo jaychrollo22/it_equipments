@@ -161,12 +161,13 @@
                 let v = this;
                 v.overall_total_inventory = '';
                 v.total_borrowed_items_today = '';
-                v.total_returned_items_today = [];
+                v.total_returned_items_today = '';
                 v.per_location = [];
                 axios.get('/dashboard-data')
                 .then(response => { 
                     v.overall_total_inventory = response.data.overall_total_inventory;
                     v.total_borrowed_items_today = response.data.total_borrowed_items_today;
+                    v.total_returned_items_today = response.data.total_returned_items_today;
                     if(response.data.per_location){
                         v.perLocationData(response.data.per_location);
                         v.perTypeData(response.data.per_type);

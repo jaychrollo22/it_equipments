@@ -58,7 +58,7 @@ class InventoryController extends Controller
                                 ->get();
         }else{
             return Inventory::with('is_borrowed.employee_info','is_transfer')
-                                ->where('status','!=','Disposed')
+                                // ->where('status','!=','Disposed')
                                 ->orderBy('type','ASC')
                                 ->get();
         }

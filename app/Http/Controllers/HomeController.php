@@ -47,10 +47,10 @@ class HomeController extends Controller
     }
 
     public function dashboardData(){
-
+        $dateToday = date('Y-m-d');
         $overall_total_inventory = Inventory::get();
-        $total_borrowed_items_today = UserInventory::whereDate('borrow_date', date('Y-m-d'))->get();
-        $total_returned_items_today = UserInventory::whereDate('return_date', date('Y-m-d'))->get();
+        $total_borrowed_items_today = UserInventory::whereDate('borrow_date', '=' , $dateToday)->get();
+        $total_returned_items_today = UserInventory::whereDate('return_date','=',$dateToday)->get();
 
         $locations = SettingLocation::get();
         $per_location = [];
