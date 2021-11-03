@@ -160,9 +160,9 @@
                                 </div>
                                 <input type="text" class="form-control" placeholder="EPC (Impinj RFID)"  v-model="inventory.epc" readonly><br>
                             </div>
-                            <div v-if="rfidDetails">
-                                <small v-if="rfidDetails.status =='success'">Scanner : {{ rfidDetails.reader_name}} | Scan Date : {{ rfidDetails.last_scan_date}}</small>   
-                                <small v-else class="text-danger">{{rfidDetails.message}}</small>   
+                            <div v-if="rfidImpinjDetails">
+                                <small v-if="rfidImpinjDetails.status =='success'">Scanner : {{ rfidImpinjDetails.reader_name}} | Scan Date : {{ rfidImpinjDetails.last_scan_date}}</small>   
+                                <small v-else class="text-danger">{{rfidImpinjDetails.message}}</small>   
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -172,8 +172,18 @@
                         </div>
                         <div class="col-md-6 mt-5">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="RFID 64 (Geovision RFID)"  v-model="inventory.rfid_64" readonly>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="cursor:pointer" @click="getGeovisionRFID">
+                                        <i class="fas fa-credit-card text-dark-50"></i>&nbsp;&nbsp;Get RFID
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="EPC (Geovision RFID)"  v-model="inventory.rfid_64" readonly><br>
                             </div>
+                            <div v-if="rfidGeovisionDetails">
+                                <small v-if="rfidGeovisionDetails.status =='success'">Scanner : {{ rfidGeovisionDetails.reader_name}} | Scan Date : {{ rfidGeovisionDetails.last_scan_date}}</small>   
+                                <small v-else class="text-danger">{{rfidGeovisionDetails.message}}</small>   
+                            </div>
+
                         </div>
                     </div>
                     <h5 class="mt-5">Inventory Information</h5>
@@ -627,7 +637,8 @@ export default {
             },
 
             //RFID
-            rfidDetails : '',
+            rfidImpinjDetails : '',
+            rfidGeovisionDetails : '',
 
             //RFID Scanner Timer
             rfid_timer : '',
@@ -685,15 +696,29 @@ export default {
         },
         scanRFID(){
             this.rfid_timer = setInterval(this.getImpinjRFID, 3000)
+            this.rfid_timer = setInterval(this.getGeovisionRFID, 3000)
         },
         getImpinjRFID(){
             let v = this;
             axios.get('/api/impinj-rfid-log-registration-details?activate_impinj_device='+v.activateImpinjDevice)
             .then(response => { 
                 if(response.data){
-                    v.rfidDetails = response.data;
+                    v.rfidImpinjDetails = response.data;
                     v.inventory.epc = response.data.epc ? response.data.epc : "No EPC Found";
                     v.inventory.tid = response.data.tid ? response.data.tid : "No EPC Found";
+                }
+            })
+            .catch(error => { 
+                v.errors = error.response.data.error;
+            })
+        },
+        getGeovisionRFID(){
+            let v = this;
+            axios.get('/api/geovision-rfid-log-item-details')
+            .then(response => { 
+                if(response.data){
+                    v.rfidGeovisionDetails = response.data;
+                    v.inventory.rfid_64 = response.data.rfid_64 ? response.data.rfid_64 : "No EPC Found";
                 }
             })
             .catch(error => { 
@@ -761,7 +786,7 @@ export default {
         },
         addInventory(){
             let v = this;
-            v.rfidDetails = '';
+            v.rfidImpinjDetails = '';
             v.errors = [];
             v.inventory.id = '';
             v.inventory.epc = '';
@@ -803,7 +828,7 @@ export default {
         },
         editInventory(inventory){
             let v = this;
-            v.rfidDetails = '';
+            v.rfidImpinjDetails = '';
             v.errors = [];
             v.inventory.id = inventory.id;
             v.inventory.epc = inventory.epc;

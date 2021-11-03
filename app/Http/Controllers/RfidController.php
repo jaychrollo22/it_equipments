@@ -177,7 +177,34 @@ class RfidController extends Controller
 
     //Geovision
     public function geovision_rfid_log_registration_details(Request $request){
-        return RfidRegistrationGeovision::all();
+
+        $rfid_logs = RfidRegistrationGeovision::orderBy('LocalTime','DESC')->first();
+        
+        if($rfid_logs){
+            // $last_scan_date = date('Y-m-d h:i',strtotime($rfid_logs->LocalTime));
+            // $current_date = date('Y-m-d h:i');
+            // if($last_scan_date == $current_date){
+                $rfid_64 = ltrim($rfid_logs['CardCode'],"0x");
+                return $data = [
+                    'reader_name' => 'BGC-Geovision',
+                    'rfid_64' => ltrim($rfid_logs['CardCode'],"0x"),
+                    'last_scan_date' => $rfid_logs->LocalTime ? date('Y-m-d h:i:s A',strtotime($rfid_logs->LocalTime)) : "",
+                    'message'=> 'success',
+                    'status'=> 'success',
+                ];
+            // }else{
+            //     return $data = [
+            //         'message'=>'Please tap the item to scan',
+            //         'status'=>'error'
+            //     ];
+            // }
+        }else{
+            return $data = [
+                'message'=>'Please tap the item to scan',
+                'status'=>'error'
+            ];
+        }
+
     }
 
 }
