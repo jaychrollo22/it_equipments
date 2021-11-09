@@ -25,8 +25,8 @@ class RfidController extends Controller
         $rfid_details = RfidRegistrationDevice::where('reader_name',$reader_name)->first();
         if($rfid_details){
             $rfid_logs = json_decode($rfid_details->rfid_log,true);
-            $x = count($rfid_logs) > 0 ? count($rfid_logs) - 1 :  "";
-            if(count($rfid_logs) > 0){
+            $x = $rfid_logs ? count($rfid_logs) - 1 :  "";
+            if($rfid_logs){
                 $last_scan_date = date('Y-m-d h',strtotime($rfid_details->updated_at));
                 $current_date = date('Y-m-d h');
                 if($last_scan_date == $current_date){
