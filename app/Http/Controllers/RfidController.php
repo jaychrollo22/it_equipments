@@ -181,9 +181,9 @@ class RfidController extends Controller
         $rfid_logs = RfidRegistrationGeovision::orderBy('LocalTime','DESC')->first();
         
         if($rfid_logs){
-            // $last_scan_date = date('Y-m-d h:i',strtotime($rfid_logs->LocalTime));
-            // $current_date = date('Y-m-d h:i');
-            // if($last_scan_date == $current_date){
+            $last_scan_date = date('Y-m-d h:i',strtotime($rfid_logs->LocalTime));
+            $current_date = date('Y-m-d h:i');
+            if($last_scan_date == $current_date){
                 $rfid_64 = ltrim($rfid_logs['CardCode'],"0x");
                 return $data = [
                     'reader_name' => 'BGC-Geovision',
@@ -192,12 +192,12 @@ class RfidController extends Controller
                     'message'=> 'success',
                     'status'=> 'success',
                 ];
-            // }else{
-            //     return $data = [
-            //         'message'=>'Please tap the item to scan',
-            //         'status'=>'error'
-            //     ];
-            // }
+            }else{
+                return $data = [
+                    'message'=>'Please tap the item to scan',
+                    'status'=>'error'
+                ];
+            }
         }else{
             return $data = [
                 'message'=>'Please tap the item to scan',
