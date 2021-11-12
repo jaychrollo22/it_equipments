@@ -68,7 +68,7 @@ class RfidController extends Controller
     {
         // // $tag_reads = $request->tag_reads;
         // // $stored_tags = array();
-        Log::info($request->all());
+        // Log::info($request->all());
         // //
         // return $request->all();
         DB::beginTransaction();
