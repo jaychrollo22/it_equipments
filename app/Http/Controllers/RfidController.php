@@ -178,7 +178,7 @@ class RfidController extends Controller
     //Geovision
     public function geovision_rfid_log_registration_details(Request $request){
 
-        $rfid_logs = RfidRegistrationGeovision::orderBy('LocalTime','DESC')->first();
+        $rfid_logs = RfidRegistrationGeovision::where('CardBits','=','64')->orderBy('LocalTime','DESC')->first();
         
         if($rfid_logs){
             $last_scan_date = date('Y-m-d h:i',strtotime($rfid_logs->LocalTime));
