@@ -111,8 +111,8 @@ class RfidController extends Controller
             $rfid_logs = json_decode($rfid_details->rfid_log,true);
             $x = count($rfid_logs) > 0 ? count($rfid_logs) - 1 :  "";
             if(count($rfid_logs) > 0){
-                $last_scan_date = date('Y-m-d h:i',strtotime($rfid_details->updated_at));
-                $current_date = date('Y-m-d h:i');
+                $last_scan_date = date('Y-m-d h',strtotime($rfid_details->updated_at));
+                $current_date = date('Y-m-d h');
                 if($last_scan_date == $current_date){
                     return $data = [
                         'reader_name' => $rfid_details->reader_name,
@@ -181,8 +181,8 @@ class RfidController extends Controller
         $rfid_logs = RfidRegistrationGeovision::where('CardBits','=','64')->orderBy('LocalTime','DESC')->first();
         
         if($rfid_logs){
-            $last_scan_date = date('Y-m-d h:i',strtotime($rfid_logs->LocalTime));
-            $current_date = date('Y-m-d h:i');
+            $last_scan_date = date('Y-m-d h',strtotime($rfid_logs->LocalTime));
+            $current_date = date('Y-m-d h');
             if($last_scan_date == $current_date){
                 $rfid_64 = ltrim($rfid_logs['CardCode'],"0x");
                 return $data = [
