@@ -600,6 +600,7 @@ export default {
                 'EPC' : 'epc',
                 'TID' : 'tid',
                 'RFID 64' : 'rfid_64',
+                'ID' : 'id',
                 'TYPE' : 'type',
                 'OLD INVENTORY NUMBER' : 'old_inventory_number',
                 'NEW IT TAG QR CODE/BAR CODE' : 'new_it_tag_qr_code_bar_code',

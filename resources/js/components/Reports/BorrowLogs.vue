@@ -47,6 +47,9 @@
                                 name    = "Borrow Logs.xls">
                                     Download Excel ({{ filteredBorrowLogs.length }})
                             </download-excel>
+
+                            <button class="btn btn-info mr-2" @click="uploadInventory">Upload Excel</button>
+
                         </div>
                     </div>
 
@@ -115,6 +118,36 @@
             </div>  
         </div>  
     </div>
+
+    <div class="modal fade" id="upload-inventories-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
+            <div class="modal-content">
+                <div>
+                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> 
+                <div class="modal-header">
+                    <h2 class="col-12 modal-title text-center">Upload Inventories</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Upload Template (Excel File)*</label> 
+                                <input type="file" id="upload_inventory_file" class="form-control" ref="file" accept=".xlsx" v-on:change="inventoryFileUpload()"/>
+                                <span class="text-danger" v-if="errors.upload_inventory_file">{{ errors.upload_inventory_file[0] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-md" :disabled="uploadDisable" @click="saveUploadInventory">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </template>
 
@@ -173,12 +206,68 @@
                         }
                     },
                 },
+
+                //Upload User Inventories
+                upload_inventory_file : '',
+                uploadDisable : false,
             }
         },
         created () {
             this.getBorrowLogs();
         },
         methods: {
+            inventoryFileUpload(){
+                var file = document.getElementById("upload_inventory_file");
+                this.upload_inventory_file = file.files[0];
+            },
+            uploadInventory(){
+                let v = this;
+                v.uploadDisable = false;
+                v.upload_inventory_file = '';
+                document.getElementById("upload_inventory_file").value = '';
+                $('#upload-inventories-modal').modal('show');
+            },
+            saveUploadInventory(){
+                let v = this;
+                v.uploadDisable = true;
+                Swal.fire({
+                title: 'Are you sure you want to upload this Inventory?',
+                icon: 'question',
+                showDenyButton: true,
+                confirmButtonText: `Yes`,
+                denyButtonText: `No`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                            let formData = new FormData();
+                            if(v.upload_inventory_file){
+                                formData.append('upload_inventory_file', v.upload_inventory_file);
+                            }
+                            axios.post(`/save-upload-user-inventories`, formData)
+                            .then(response =>{
+                                if(response.data > 0){
+                                    $('#upload-inventories-modal').modal('hide');
+                                    v.getInventories();
+                                    v.performance_eval_file = '';
+                                    document.getElementById("upload_inventory_file").value = '';
+                                    v.uploadDisable = false;
+                                    Swal.fire(response.data + ' inventories has been saved!', '', 'success');             
+                                    
+                                }else{
+                                    Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
+                                    v.uploadDisable = false;
+                                }
+                            })
+                            .catch(error => {
+                                v.uploadDisable = false;
+                                this.errors = error.response.data.errors;
+                            })
+                    }else if (result.isDenied) {
+                        Swal.fire('Changes are not saved', '', 'info');
+                        v.uploadDisable = false;
+                    }
+                })    
+
+            },
             getBorrowLogs() {
                 let v = this;
                 v.borrowLogs = [];

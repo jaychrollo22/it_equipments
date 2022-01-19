@@ -21,6 +21,7 @@ Route::get('/item-search-employee', 'ItemsController@itemSearchEmployee');
 Route::get('/item-search', 'ItemsController@itemSearch');
 Route::post('/save-borrow-item', 'ItemsController@saveBorrowItem');
 Route::post('/save-return-item', 'ItemsController@saveReturnItem');
+Route::post('/save-upload-user-inventories', 'ReportsController@uploadUserInventories');
 
 Route::get('/', function () {
     return redirect('/login');

@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\UserInventory;
 use App\Inventory;
 use App\AssetHandoverForm;
+
+
+use App\Imports\UserInventoriesImport;
+
+use Excel;
 use PDF;
 use Auth;
 class ReportsController extends Controller
@@ -129,5 +134,49 @@ class ReportsController extends Controller
         }else{
             return redirect('/reports-asset-handover-forms');
         }
+    }
+
+    public function uploadUserInventories(Request $request){
+
+        $this->validate($request, [
+            'upload_inventory_file' => 'required|mimes:xls,xlsx'
+        ]);
+        $data = $request->all();
+        $upload_inventory_file = Excel::toArray(new UserInventoriesImport, $request->file('upload_inventory_file'));
+        $save_count = 0;
+        if($upload_inventory_file){
+            foreach($upload_inventory_file[0] as $k => $item){
+                if($item['employee_id']){
+                    $user_inventory = UserInventory::where('employee_id',$item['employee_id'])
+                                                    ->where('inventory_id',$item['id'])
+                                                    ->where('status','Borrowed')
+                                                    ->first();
+
+                    $borrow_date = isset($item['borrow_date']) ? ($item['borrow_date'] - 25569) * 86400 : "";
+                    $borrow_date = $item['borrow_date'] ? gmdate("Y-m-d", $borrow_date) : "";
+
+                    $save_item = [
+                        'employee_id' => $item['employee_id'],
+                            'inventory_id' => $item['id'],
+                            'borrow_date' => $borrow_date,
+                            'status' => 'Borrowed',
+                            'ticket_number' => $item['ticket_number'],
+                    ];
+
+                    if(empty($user_inventory)){
+                        //Add
+                        UserInventory::create($save_item);
+                        $save_count++;
+                    }else{
+                        //Update
+                        $user_inventory->update($save_item);
+                        $save_count++;
+                    }
+                }
+            }
+        }
+
+        return $save_count;
+
     }
 }
