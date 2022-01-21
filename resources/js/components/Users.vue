@@ -40,7 +40,13 @@
                             <span class="d-block text-muted pt-2 font-size-sm">Show active users</span></h3>
                         </div>
                         <div class="card-toolbar">
-                            
+                            <download-excel
+                                :data   = "users"
+                                :fields = "exportUsers"
+                                class   = "btn btn-success mr-2"
+                                name    = "Users.xls">
+                                    Download Excel ({{ users.length }})
+                            </download-excel>
                         </div>
                     </div>
 
@@ -154,7 +160,11 @@
 </template>
 
 <script>
+    import JsonExcel from 'vue-json-excel'
     export default {
+        components: {
+            'downloadExcel': JsonExcel
+        },
         data() {
             return {
                 keywords: '',
@@ -164,6 +174,26 @@
                 errors : [],
                 currentPageUser: 0,
                 itemsPerPageUser: 10, 
+                exportUsers : {
+                    'ID' : {
+                        callback: (value) => {
+                            if(value.employee){
+                                return value.employee.id;
+                            }else{
+                                return '';
+                            }
+                        }
+                    },
+                    'Employee' : {
+                        callback: (value) => {
+                            if(value.employee){
+                                return value.employee.first_name + ' ' + value.employee.last_name;
+                            }else{
+                                return '';
+                            }
+                        }
+                    },
+                }
             }
         },
         created () {
