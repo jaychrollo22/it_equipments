@@ -702,8 +702,8 @@ export default {
             clearInterval(this.rfid_timer);
         },
         scanRFID(){
-            this.rfid_timer = setInterval(this.getImpinjRFID, 3000)
-            this.rfid_timer = setInterval(this.getGeovisionRFID, 3000)
+            // this.rfid_timer = setInterval(this.getImpinjRFID, 3000)
+            // this.rfid_timer = setInterval(this.getGeovisionRFID, 3000)
         },
         getImpinjRFID(){
             let v = this;
