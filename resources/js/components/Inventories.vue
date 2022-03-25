@@ -371,9 +371,12 @@
                                 <label for="role">Status</label> 
                                 <select class="form-control" v-model="inventory.status">
                                     <option value="Active">Active</option>
-                                    <option value="Inactive">Inactive</option>
-                                    <option value="For Repair">For Repair</option>
+                                    <option value="Defective">Defective</option>
                                     <option value="Disposed">Disposed</option>
+                                    <option value="For Disposal">For Disposal</option>
+                                    <option value="Owned">Owned</option>
+                                    <option value="Replacement">Replacement</option>
+                                    <option value="Spare">Spare</option>
                                 </select>
                                 <span class="text-danger" v-if="errors.status">{{ errors.status[0] }}</span>
                             </div>
@@ -516,9 +519,12 @@
                                 <select class="form-control" v-model="filter.status">
                                     <option value="">Choose Status</option>
                                     <option value="Active">Active</option>
-                                    <option value="Inactive">Inactive</option>
-                                    <option value="For Repair">For Repair</option>
+                                    <option value="Defective">Defective</option>
                                     <option value="Disposed">Disposed</option>
+                                    <option value="For Disposal">For Disposal</option>
+                                    <option value="Owned">Owned</option>
+                                    <option value="Replacement">Replacement</option>
+                                    <option value="Spare">Spare</option>
                                 </select>
                             </div>
                         </div>
