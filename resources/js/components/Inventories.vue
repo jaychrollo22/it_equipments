@@ -76,6 +76,19 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <div class="mt-2">
+                            Show
+                            <select v-model="itemsPerPage">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            Total : {{ filteredInventories.length }}
+                        </div>
+
                         <!--begin: Datatable-->
                         <div class="table-responsive">
                             <table class="table table-checkable" id="kt_datatable">
@@ -125,9 +138,9 @@
                                     <span class="text-dark">Page {{ currentPage + 1 }} of {{ totalPages }}</span>
                                 <button :disabled="!showNextLink()" class="btn btn-default btn-sm btn-fill" v-on:click="setPage(currentPage + 1)"> Next </button>
                             </div>
-                            <div class="col-6 text-right">
+                            <!-- <div class="col-6 text-right">
                                 <span class="mr-2">Total Inventories : {{ filteredInventories.length }} </span><br>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>  
@@ -631,6 +644,7 @@ export default {
                 'BUILDING' : 'building',
                 'CATEGORY' : 'category',
                 'STATUS' : 'status',
+                'REMARKS' : 'remarks',
                 'DISPOSAL DATE' : 'disposal_date',
             },
 
@@ -1038,11 +1052,11 @@ export default {
             }
         },
         totalPages() {
-            return Math.ceil(Object.values(this.filteredInventories).length / this.itemsPerPage)
+            return Math.ceil(Object.values(this.filteredInventories).length / Number(this.itemsPerPage))
         },
         filteredInventoryQueues() {
-            var index = this.currentPage * this.itemsPerPage;
-            var queues_array = this.filteredInventories.slice(index, index + this.itemsPerPage);
+            var index = this.currentPage * Number(this.itemsPerPage);
+            var queues_array = this.filteredInventories.slice(index, index + Number(this.itemsPerPage));
             if(this.currentPage >= this.totalPages) {
                 this.currentPage = this.totalPages - 1
             }
