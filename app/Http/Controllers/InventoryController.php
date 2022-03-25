@@ -189,6 +189,7 @@ class InventoryController extends Controller
                         'category'=> isset($item['category']) ? $item['category'] : "",
                         'status'=> isset($item['status']) ? $item['status'] : "",
                         'disposal_date'=> isset($item['disposal_date']) ? $item['disposal_date'] : null,
+                        'remarks'=> isset($item['remarks']) ? $item['remarks'] : null,
                     ];
 
                     if(empty($check_inventory_file)){
