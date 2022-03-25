@@ -1031,20 +1031,20 @@ export default {
                 return Object.values(self.inventories).filter(item => {
                     if(self.filter_status == 'Available'){
                         if(item.is_borrowed == null){
-                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.manufacturer.toLowerCase().includes(this.keywords.toLowerCase()) || item.supplier.toLowerCase().includes(this.keywords.toLowerCase())
+                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
                         }
                     }else if(self.filter_status == 'Borrowed'){
                         if(item.is_borrowed){
                             if(item.is_borrowed.status == 'Borrowed'){
-                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.manufacturer.toLowerCase().includes(this.keywords.toLowerCase()) || item.supplier.toLowerCase().includes(this.keywords.toLowerCase())
+                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
                             }
                         }
                     }else if(self.filter_status == 'For Transfer'){
                         if(item.is_transfer){
-                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.manufacturer.toLowerCase().includes(this.keywords.toLowerCase()) || item.supplier.toLowerCase().includes(this.keywords.toLowerCase())
+                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
                         }
                     }else{
-                         return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())  || item.manufacturer.toLowerCase().includes(this.keywords.toLowerCase()) || item.supplier.toLowerCase().includes(this.keywords.toLowerCase())
+                         return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
                     }
                 });
             }else{
