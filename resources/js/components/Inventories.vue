@@ -335,13 +335,13 @@
                     <h5>Others</h5>
                     <hr>
                     <div class="row">
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                             <div class="form-group">
                                 <label for="role">Tab Name</label> 
                                 <input type="text" class="form-control" placeholder="Tab Name" v-model="inventory.tab_name">
                                 <span class="text-danger" v-if="errors.tab_name">{{ errors.tab_name[0] }}</span>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="role">Area</label> 
@@ -390,6 +390,7 @@
                                     <option value="Owned">Owned</option>
                                     <option value="Replacement">Replacement</option>
                                     <option value="Spare">Spare</option>
+                                    <option value="Rented">Rented</option>
                                 </select>
                                 <span class="text-danger" v-if="errors.status">{{ errors.status[0] }}</span>
                             </div>
@@ -585,7 +586,7 @@ export default {
                 'purchase_cost' : '0.00',
                 'insurance_date' : '',
                 'os_name_and_version' : 'N/A',
-                'tab_name' : 'N/A',
+                // 'tab_name' : 'N/A',
                 'area' : 'N/A',
                 'location' : 'N/A',
                 'category' : 'N/A',
@@ -638,7 +639,7 @@ export default {
                 'PURCHASE COST' : 'purchase_cost',
                 'INSURANCE DATE' : 'insurance_date',
                 'OS NAME AND VERSION' : 'os_name_and_version',
-                'TAB NAME' : 'tab_name',
+                // 'TAB NAME' : 'tab_name',
                 'AREA' : 'area',
                 'LOCATION' : 'location',
                 'BUILDING' : 'building',
@@ -926,7 +927,7 @@ export default {
                     formData.append('purchase_cost', v.inventory.purchase_cost ? v.inventory.purchase_cost : "");
                     formData.append('insurance_date', v.inventory.insurance_date ? v.inventory.insurance_date : "");
                     formData.append('os_name_and_version', v.inventory.os_name_and_version ? v.inventory.os_name_and_version : "");
-                    formData.append('tab_name', v.inventory.tab_name ? v.inventory.tab_name : "");
+                    // formData.append('tab_name', v.inventory.tab_name ? v.inventory.tab_name : "");
                     formData.append('area', v.inventory.area ? v.inventory.area : "");
                     formData.append('location', v.inventory.location ? v.inventory.location : "");
                     formData.append('building', v.inventory.building ? v.inventory.building : "");

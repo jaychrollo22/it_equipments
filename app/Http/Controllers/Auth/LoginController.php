@@ -7,6 +7,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 use App\UserLog;
+use App\Employee;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -47,6 +49,21 @@ class LoginController extends Controller
             'user_id'=>$user->id,
             'log_date'=>Carbon::now()->toDateTimeString()
         ];
+
         UserLog::create($data);
+
+        $employee = Employee::select('id','user_id','id_number','first_name','last_name','middle_name','position','level')
+                            ->with('user.user_role')
+                            ->where('user_id',Auth::user()->id)
+                            ->first();
+
+        if($employee->user->user_role){
+            if($employee->user->user_role->role == 'Administrator' || $employee->user->user_role->role == 'IT Support'){
+                session([
+                    'user' => $employee,
+                    'user_role' => $employee->user->user_role->role,
+                ]); 
+            }
+        }
     }
 }
