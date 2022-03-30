@@ -35,6 +35,11 @@ Route::get('/', function () {
     Route::get('/home', 'HomeController@dashboard')->name('dashboard');
     Route::get('/dashboard-data','HomeController@dashboardData');
 
+    Route::get('/inventories-active-data', 'HomeController@inventoriesActiveData');
+    Route::get('/inventories-spare-data', 'HomeController@inventoriesSpareData');
+    Route::get('/inventories-loan-items-data', 'HomeController@inventoriesLoanItemsData');
+    Route::get('/inventories-maintenance-data', 'HomeController@inventoriesMaintenanceData');
+
     //Inventories
     Route::get('/inventories', 'InventoryController@index')->name('inventories');
     Route::get('/inventories-data', 'InventoryController@indexData');

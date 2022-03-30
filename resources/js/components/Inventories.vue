@@ -391,6 +391,8 @@
                                     <option value="Replacement">Replacement</option>
                                     <option value="Spare">Spare</option>
                                     <option value="Rented">Rented</option>
+                                    <option value="Loan Item">Loan Item</option>
+                                    <option value="For Repair">For Repair</option>
                                 </select>
                                 <span class="text-danger" v-if="errors.status">{{ errors.status[0] }}</span>
                             </div>

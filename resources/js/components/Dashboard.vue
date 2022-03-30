@@ -1,79 +1,88 @@
 <template>
 <div>
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-        <!--begin::Subheader-->
         <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
             <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-                <!--begin::Info-->
                 <div class="d-flex align-items-center flex-wrap mr-1">
-                    <!--begin::Heading-->
                     <div class="d-flex flex-column">
-                        <!--begin::Title-->
                         <h2 class="text-white font-weight-bold my-2 mr-5">Dashboard</h2>
-                        <!--end::Title-->
-                        <!--begin::Breadcrumb-->
                         <div class="d-flex align-items-center font-weight-bold my-2">
-                            <!--begin::Item-->
                             <a href="#" class="opacity-75 hover-opacity-100">
                                 <i class="flaticon2-shelter text-white icon-1x"></i>
                             </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
                             <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
                             <a href="" class="text-white text-hover-white opacity-75 hover-opacity-100">Updated</a>
-                            <!--end::Item-->
                         </div>
-                        <!--end::Breadcrumb-->
                     </div>
-                    <!--end::Heading-->
                 </div>
             </div>
         </div>
 
         <div class="d-flex flex-column-fluid">
-            <!--begin::Container-->
             <div class="container">
-                <!--begin::Dashboard-->
-                <!--begin::Row-->
                 <div class="row">
                     <div class="col-xl-4">
-                        <!--begin::Stats Widget 22-->
                         <a href="/inventories" class="card card-custom bg-success bg-hover-state-success bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
-                            <!--begin::Body-->
                             <div class="card-body">
                                 <i class="icon-xl fas fa-th-large text-inverse-success"></i>
                                 <span class="text-inverse-success card-title font-weight-bolder font-size-h2 mb-0 mt-6 d-block">{{overall_total_inventory.length}}</span>
                                 <span class="text-inverse-success font-weight-bold font-size-sm">Overall Total Inventory</span>
                             </div>
-                            <!--end::Body-->
                         </a>
-                        <!--end::Stats Widget 22-->
                     </div>
                     <div class="col-xl-4">
-                        <!--begin::Stats Widget 22-->
                         <a href="/reports-borrow-logs" class="card card-custom bg-primary bg-hover-state-primary bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
-                            <!--begin::Body-->
                             <div class="card-body">
                                 <i class="icon-xl fas fa-undo text-inverse-primary"></i>
                                 <span class="text-inverse-primary card-title font-weight-bolder font-size-h2 mb-0 mt-6 d-block">{{total_borrowed_items_today.length}}</span>
                                 <span class="text-inverse-primary font-weight-bold font-size-sm">Total Borrowed Items Today</span>
                             </div>
-                            <!--end::Body-->
                         </a>
-                        <!--end::Stats Widget 22-->
                     </div>
                     <div class="col-xl-4">
-                        <!--begin::Stats Widget 22-->
                         <a href="/reports-return-logs" class="card card-custom bg-warning bg-hover-state-warning bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
-                            <!--begin::Body-->
                             <div class="card-body">
                                 <i class="icon-xl fas fas fa-redo text-inverse-warning"></i>
                                 <span class="text-inverse-warning card-title font-weight-bolder font-size-h2 mb-0 mt-6 d-block">{{total_returned_items_today.length}}</span>
                                 <span class="text-inverse-warning font-weight-bold font-size-sm">Total Return Items Today</span>
                             </div>
-                            <!--end::Body-->
                         </a>
-                        <!--end::Stats Widget 22-->
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="card card-custom gutter-b" style="height: 150px">
+                            <div class="card-body">
+                                <i class="icon-xl fas fas fa-box text-primary"></i>
+                                <div class="text-dark font-weight-bolder font-size-h2 mt-3">{{inventoriesActiveData.length}}</div>
+                                <a href="#" class="text-muted text-hover-primary font-weight-bold font-size-lg mt-1">Total Active</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="card card-custom gutter-b" style="height: 150px">
+                            <div class="card-body">
+                                <i class="icon-xl fas fas fa-box text-success"></i>
+                                <div class="text-dark font-weight-bolder font-size-h2 mt-3">{{inventoriesSpareData.length}}</div>
+                                <a href="#" class="text-muted text-hover-primary font-weight-bold font-size-lg mt-1">Total Spare</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="card card-custom gutter-b" style="height: 150px">
+                            <div class="card-body">
+                                <i class="icon-xl fas fas fa-box text-warning"></i>
+                                <div class="text-dark font-weight-bolder font-size-h2 mt-3">{{inventoriesLoanItemsData.length}}</div>
+                                <a href="#" class="text-muted text-hover-primary font-weight-bold font-size-lg mt-1">Total Loan Items</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="card card-custom gutter-b" style="height: 150px">
+                            <div class="card-body">
+                                <i class="icon-xl fas fas fa-box text-danger"></i>
+                                <div class="text-dark font-weight-bolder font-size-h2 mt-3">{{inventoriesMaintenanceData.length}}</div>
+                                <a href="#" class="text-muted text-hover-primary font-weight-bold font-size-lg mt-1">Total Maintenance</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -149,14 +158,49 @@
                         },
                     ]
                 },
-
+                inventoriesActiveData : [],
+                inventoriesSpareData : [],
+                inventoriesLoanItemsData : [],
+                inventoriesMaintenanceData : [],
 
             }
         },
         created () {
             this.dashboardData();
+            this.getInventoriesActiveData();
+            this.getInventoriesSpareData();
+            this.getInventoriesLoanItemsData();
+            this.getInventoriesMaintenanceData();
         },
         methods: {
+            getInventoriesActiveData(){
+                this.inventoriesActiveData = [];
+                axios.get('/inventories-active-data')
+                .then(response => { 
+                    this.inventoriesActiveData = response.data;
+                })
+            },
+            getInventoriesSpareData(){
+                this.inventoriesSpareData = [];
+                axios.get('/inventories-spare-data')
+                .then(response => { 
+                    this.inventoriesSpareData = response.data;
+                })
+            },
+            getInventoriesLoanItemsData(){
+                this.inventoriesLoanItemsData = [];
+                axios.get('/inventories-loan-items-data')
+                .then(response => { 
+                    this.inventoriesLoanItemsData = response.data;
+                })
+            },
+            getInventoriesMaintenanceData(){
+                this.inventoriesMaintenanceData = [];
+                axios.get('/inventories-maintenance-data')
+                .then(response => { 
+                    this.inventoriesMaintenanceData = response.data;
+                })
+            },
             dashboardData() {
                 let v = this;
                 v.overall_total_inventory = '';

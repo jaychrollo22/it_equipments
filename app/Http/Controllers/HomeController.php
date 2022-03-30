@@ -81,4 +81,17 @@ class HomeController extends Controller
             'per_type' => $per_type,
         ];
     }
+
+    public function inventoriesActiveData(){
+        return $inventories = Inventory::where('status','Active')->get();
+    }
+    public function inventoriesSpareData(){
+        return $inventories = Inventory::where('status','Spare')->get();
+    }
+    public function inventoriesLoanItemsData(){
+        return $inventories = Inventory::where('status','Loan Item')->get();
+    }
+    public function inventoriesMaintenanceData(){
+        return $inventories = Inventory::where('status','For Repair')->get();
+    }
 }
