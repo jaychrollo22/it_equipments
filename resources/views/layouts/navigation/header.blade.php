@@ -59,6 +59,14 @@
                                         </a>
                                     </li>
                                     @endif
+                                    @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('for-disposal') }}" class="menu-link" disabled>
+                                            <span class="menu-text">For Disposal</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    @endif
                                 </ul>
                             </div>
                         </li>

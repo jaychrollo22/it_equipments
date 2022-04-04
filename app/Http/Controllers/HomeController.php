@@ -24,6 +24,10 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    public function currentUser(){
+        return session('user');
+    }
+
     public function dashboard(){
         $employee = Employee::select('id','user_id','id_number','first_name','last_name','middle_name','position','level')
                             ->with('user.user_role')

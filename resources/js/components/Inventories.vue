@@ -89,17 +89,22 @@
                             Total : {{ filteredInventories.length }}
                         </div>
 
+                        <div class="float-right" v-if="check_selected_items.length > 0">
+                            <a href="#" class="text-danger" @click="forDisposal">For Disposal ({{check_selected_items.length}})</a>
+                            <a href="#" class="text-success" @click="clearSelection">Clear Selection ({{check_selected_items.length}})</a>
+                        </div>
+
                         <!--begin: Datatable-->
                         <div class="table-responsive">
                             <table class="table table-checkable" id="kt_datatable">
                                 <thead>
                                     <tr>
+                                        <th class="text-center"></th>
                                         <th class="text-center">RFID</th>
                                         <th class="text-center">TYPE</th>
                                         <th class="text-center">SERIAL NUMBER</th>
                                         <th class="text-center">MODEL</th>
-                                        <th class="text-center">MANUFACTURER</th>
-                                        <th class="text-center">SUPPLIER</th>
+                                        <th class="text-center">STATUS</th>
                                         <th class="text-center">AVAILABILITY</th>
                                         <th class="text-center">LOCATION</th>
                                         <th class="text-center">ACTION</th>
@@ -107,26 +112,34 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, i) in filteredInventoryQueues" :key="i" >
-                                       <td align="center">
-                                           <i class="fas fa-check text-success" v-if="item.epc" :title="item.epc"></i>
+                                        <td>
+                                            <label class="container" v-if="item.status == 'For Disposal' || item.status == 'Disposed'">
+                                                <input type="checkbox" disabled>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="container" v-else>
+                                                <input type="checkbox" :id="item.id" :value="item.id" v-model="check_selected_items">
+                                                <span class="checkmark"></span>
+                                            </label>
                                         </td>
-                                       <td align="center"><small>{{item.type}}</small></td>
-                                       <td align="center"><small>{{item.serial_number}}</small></td>
-                                       <td align="center"><small>{{item.model}}</small></td>
-                                       <td align="center"><small>{{item.manufacturer}}</small></td>
-                                       <td align="center"><small>{{item.supplier}}</small></td>
-                                       
-                                       <td align="center">
-                                          <span v-if="item.is_borrowed" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" :title="item.is_borrowed.status" @click="viewBorrowItem(item)">{{ item.is_borrowed.status }}</span>
-                                          <span v-else-if="item.is_transfer" class="label label-primary label-pill label-inline mr-2" style="cursor:pointer">For Transfer</span>
-                                          <span v-else class="label label-success label-pill label-inline mr-2" title="Available to Borrow">Available</span>
+                                        <td align="center">
+                                            <i class="fas fa-check text-success" v-if="item.epc" :title="item.epc"></i> {{item.epc}}
                                         </td>
-                                        <td align="center"><small>{{item.location}}</small></td>
-                                       <td align="center">
-                                           <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editInventory(item)">
+                                        <td align="center"><small>{{item.type}}</small></td>
+                                        <td align="center"><small>{{item.serial_number}}</small></td>
+                                        <td align="center"><small>{{item.model}}</small></td>
+                                        <td align="center"><small>{{item.status}}</small></td>
+                                        <td align="center">
+                                            <span v-if="item.is_borrowed" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" :title="item.is_borrowed.status" @click="viewBorrowItem(item)">{{ item.is_borrowed.status }}</span>
+                                            <span v-else-if="item.is_transfer" class="label label-primary label-pill label-inline mr-2" style="cursor:pointer">For Transfer</span>
+                                            <span v-else class="label label-success label-pill label-inline mr-2" title="Available to Borrow">Available</span>
+                                            </td>
+                                            <td align="center"><small>{{item.location}}</small></td>
+                                        <td align="center">
+                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editInventory(item)">
                                                 <i class="flaticon-edit"></i>
                                             </button>
-                                       </td>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -553,6 +566,51 @@
         </div>
     </div>
 
+    <div class="modal fade" id="for-disposal-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div>
+                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> 
+                <div class="modal-header">
+                    <h2 class="col-12 modal-title text-center">For Disposal Items</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-checkable" id="kt_datatable">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">TYPE</th>
+                                    <th class="text-center">SERIAL NUMBER</th>
+                                    <th class="text-center">MODEL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, i) in check_selected_items" :key="i" >
+                                    <td align="center">
+                                        {{getType(item)}}
+                                    </td>
+                                    <td align="center">
+                                        {{getSerialNumber(item)}}
+                                    </td>
+                                    <td align="center">
+                                        {{getModel(item)}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-md" @click="saveForDisposalItems" :disabled="forDisposalDisable">Request For Disposal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 </template>
 
@@ -671,6 +729,11 @@ export default {
 
             //Inventory
             savingDisable : false,
+
+            //Selected Inventory Check
+            check_selected_items : [],
+
+            forDisposalDisable : false,
         }
     },
     created () {
@@ -683,6 +746,82 @@ export default {
         // this.scanRFID();
     },
     methods : {
+        getType(item){
+            var rfid = Object.values(this.inventories).filter(i => {
+                if(i.id == item){
+                    return i;
+                }
+            });
+            if(rfid.length > 0){
+                return rfid[0].type;
+            }
+        },
+        getSerialNumber(item){
+            var rfid = Object.values(this.inventories).filter(i => {
+                if(i.id == item){
+                    return i;
+                }
+            });
+            if(rfid.length > 0){
+                return rfid[0].serial_number;
+            }
+        },
+        getModel(item){
+            var rfid = Object.values(this.inventories).filter(i => {
+                if(i.id == item){
+                    return i;
+                }
+            });
+            if(rfid.length > 0){
+                return rfid[0].model;
+            }
+        },
+        saveForDisposalItems(){
+            let v = this;
+            v.forDisposalDisable = true;
+            Swal.fire({
+            title: 'Are you sure you want to upload this Inventory?',
+            icon: 'question',
+            showDenyButton: true,
+            confirmButtonText: `Yes`,
+            denyButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let formData = new FormData();
+                    formData.append('items', JSON.stringify(v.check_selected_items));
+                    axios.post(`/for-disposal-store`, formData)
+                    .then(response =>{
+                        if(response.data.status=='saved'){
+                            v.forDisposalDisable = false;
+                            Swal.fire(response.data.success + ' Items for disposal has been saved!', '', 'success')
+                                .then(okay => {
+                                    if (okay) {
+                                        window.location.href = "/for-disposal-items?id=" + response.data.for_disposal_id;
+                                    }
+                                    });
+                        }else{
+                            Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
+                            v.forDisposalDisable = false;
+                        }
+                    })
+                    .catch(error => {
+                        v.forDisposalDisable = false;
+                        v.errors = error.response.data.errors;
+                    })
+                }else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info');
+                    v.forDisposalDisable = false;
+                }
+            })  
+
+
+        },
+        clearSelection(){
+            this.check_selected_items = [];
+        },
+        forDisposal(){
+            $('#for-disposal-modal').modal('show');
+        },
         clearRFID(){
             let v = this;
             if(v.activateImpinjDevice){

@@ -31,6 +31,11 @@ Route::get('/', function () {
 
 
     Auth::routes();
+
+    //Current User
+    Route::get('/current-user','HomeController@currentUser');
+
+
     // Dashboard
     Route::get('/home', 'HomeController@dashboard')->name('dashboard');
     Route::get('/dashboard-data','HomeController@dashboardData');
@@ -47,6 +52,27 @@ Route::get('/', function () {
     Route::post('/inventories-update', 'InventoryController@update');
 
     Route::post('/save-upload-inventories', 'InventoryController@uploadInventories');
+
+    //For Disposal Inventories
+    Route::get('/for-disposal', 'InventoriesForDisposalController@index')->name('for-disposal');
+    Route::get('/for-disposal-data', 'InventoriesForDisposalController@indexData');
+    Route::post('/for-disposal-store', 'InventoriesForDisposalController@store');
+    Route::post('/for-disposal-update', 'InventoriesForDisposalController@update');
+    Route::get('/for-disposal-items', 'InventoriesForDisposalController@forDisposalItems');
+    Route::get('/for-disposal-items-data', 'InventoriesForDisposalController@forDisposalItemsData');
+
+    Route::post('/place-request-for-disposal', 'InventoriesForDisposalController@placeRequestForDisposal');
+    Route::post('/delete-request-for-disposal', 'InventoriesForDisposalController@deleteRequestForDisposal');
+
+    Route::post('/delete-request-for-disposal-item', 'InventoriesForDisposalController@deleteRequestForDisposalItem');
+    Route::post('/approve-request-for-disposal-item', 'InventoriesForDisposalController@approveRequestForDisposalItem');
+    Route::post('/disapprove-request-for-disposal-item', 'InventoriesForDisposalController@disapproveRequestForDisposalItem');
+
+    Route::post('/save-rfd-for-disposal', 'InventoriesForDisposalController@saveRdfForDisposal');
+    Route::post('/delete-rdf-for-disposal', 'InventoriesForDisposalController@deleteRdfForDisposal');
+
+    Route::post('/save-picture-for-disposal-item', 'InventoriesForDisposalController@savePictureForDisposalItem');
+    Route::post('/delete-picture-for-disposal-item', 'InventoriesForDisposalController@deletePictureForDisposalItem');
 
     //Transfer Inventories
     Route::get('/inventory-transfer', 'InventoryController@transfer')->name('transfer');
@@ -136,6 +162,14 @@ Route::get('/', function () {
     //Impinj
     Route::get('/rfid-registration-impinj-devices-activated-data', 'RfidRegistrationDeviceController@activatedImpinjReaderData');
     Route::post('/rfid-registration-impinj-devices-activate', 'RfidRegistrationDeviceController@activateImpinjReader');
+
+    //System Approver
+    Route::get('/system-approver-it-data', 'SystemApproverController@systemApproverITData');
+    Route::get('/system-approver-finance-data', 'SystemApproverController@systemApproverFinanceData');
+
+    
+
+
 
 
     

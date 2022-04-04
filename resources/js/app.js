@@ -47,6 +47,11 @@ Vue.component('asset-handover-forms', require('./components/Reports/AssetHandove
 //RFID Registration Device
 Vue.component('rfid-registration-device', require('./components/Rfid/RfidRegistrationDevice.vue').default);
 
+
+//For Disposal
+Vue.component('for-disposal', require('./components/ForDisposal/ForDisposal.vue').default);
+Vue.component('for-disposal-items', require('./components/ForDisposal/ForDisposalItems.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
