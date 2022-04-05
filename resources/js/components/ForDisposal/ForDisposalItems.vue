@@ -85,7 +85,7 @@
                                     <tr>
                                         <th>Inventory Details</th>
                                         <th class="text-center" v-if="for_disposal.status ==null || for_disposal.status == '' || for_disposal.status == 'For Approval' && isCurrentUserRequestorVisible">Action</th>
-                                        <th class="text-center">Picture</th>
+                                        <th class="text-center">File</th>
                                     </tr>
                                 </thead>
                                 <tbody>
