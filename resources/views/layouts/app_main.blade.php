@@ -56,7 +56,7 @@
                 </svg>
             </span>
         </div>
-        <script src="{{ asset('js/all.js?v=1.1.0') }}"></script>
+        <script src="{{ asset('js/all.js?v=1.1.1') }}"></script>
         <script src="assets/plugins/global/plugins.bundle.js"></script>
         <script src="assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
         <script src="assets/js/scripts.bundle.js"></script>

@@ -414,7 +414,7 @@
                         .then(response =>{
                             if(response.data.status=='saved'){
                                
-                                Swal.fire('For disposal items has been approved. Thank you.', '', 'success')
+                                Swal.fire('For disposal items has been disapproved. Thank you.', '', 'success')
                                     .then(okay => {
                                         if (okay) {
                                             $('#for-approval-modal').modal('hide');

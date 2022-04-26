@@ -132,7 +132,7 @@
                                         <td align="center">
                                             <span v-if="item.is_borrowed" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" :title="item.is_borrowed.status" @click="viewBorrowItem(item)">{{ item.is_borrowed.status }}</span>
                                             <span v-else-if="item.is_transfer" class="label label-primary label-pill label-inline mr-2" style="cursor:pointer">For Transfer</span>
-                                            <span v-else class="label label-success label-pill label-inline mr-2" title="Available to Borrow">Available</span>
+                                            <span v-else class="label label-success label-pill label-inline mr-2" title="Available to Borrow" style="cursor:pointer" @click="assignItem(item)">Available</span>
                                             </td>
                                             <td align="center"><small>{{item.location}}</small></td>
                                         <td align="center">
@@ -610,6 +610,45 @@
         </div>
     </div>
 
+    <div class="modal fade" id="assign-item-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div>
+                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> 
+                <div class="modal-header">
+                    <h2 class="col-12 modal-title text-center">Assign Item</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Select Employee</label> 
+                                <select class="form-control" v-model="assign.employee_id">
+                                    <option value="">Choose Employee</option>
+                                    <option v-for="(employee,b) in employees" v-bind:key="b" :value="employee.id"> {{ employee.first_name + ' ' + employee.last_name }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Borrow Date</label> 
+                                <input type="date" v-model="assign.borrow_date" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-md btn-primary" @click="assignEmployeeItem" :disabled="assignItemDisable">Assign</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </div>
 </template>
@@ -734,6 +773,12 @@ export default {
             check_selected_items : [],
 
             forDisposalDisable : false,
+            assignItemDisable : false,
+            assign : {
+                inventory_id : '',
+                employee_id : '',
+                borrow_date : '',
+            }
         }
     },
     created () {
@@ -743,9 +788,69 @@ export default {
         this.getBuildings();
         this.getCategories();
         this.getActivatedImpinjDevice();
-        // this.scanRFID();
+        this.getEmployees();
     },
     methods : {
+        assignEmployeeItem(){
+            let v = this;
+            v.assignItemDisable = true;
+            Swal.fire({
+            title: 'Are you sure you want to assign this Inventory?',
+            icon: 'question',
+            showDenyButton: true,
+            confirmButtonText: `Yes`,
+            denyButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let formData = new FormData();
+                    formData.append('inventory_id', v.assign.inventory_id ? v.assign.inventory_id : "");
+                    formData.append('employee_id', v.assign.employee_id ? v.assign.employee_id : "");
+                    formData.append('borrow_date', v.assign.borrow_date ? v.assign.borrow_date : "");
+                    axios.post(`/assign-employee-item`, formData)
+                    .then(response =>{
+                        if(response.data.status=='saved'){
+                            v.assignItemDisable = false;
+                            Swal.fire('Item has been assigned!', '', 'success')
+                            .then(okay => {
+                                if (okay) {
+                                    // v.getInventories();
+                                    var index = this.inventories.findIndex(item => item.id == v.assign.inventory_id);
+                                    this.inventories.splice(index,1,response.data.inventory);
+                                    $('#assign-item-modal').modal('hide');
+                                }
+                            });
+                        }else{
+                            Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
+                            v.assignItemDisable = false;
+                        }
+                    })
+                    .catch(error => {
+                        v.assignItemDisable = false;
+                        v.errors = error.response.data.errors;
+                    })
+                }else if (result.isDenied) {
+                    Swal.fire('Employee assigned inventory not saved', '', 'info');
+                    v.assignItemDisable = false;
+                }
+            })  
+        },
+        assignItem(item){
+            this.assign.inventory_id = item.id;
+            this.assign.employee_id = "";
+            this.assign.borrow_date = "";
+            $('#assign-item-modal').modal('show');
+        },
+        getEmployees(){
+            let v = this;
+            v.employees = '';
+            axios.get('/all-employees')
+            .then(response => { 
+                v.employees = response.data;
+            })
+            .catch(error => { 
+                v.errors = error.response.data.error;
+            })
+        },
         getType(item){
             var rfid = Object.values(this.inventories).filter(i => {
                 if(i.id == item){
@@ -1078,10 +1183,16 @@ export default {
                     formData.append('disposal_date', v.inventory.disposal_date ? v.inventory.disposal_date : "");
                     axios.post(postURL, formData)
                     .then(response =>{
+                        
                         if(response.data.status == "success"){
                             Swal.fire('Inventory has been saved!', '', 'success');        
                             $('#inventory-modal').modal('hide'); 
-                            this.getInventories();
+                            // this.getInventories();
+                            if(v.action == "Update"){
+                                var index = this.inventories.findIndex(item => item.id == v.inventory.id);
+                                this.inventories.splice(index,1,response.data.inventory);
+                            }
+                            
                             this.stopTimer();
                             this.savingDisable = false;
                         }else{

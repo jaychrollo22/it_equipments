@@ -83,6 +83,8 @@ Route::get('/', function () {
 
     Route::get('/print-inventory-transfer', 'InventoryController@printTransfer');
 
+    Route::post('/assign-employee-item', 'InventoryController@assignEmployeeItem');
+
     //Receive Inventories
     Route::get('/inventory-receive', 'InventoryController@receive')->name('receive');
     Route::get('/search-transfer-code', 'InventoryController@searchTransferCode');
@@ -166,6 +168,9 @@ Route::get('/', function () {
     //System Approver
     Route::get('/system-approver-it-data', 'SystemApproverController@systemApproverITData');
     Route::get('/system-approver-finance-data', 'SystemApproverController@systemApproverFinanceData');
+
+    //Employees
+    Route::get('/all-employees', 'EmployeeController@allEmployees');
 
     
 

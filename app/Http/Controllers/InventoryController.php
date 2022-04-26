@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Inventory;
 use App\InventoryTransfer;
 use App\InventoryTransferItem;
+use App\UserInventory;
 
 use App\Imports\InventoriesImport;
 
@@ -134,6 +135,8 @@ class InventoryController extends Controller
                 }
                 $inventory->update($data);
                 DB::commit();
+
+                $inventory = Inventory::with('is_borrowed.employee_info','is_transfer')->where('id',$request->id)->first();
                 return $status_data = [
                     'status'=>'success',
                     'inventory'=>$inventory,
@@ -482,6 +485,47 @@ class InventoryController extends Controller
                 'status'=>'error'
             ];
         }
+    }
+
+    public function assignEmployeeItem(Request $request){
+        $this->validate($request, [
+            'employee_id' => 'required',
+            'inventory_id' => 'required',
+            'borrow_date' => 'required',
+        ]);
+
+        $data = $request->all();
+        DB::beginTransaction();
+        try {
+            $user_inventory = UserInventory::where('employee_id',$data['employee_id'])
+                                                    ->where('inventory_id',$data['inventory_id'])
+                                                    ->where('status','Borrowed')
+                                                    ->first();
+            if(empty($user_inventory)){
+                $newData = [
+                    'employee_id' => $data['employee_id'],
+                    'inventory_id' => $data['inventory_id'],
+                    'borrow_date' => $data['borrow_date'],
+                    'status' => 'Borrowed',
+                    // 'ticket_number' => $data['ticket_number'],
+                ];
+                UserInventory::create($newData);
+                DB::commit();
+
+                $inventory = Inventory::with('is_borrowed.employee_info','is_transfer')->where('id',$request->inventory_id)->first();
+
+                return $response = [
+                    'status'=>'saved',
+                    'inventory' => $inventory
+                ];
+            }
+        }catch (Exception $e) {
+            DB::rollBack();
+            return $response = [
+                'status'=>'error'
+            ];
+        }
+
     }
 
     
