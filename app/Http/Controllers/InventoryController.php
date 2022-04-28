@@ -14,6 +14,8 @@ use DB;
 use Excel;
 use PDF;
 use Auth;
+use QRCode;
+
 class InventoryController extends Controller
 {
     /**
@@ -526,6 +528,13 @@ class InventoryController extends Controller
             ];
         }
 
+    }
+
+    public function generateQrCode(Request $request){
+        if($request->id){
+            QRCode::text($request->id)->setSize(25)->setMargin(2)->setOutfile(base_path().'/public/inventory_qr/'. $request->id.'.png')->png();
+            return redirect('inventory_qr/'. $request->id.'.png');
+        }
     }
 
     

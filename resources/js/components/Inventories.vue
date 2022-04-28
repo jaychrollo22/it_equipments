@@ -136,9 +136,12 @@
                                             </td>
                                             <td align="center"><small>{{item.location}}</small></td>
                                         <td align="center">
-                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editInventory(item)">
+                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editInventory(item)" title="Edit">
                                                 <i class="flaticon-edit"></i>
                                             </button>
+                                            <a :href="'generate-qr-code?id='+item.id" target="_blank" type="button" class="btn btn-light-primary btn-icon btn-sm" title="Print QR">
+                                                <i class="flaticon-squares-4"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>

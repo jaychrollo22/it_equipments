@@ -53,7 +53,7 @@
         </span>
     </div>
    
-    <script src="{{ asset('js/all.js?v=1.1.1') }}"></script>
+    <script src="{{ asset('js/all-1.1.2.js') }}"></script>
 
 
     <!--begin::Global Theme Bundle(used by all pages)-->

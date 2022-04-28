@@ -172,6 +172,9 @@ Route::get('/', function () {
     //Employees
     Route::get('/all-employees', 'EmployeeController@allEmployees');
 
+    //Generate QR
+    Route::get('/generate-qr-code', 'InventoryController@generateQrCode');
+
     
 
 
