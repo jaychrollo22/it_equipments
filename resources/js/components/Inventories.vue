@@ -101,6 +101,7 @@
                                     <tr>
                                         <th class="text-center"></th>
                                         <th class="text-center">RFID</th>
+                                        <th class="text-center">ID</th>
                                         <th class="text-center">TYPE</th>
                                         <th class="text-center">SERIAL NUMBER</th>
                                         <th class="text-center">MODEL</th>
@@ -125,6 +126,7 @@
                                         <td align="center">
                                             <i class="fas fa-check text-success" v-if="item.epc" :title="item.epc"></i> {{item.epc}}
                                         </td>
+                                        <td align="center"><small>{{item.id}}</small></td>
                                         <td align="center"><small>{{item.type}}</small></td>
                                         <td align="center"><small>{{item.serial_number}}</small></td>
                                         <td align="center"><small>{{item.model}}</small></td>
