@@ -16,6 +16,8 @@ use PDF;
 use Auth;
 use QRCode;
 
+use setasign\Fpdi\Fpdi;
+
 class InventoryController extends Controller
 {
     /**
@@ -533,7 +535,25 @@ class InventoryController extends Controller
     public function generateQrCode(Request $request){
         if($request->id){
             QRCode::text($request->id)->setSize(25)->setMargin(2)->setOutfile(base_path().'/public/inventory_qr/'. $request->id.'.png')->png();
-            return redirect('inventory_qr/'. $request->id.'.png');
+
+
+            $pdf = new Fpdi();
+            $pdf->AddPage('L',[30,20]);
+
+            $pdf->SetMargins(0, 0, 0, 0);
+            $pdf->SetAutoPageBreak(0, 0);
+            $pdf->Image(base_path().'/public/inventory_qr/'. $request->id.'.png', 7, 0, 17, 17,'PNG');
+
+            $pdf->SetFont('Arial','B','8');
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->SetXY(0, 16);
+            $pdf->Cell(30,4,$request->id,0,1,'C');
+
+
+            $pdf->Output('I', $request->id . '.pdf');
+            exit();
+
+            // return redirect('inventory_qr/'. $request->id.'.png');
         }
     }
 
