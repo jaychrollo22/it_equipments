@@ -157,6 +157,15 @@
                                 <span class="text-danger" v-if="errors.type">{{ errors.activateDevice[0] }}</span>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Activate Geovision Device</label> 
+                               <select class="form-control" v-model="activateGeovisionDevice">
+                                   <option  v-for="(item, i) in geovision_devices" :key="i" :value="item.reader_name" >{{item.reader_name}}</option>
+                               </select>
+                                <span class="text-danger" v-if="errors.type">{{ errors.activateDevice[0] }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -175,6 +184,7 @@
             return {
                 keywords: '',
                 activateImpinjDevice : '',
+                activateGeovisionDevice : '',
                 device : {
                     'id' : '',
                     'reader_name' : '',
@@ -200,9 +210,11 @@
             getActivatedImpinjDevice(){
                 let v = this;
                 v.activateImpinjDevice = '';
+                v.activateGeovisionDevice = '';
                 axios.get('/rfid-registration-impinj-devices-activated-data')
                 .then(response => { 
                     v.activateImpinjDevice = response.data.activate_impinj_device;
+                    v.activateGeovisionDevice = response.data.activate_geovision_device;
                 })
                 .catch(error => { 
                     v.errors = error.response.data.error;
@@ -212,12 +224,14 @@
                 let v = this;
                 let formData = new FormData();
                 formData.append('activate_impinj_device', v.activateImpinjDevice ? v.activateImpinjDevice : "");
+                formData.append('activate_geovision_device', v.activateGeovisionDevice ? v.activateGeovisionDevice : "");
                 axios.post(`/rfid-registration-impinj-devices-activate`, formData)
                 .then(response =>{
                     if(response.data){
                         Swal.fire('Device has been activated!', '', 'success');        
                         $('#activate-device-modal').modal('hide');
                         v.activateImpinjDevice = '';
+                        v.activateGeovisionDevice = '';
                         this.getActivatedImpinjDevice();
                     }else{
                         Swal.fire('Error: Cannot changed. Please try again.', '', 'error');   

@@ -177,16 +177,18 @@ class RfidController extends Controller
 
     //Geovision
     public function geovision_rfid_log_registration_details(Request $request){
-
-        $rfid_logs = RfidRegistrationGeovision::where('CardBits','=','64')->orderBy('LocalTime','DESC')->first();
+       
+        $reader_name = $request->activate_geovision_device;
+        $rfid_details = RfidRegistrationDevice::where('reader_name',$reader_name)->first();
+        $rfid_logs = RfidRegistrationGeovision::where('CardBits','=','64')->where('ControllerID',$rfid_details['controller_id'])->orderBy('LocalTime','DESC')->first();
         
-        if($rfid_logs){
+        if($rfid_logs && $rfid_details){
             $last_scan_date = date('Y-m-d h',strtotime($rfid_logs->LocalTime));
             $current_date = date('Y-m-d h');
             if($last_scan_date == $current_date){
                 $rfid_64 = ltrim($rfid_logs['CardCode'],"0x");
                 return $data = [
-                    'reader_name' => 'BGC-Geovision',
+                    'reader_name' => $rfid_details->reader_name,
                     'rfid_64' => ltrim($rfid_logs['CardCode'],"0x"),
                     'last_scan_date' => $rfid_logs->LocalTime ? date('Y-m-d h:i:s A',strtotime($rfid_logs->LocalTime)) : "",
                     'message'=> 'success',

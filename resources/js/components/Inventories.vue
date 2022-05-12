@@ -449,8 +449,8 @@
                 <div class="modal-header">
                     <h2 class="col-12 modal-title text-center">View Borrower Information</h2>
                 </div>
-                <div class="modal-body">
-                    <div class="row" v-if="selectedItem">
+                <div class="modal-body" v-if="selectedItem">
+                    <div class="row">
                         <div class="col-md-12">
                             <h4>Employee Name : {{selectedItem.is_borrowed.employee_info.first_name + ' ' + selectedItem.is_borrowed.employee_info.last_name }}</h4>  
                         </div>
@@ -471,6 +471,9 @@
                         </div>
                    </div>
                 </div>
+                <!-- <div class="modal-footer" v-if="selectedItem">
+                    <a v-if="selectedItem.is_borrowed" :href="'/generate-letter-of-undertaking?id=' + selectedItem.is_borrowed.id" class="btn btn-sm btn-primary">Generate LOU</a>
+                </div> -->
             </div>
         </div>
     </div>
@@ -770,6 +773,7 @@ export default {
             rfid_timer : '',
 
             activateImpinjDevice : '',
+            activateGeovisionDevice : '',
 
             //Inventory
             savingDisable : false,
@@ -952,9 +956,11 @@ export default {
         getActivatedImpinjDevice(){
             let v = this;
             v.activateImpinjDevice = '';
+            v.activateGeovisionDevice = '';
             axios.get('/rfid-registration-impinj-devices-activated-data')
             .then(response => { 
                 v.activateImpinjDevice = response.data.activate_impinj_device;
+                v.activateGeovisionDevice = response.data.activate_geovision_device;
             })
             .catch(error => { 
                 v.errors = error.response.data.error;
@@ -987,7 +993,7 @@ export default {
         },
         getGeovisionRFID(){
             let v = this;
-            axios.get('/api/geovision-rfid-log-item-details')
+            axios.get('/api/geovision-rfid-log-item-details?activate_geovision_device='+v.activateGeovisionDevice)
             .then(response => { 
                 if(response.data){
                     v.rfidGeovisionDetails = response.data;

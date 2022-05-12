@@ -164,6 +164,7 @@ Route::get('/', function () {
     //Impinj
     Route::get('/rfid-registration-impinj-devices-activated-data', 'RfidRegistrationDeviceController@activatedImpinjReaderData');
     Route::post('/rfid-registration-impinj-devices-activate', 'RfidRegistrationDeviceController@activateImpinjReader');
+    Route::post('/rfid-registration-geovision-devices-activate', 'RfidRegistrationDeviceController@activatedGeovisionReaderData');
 
     //System Approver
     Route::get('/system-approver-it-data', 'SystemApproverController@systemApproverITData');
@@ -174,6 +175,12 @@ Route::get('/', function () {
 
     //Generate QR
     Route::get('/generate-qr-code', 'InventoryController@generateQrCode');
+
+    //Generate LOU
+    Route::get('/generate-letter-of-undertaking', 'LetterOfUndertakingController@generateLetterOfUndertaking');
+    Route::get('/get-lou-user-inventory', 'LetterOfUndertakingController@getLouUserInventory');
+    Route::post('/save-generate-letter-of-undertaking', 'LetterOfUndertakingController@saveGenerateLetterOfUndertaking');
+    Route::get('/print-generate-letter-of-undertaking-laptop', 'LetterOfUndertakingController@printGenerateLetterOfUndertakingLaptop');
 
     
 

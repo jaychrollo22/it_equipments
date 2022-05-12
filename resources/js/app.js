@@ -52,6 +52,9 @@ Vue.component('rfid-registration-device', require('./components/Rfid/RfidRegistr
 Vue.component('for-disposal', require('./components/ForDisposal/ForDisposal.vue').default);
 Vue.component('for-disposal-items', require('./components/ForDisposal/ForDisposalItems.vue').default);
 
+//Generate LOU
+Vue.component('generate-lou', require('./components/LetterOfUndertaking/GenerateLou.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

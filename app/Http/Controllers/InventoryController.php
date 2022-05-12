@@ -46,7 +46,7 @@ class InventoryController extends Controller
     public function indexData(Request $request){
         $data = $request->all();
         if($data['type'] || $data['location'] || $data['category'] || $data['status']){
-            return Inventory::with('is_borrowed.employee_info','is_transfer')
+            return Inventory::with('is_borrowed.employee_info','is_borrowed.letter_of_undertaking','is_transfer')
                                 ->when(!empty($data['type']),function($q) use($data){
                                     $q->where('type','LIKE','%'.$data['type'].'%');
                                 })
@@ -62,7 +62,7 @@ class InventoryController extends Controller
                                 ->orderBy('type','ASC')
                                 ->get();
         }else{
-            return Inventory::with('is_borrowed.employee_info','is_transfer')
+            return Inventory::with('is_borrowed.employee_info','is_borrowed.letter_of_undertaking','is_transfer')
                                 // ->where('status','!=','Disposed')
                                 ->orderBy('type','ASC')
                                 ->get();
@@ -140,7 +140,7 @@ class InventoryController extends Controller
                 $inventory->update($data);
                 DB::commit();
 
-                $inventory = Inventory::with('is_borrowed.employee_info','is_transfer')->where('id',$request->id)->first();
+                $inventory = Inventory::with('is_borrowed.employee_info','is_borrowed.letter_of_undertaking','is_transfer')->where('id',$request->id)->first();
                 return $status_data = [
                     'status'=>'success',
                     'inventory'=>$inventory,
