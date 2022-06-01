@@ -43,10 +43,11 @@ class ItemsController extends Controller
                                 ->doesnthave('is_borrowed')
                                 ->doesnthave('is_transfer')
                                 ->where(function($q) use($data){
-                                    $q->where('model', 'like','%'.$data['item_name'].'%')
+                                        $q->where('model', 'like','%'.$data['item_name'].'%')
                                         ->orWhere('serial_number', 'like','%'.$data['item_name'].'%')
                                         ->orWhere('type', 'like','%'.$data['item_name'].'%');
                                 })
+                                ->orWhere('id', '=',$data['item_name'])
                                 ->take(5)
                                 ->get();
 

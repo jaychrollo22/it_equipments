@@ -189,7 +189,7 @@
                                        <i class="fas fa-shopping-cart"></i>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control" v-model="itemName" placeholder="Search Item (Serial Number/Model)" @keyup.enter="searchBorrowItem">
+                                <input type="text" class="form-control" v-model="itemName" placeholder="Search Item (ID/Serial Number/Model)" @keyup.enter="searchBorrowItem">
                                 <div class="input-group-append">
                                     <a href="#" @click="searchBorrowItem" class="btn font-weight-bold btn-success btn-icon">
                                         <i class="fas fa-search"></i>
