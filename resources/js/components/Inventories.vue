@@ -69,6 +69,7 @@
                                 <div class="form-group">
                                     <select class="form-control form-control-primary" v-model="filter_status">
                                         <option value="">Choose Availability</option>
+                                        <option value="Assigned">Assigned</option>
                                         <option value="Available">Available</option>
                                         <option value="Borrowed">Borrowed</option>
                                         <option value="For Transfer">For Transfer</option>
@@ -132,7 +133,7 @@
                                         <td align="center"><small>{{item.model}}</small></td>
                                         <td align="center"><small>{{item.status}}</small></td>
                                         <td align="center">
-                                            <span v-if="item.is_borrowed" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" :title="item.is_borrowed.status" @click="viewBorrowItem(item)">{{ item.is_borrowed.status }}</span>
+                                            <span v-if="item.is_borrowed" :class="getColorIsBorrow(item)" style="cursor:pointer" :title="item.is_borrowed.status" @click="viewBorrowItem(item)">{{ item.is_borrowed.is_assigned == 'true' ? "Assigned" : item.is_borrowed.status }}</span>
                                             <span v-else-if="item.is_transfer" class="label label-primary label-pill label-inline mr-2" style="cursor:pointer">For Transfer</span>
                                             <span v-else class="label label-success label-pill label-inline mr-2" title="Available to Borrow" style="cursor:pointer" @click="assignItem(item)">Available</span>
                                             </td>
@@ -166,6 +167,7 @@
         </div> 
     </div>
 
+    <!-- Add Edit Inventory -->
     <div class="modal fade" id="inventory-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl modal-fixed" role="document">
             <div class="modal-content">
@@ -239,9 +241,8 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="role">New IT Tag / QR Code / BAR CODE</label> 
-                                <input type="text" class="form-control" placeholder="New IT Tag / QR Code / BAR CODE" v-model="inventory.new_it_tag_qr_code_bar_code">
-                                <span class="text-danger" v-if="errors.new_it_tag_qr_code_bar_code">{{ errors.new_it_tag_qr_code_bar_code[0] }}</span>
+                                <label for="role">ID</label> 
+                                <input type="text" class="form-control" placeholder="ID" v-model="inventory.id" disabled>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -438,6 +439,7 @@
         </div>
     </div>
 
+    <!-- Borrow Info -->
     <div class="modal fade" id="borrow-info-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
             <div class="modal-content">
@@ -447,27 +449,37 @@
                     </button>
                 </div> 
                 <div class="modal-header">
-                    <h2 class="col-12 modal-title text-center">View Borrower Information</h2>
+                    <h4 class="col-12 modal-title text-center">View Borrower Information</h4>
                 </div>
                 <div class="modal-body" v-if="selectedItem">
                     <div class="row">
                         <div class="col-md-12">
-                            <h4>Employee Name : {{selectedItem.is_borrowed.employee_info.first_name + ' ' + selectedItem.is_borrowed.employee_info.last_name }}</h4>  
+                            <h5>Employee Name : {{selectedItem.is_borrowed.employee_info.first_name + ' ' + selectedItem.is_borrowed.employee_info.last_name }}</h5>  
                         </div>
                         <div class="col-md-12">
-                            <h4>Business Unit : {{selectedItem.is_borrowed.employee_info.cluster}}</h4>  
+                            <h5>Business Unit : {{selectedItem.is_borrowed.employee_info.cluster}}</h5>  
                         </div>
                         <div class="col-md-12">
-                            <h4>Cluster : {{selectedItem.is_borrowed.employee_info.new_cluster}}</h4>  
+                            <h5>Cluster : {{selectedItem.is_borrowed.employee_info.new_cluster}}</h5>  
                         </div>
                         <div class="col-md-12">
-                            <h4>Borrow Date : {{selectedItem.is_borrowed.borrow_date}}</h4>  
+                            <h5>Borrow Date : {{selectedItem.is_borrowed.borrow_date}}</h5>  
                         </div>
                         <div class="col-md-12">
-                            <h4>Ticket No. : {{selectedItem.is_borrowed.ticket_number}}</h4>  
+                            <h5>Ticket No. : {{selectedItem.is_borrowed.ticket_number}}</h5>  
                         </div>
                         <div class="col-md-12">
-                            <h4>Status : {{selectedItem.is_borrowed.status}}</h4>  
+                            <h5>Status : {{selectedItem.is_borrowed.status}}</h5>  
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="selectedItem.is_borrowed.is_assigned" @change="updateUserInventoryIsAssigned(selectedItem.is_borrowed)" id="flexCheckDefault"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Is Assigned?
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                    </div>
                 </div>
@@ -478,6 +490,7 @@
         </div>
     </div>
 
+    <!-- Upload Inventories -->
     <div class="modal fade" id="upload-inventories-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
             <div class="modal-content">
@@ -507,6 +520,7 @@
         </div>
     </div>
 
+    <!-- Filter -->
     <div class="modal fade" id="apply-filter-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
             <div class="modal-content">
@@ -574,6 +588,7 @@
         </div>
     </div>
 
+    <!-- For Disposal -->
     <div class="modal fade" id="for-disposal-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
@@ -618,6 +633,7 @@
         </div>
     </div>
 
+    <!-- Assign Item -->
     <div class="modal fade" id="assign-item-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
             <div class="modal-content">
@@ -641,11 +657,20 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="role">Borrow Date</label> 
                                 <input type="date" v-model="assign.borrow_date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="assign.is_assigned" id="flexCheckDefault"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Is Assigned?
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -800,7 +825,26 @@ export default {
         this.getEmployees();
     },
     methods : {
-        assignEmployeeItem(){
+        getColorIsBorrow(item){
+            if(item.is_borrowed.is_assigned == 'true'){
+                return 'label label-primary label-pill label-inline mr-2';
+            }else{
+                return 'label label-warning label-pill label-inline mr-2';
+            }
+        },
+        updateUserInventoryIsAssigned(){
+            let formData = new FormData();
+            formData.append('id', this.selectedItem.is_borrowed.id ? this.selectedItem.is_borrowed.id : "");
+            formData.append('is_assigned', this.selectedItem.is_borrowed.is_assigned ? this.selectedItem.is_borrowed.is_assigned : "");
+            axios.post(`/update-user-inventory-is-assigned`, formData)
+            .then(response =>{
+                if(response.data.status == 'saved'){
+                    var index = this.inventories.findIndex(item => item.id == this.selectedItem.id);
+                    this.inventories.splice(index,1,response.data.inventory);
+                }
+            })
+        },
+        assignEmployeeItem(){   
             let v = this;
             v.assignItemDisable = true;
             Swal.fire({
@@ -814,6 +858,7 @@ export default {
                     let formData = new FormData();
                     formData.append('inventory_id', v.assign.inventory_id ? v.assign.inventory_id : "");
                     formData.append('employee_id', v.assign.employee_id ? v.assign.employee_id : "");
+                    formData.append('is_assigned', v.assign.is_assigned ? v.assign.is_assigned : "");
                     formData.append('borrow_date', v.assign.borrow_date ? v.assign.borrow_date : "");
                     axios.post(`/assign-employee-item`, formData)
                     .then(response =>{
@@ -1296,6 +1341,12 @@ export default {
                     if(self.filter_status == 'Available'){
                         if(item.is_borrowed == null){
                             return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
+                        }
+                    }else if(self.filter_status == 'Assigned'){
+                        if(item.is_borrowed){
+                            if(item.is_borrowed.is_assigned == 'true'){
+                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
+                            }
                         }
                     }else if(self.filter_status == 'Borrowed'){
                         if(item.is_borrowed){

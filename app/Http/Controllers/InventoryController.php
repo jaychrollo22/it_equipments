@@ -510,6 +510,7 @@ class InventoryController extends Controller
                     'employee_id' => $data['employee_id'],
                     'inventory_id' => $data['inventory_id'],
                     'borrow_date' => $data['borrow_date'],
+                    'is_assigned' => $data['is_assigned'],
                     'status' => 'Borrowed',
                     // 'ticket_number' => $data['ticket_number'],
                 ];
@@ -557,5 +558,16 @@ class InventoryController extends Controller
         }
     }
 
-    
+    public function updateUserInventoryIsAssigned(Request $request){
+        $user_inventory = UserInventory::where('id',$request->id)->first();
+
+        if($user_inventory){
+            $user_inventory->update(['is_assigned'=>$request->is_assigned]);
+            $inventory = Inventory::with('is_borrowed.employee_info','is_transfer')->where('id',$user_inventory->inventory_id)->first();
+            return $response = [
+                'status'=>'saved',
+                'inventory' => $inventory,
+            ];
+        }
+    }
 }

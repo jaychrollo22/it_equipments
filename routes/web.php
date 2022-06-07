@@ -84,6 +84,7 @@ Route::get('/', function () {
     Route::get('/print-inventory-transfer', 'InventoryController@printTransfer');
 
     Route::post('/assign-employee-item', 'InventoryController@assignEmployeeItem');
+    Route::post('/update-user-inventory-is-assigned', 'InventoryController@updateUserInventoryIsAssigned');
 
     //Receive Inventories
     Route::get('/inventory-receive', 'InventoryController@receive')->name('receive');
