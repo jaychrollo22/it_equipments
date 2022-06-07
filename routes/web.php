@@ -181,7 +181,7 @@ Route::get('/', function () {
     Route::get('/generate-letter-of-undertaking', 'LetterOfUndertakingController@generateLetterOfUndertaking');
     Route::get('/get-lou-user-inventory', 'LetterOfUndertakingController@getLouUserInventory');
     Route::post('/save-generate-letter-of-undertaking', 'LetterOfUndertakingController@saveGenerateLetterOfUndertaking');
-    Route::get('/print-generate-letter-of-undertaking-laptop', 'LetterOfUndertakingController@printGenerateLetterOfUndertakingLaptop');
+    Route::get('/print-generate-letter-of-undertaking', 'LetterOfUndertakingController@printGenerateLetterOfUndertaking');
 
     
 

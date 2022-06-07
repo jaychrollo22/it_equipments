@@ -42,7 +42,7 @@
                                             <td><small>{{user_inventory.inventory_info.type}}</small> </td>
                                             <td><small>{{user_inventory.inventory_info.model}}</small> </td>
                                             <td><small>{{user_inventory.inventory_info.serial_number}}</small> </td>
-                                            <td><small>{{user_inventory.inventory_info.new_it_tag_qr_code_bar_code}}</small></td>
+                                            <td><small>{{user_inventory.inventory_info.id}}</small></td>
                                         </tr>
                                         <tr>
                                             <td><small>Processor</small></td>
@@ -139,7 +139,9 @@
                                     .then(okay => {
                                     if (okay) {
                                         // this.getUserInventory();
-                                        alert('Redirecting...');
+                                        // window.location.replace = "/print-generate-letter-of-undertaking?id="+response.data.letter_of_undertaking.id;
+                                        var url = '/print-generate-letter-of-undertaking?id='+response.data.letter_of_undertaking.id;
+                                        location.replace(url)
                                     }
                                 });
                             }

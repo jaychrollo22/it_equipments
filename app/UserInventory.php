@@ -20,7 +20,7 @@ class UserInventory extends Model implements AuditableContract
     }
 
     public function inventory_info(){
-        return $this->belongsTo('App\Inventory','inventory_id','id')->select('id','model','serial_number','type','location','processor','new_it_tag_qr_code_bar_code');
+        return $this->belongsTo('App\Inventory','inventory_id','id')->select('id','model','serial_number','type','location','processor','os_name_and_version');
     }
 
     public function letter_of_undertaking(){
