@@ -158,17 +158,17 @@ class LetterOfUndertakingController extends Controller
                         $current_x = $pdf->getx();
                         $pdf->SetXY($current_x,172.5 + 5);
                         $pdf->SetFont('Arial', '', 8);
-                        $pdf->Cell(47.9,5, utf8_decode($inventory_info->processor) ,1,'C');
+                        $pdf->Cell(47.9 + 46.4 + 35.5,5, utf8_decode($inventory_info->processor) ,1,'C');
 
-                        $current_x = $pdf->getx();
-                        $pdf->SetXY($current_x,172.5 + 5);
-                        $pdf->SetFont('Arial', '', 8);
-                        $pdf->Cell(46.4,5, "" ,1,'C');
+                        // $current_x = $pdf->getx();
+                        // $pdf->SetXY($current_x,172.5 + 5);
+                        // $pdf->SetFont('Arial', '', 8);
+                        // $pdf->Cell(46.4,5, "" ,1,'C');
 
-                        $current_x = $pdf->getx();
-                        $pdf->SetXY($current_x,172.5 + 5);
-                        $pdf->SetFont('Arial', '', 8);
-                        $pdf->Cell(35.5,5, "" ,1,'C');
+                        // $current_x = $pdf->getx();
+                        // $pdf->SetXY($current_x,172.5 + 5);
+                        // $pdf->SetFont('Arial', '', 8);
+                        // $pdf->Cell(35.5,5, "" ,1,'C');
                    
                     //Operating System Installation:
                         $pdf->SetXY(24.7,200);
