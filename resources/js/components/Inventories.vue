@@ -128,7 +128,7 @@
                                             </label>
                                         </td>
                                         <td align="center">
-                                            <i class="fas fa-check text-success" v-if="item.epc" :title="item.epc"></i> {{item.epc}}
+                                            <i class="fas fa-check text-success" v-if="item.epc" :title="item.epc"></i> <small>{{item.epc}}</small>
                                         </td>
                                         <td align="center"><small>{{item.id}}</small></td>
                                         <td align="center"><small>{{item.type}}</small></td>
@@ -1260,6 +1260,7 @@ export default {
                     })
                     .catch(error => {
                         this.errors = error.response.data.errors;
+                        this.savingDisable = false;
                     })
                 }else{
                     this.savingDisable = false;

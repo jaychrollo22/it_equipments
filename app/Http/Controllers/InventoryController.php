@@ -79,10 +79,10 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'serial_number' => 'required',
             'model' => 'required',
             'type' => 'required',
             'status' => 'required',
+            'serial_number' => 'required|unique:inventories,serial_number,',
         ]);
         DB::beginTransaction();
         try {
