@@ -5,7 +5,7 @@
             <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap inventories-container">
                 <div class="d-flex align-items-center flex-wrap mr-1">
                     <div class="d-flex flex-column">
-                        <h2 class="text-white font-weight-bold my-2 mr-5">Generate Letter of Undertaking</h2>
+                        <h2 class="text-white font-weight-bold my-2 mr-5">Print Letter of Undertaking</h2>
                     </div>
                 </div>
             </div>
@@ -20,9 +20,6 @@
                             <h3 class="card-label">
                             LETTER OF UNDERTAKING
                             <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
-                        </div>
-                        <div class="card-toolbar">
-                            <!-- <button class="btn btn-primary mr-2" @click="preview">Preview</button> -->
                         </div>
                     </div>
 
@@ -39,47 +36,27 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><small>{{user_inventory.inventory_info.type}}</small> </td>
+                                            <td><small><strong>{{user_inventory.inventory_info.type}}</strong></small> </td>
                                             <td><small>{{user_inventory.inventory_info.model}}</small> </td>
                                             <td><small>{{user_inventory.inventory_info.serial_number}}</small> </td>
                                             <td><small>{{user_inventory.inventory_info.id}}</small></td>
                                         </tr>
                                         <tr>
-                                            <td><small>Processor</small></td>
-                                            <td><small>{{user_inventory.inventory_info.processor}}</small> </td>
-                                            <td></td>
-                                            <td></td>
+                                            <td><small><strong>Processor</strong></small></td>
+                                            <td colspan="3"><small>{{user_inventory.inventory_info.processor}}</small> </td>
                                         </tr>
                                         
                                     </tbody>
                                 </table>
                                 <b>B.	Operating System Installation:</b>
-                                <!-- <button class="btn btn-primary btn-sm mb-2 float-right" @click="addNewOSIntallation">Add New</button> -->
                                 <table class="table table-bordered">
                                     <thead>
-                                        <th>Software</th>
-                                        <th>Version</th>
-                                        <th>Serial Number</th>
-                                        <!-- <th></th> -->
+                                        <th colspan="3">Software and OS Version</th>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td colspan="3"><small>{{user_inventory.inventory_info.os_name_and_version}}</small> </td>
                                         </tr>
-                                        <!-- <tr v-for="(row,index) in os_installations" v-bind:key="index">
-                                            <td>
-                                                <input class="form-control" placeholder="Software" type="text" v-model="row.software">
-                                            </td>
-                                            <td>
-                                                <input class="form-control" placeholder="Version" type="text" v-model="row.version">
-                                            </td>
-                                            <td>
-                                                <input class="form-control" placeholder="Serial Number" type="text" v-model="row.serial_number">
-                                            </td>
-                                            <td align="center">
-                                                <button type="button" class="btn btn-danger btn-sm mt-2" @click="removeOSIntallation(index)">Remove</button>
-                                            </td>
-                                        </tr> -->
                                     </tbody>
                                 </table>
                                 <b>Inclusions</b>
@@ -87,6 +64,21 @@
                                 <br>
                             </div>
                             <b>RECEIVED BY: {{user_inventory.employee_info.first_name + ' ' + user_inventory.employee_info.last_name }}</b>
+
+                            <div class="table-responsive mt-5">
+                                <table class="table table-bordered" v-if="letter_of_undertaking_id">
+                                    <tr>
+                                        <td><small>Upload Signed LOU</small></td>
+                                        <td>
+                                            <input type="file" id="attachment" class="form-control" ref="file" accept="*" v-on:change="fileHandleFileUpload()">
+                                        </td>
+                                        <td align="center">
+                                            <button class="btn btn-sm btn-primary" @click="saveLOUAttachment" :disabled="save_disable">Save</button>
+                                            <a v-if="letter_of_undertaking_file" :href="'/storage/letter_of_undertaking_attachments/'+letter_of_undertaking_file" target="_blank" class="btn btn-sm btn-success">View</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -114,17 +106,57 @@
                 }],
                 user_inventory : '',
                 inclusions : '',
+                letter_of_undertaking_id : '',
+                letter_of_undertaking_file : '',
                 errors : [],
+                uploaded_scanned_file : '',
+                save_disable : false,
             }
         },
         created () {
             this.getUserInventory();
         },
         methods: {
+            saveLOUAttachment(){
+                this.save_disable = true;
+                Swal.fire({
+                title: 'Are you sure you want to upload this attachment?',
+                icon: 'question',
+                showDenyButton: true,
+                confirmButtonText: `Yes`,
+                denyButtonText: `No`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let formData = new FormData();
+                        formData.append('letter_of_undertaking_id', this.letter_of_undertaking_id ? this.letter_of_undertaking_id : "");
+                        formData.append('uploaded_scanned_file', this.uploaded_scanned_file ? this.uploaded_scanned_file : "");
+                        axios.post(`/save-lou-attachment`, formData)
+                        .then(response =>{
+                            if(response.data.status == 'saved'){
+                                Swal.fire('Attachment has been uploaded', '', 'success')
+                                .then(okay => {
+                                    if (okay) {
+                                        this.getUserInventory();
+                                        this.save_disable = false;
+                                    }
+                                })
+                            }else{
+                                this.save_disable = false;
+                            }
+                        })
+                    }else{
+                        this.save_disable = false;
+                    }
+                })
+            },
+            fileHandleFileUpload(){
+                var file = document.getElementById("attachment");
+                this.uploaded_scanned_file = file.files[0];
+            },
             generateLOU(){
                 let v = this;
                 Swal.fire({
-                title: 'Are you sure you want to generate this ?',
+                title: 'Are you sure you want to generate this Letter of Under?',
                 icon: 'question',
                 showDenyButton: true,
                 confirmButtonText: `Yes`,
@@ -149,7 +181,9 @@
                                 });
                             }
                         })
-
+                        .catch(error => { 
+                            v.errors = error.response.data.error;
+                        })
                     }
                 })
 
@@ -172,6 +206,8 @@
                     if(v.user_inventory.letter_of_undertaking){
                         this.os_installations = v.user_inventory.letter_of_undertaking.os_installations ? JSON.parse(v.user_inventory.letter_of_undertaking.os_installations) : "";
                         this.inclusions = v.user_inventory.letter_of_undertaking.inclusions ? v.user_inventory.letter_of_undertaking.inclusions : "";
+                        this.letter_of_undertaking_id = v.user_inventory.letter_of_undertaking.id ? v.user_inventory.letter_of_undertaking.id : "";
+                        this.letter_of_undertaking_file = v.user_inventory.letter_of_undertaking.uploaded_scanned_file ? v.user_inventory.letter_of_undertaking.uploaded_scanned_file : "";
                     }
                 })
                 .catch(error => { 

@@ -182,6 +182,7 @@ Route::get('/', function () {
     Route::get('/get-lou-user-inventory', 'LetterOfUndertakingController@getLouUserInventory');
     Route::post('/save-generate-letter-of-undertaking', 'LetterOfUndertakingController@saveGenerateLetterOfUndertaking');
     Route::get('/print-generate-letter-of-undertaking', 'LetterOfUndertakingController@printGenerateLetterOfUndertaking');
+    Route::post('/save-lou-attachment', 'LetterOfUndertakingController@saveLetterofUndertakingAttachment');
 
     
 

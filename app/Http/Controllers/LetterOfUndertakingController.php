@@ -8,6 +8,7 @@ use App\UserInventory;
 use App\LetterOfUndertaking;
 use Auth;
 use DB;
+use Storage;
 
 use setasign\Fpdi\Fpdi;
 
@@ -92,6 +93,37 @@ class LetterOfUndertakingController extends Controller
 
     }
 
+    public function saveLetterofUndertakingAttachment(Request $request){
+
+        $data = $request->all();
+        DB::beginTransaction();
+        try{
+            $letter_of_undertaking = LetterOfUndertaking::where('id',$data['letter_of_undertaking_id'])->first();
+            if($letter_of_undertaking){
+                if(isset($request->uploaded_scanned_file)){
+                    if($request->file('uploaded_scanned_file')){
+                        $uploaded_scanned_file = $request->file('uploaded_scanned_file');   
+                        $file_name = $letter_of_undertaking->id . '.' . $uploaded_scanned_file->getClientOriginalExtension();
+                        $path = Storage::disk('public')->putFileAs('letter_of_undertaking_attachments', $uploaded_scanned_file , $file_name);
+                        $data['uploaded_scanned_file'] = $file_name;
+                        unset($data['letter_of_undertaking_id']);
+                        $letter_of_undertaking->update($data);
+                        DB::commit();
+                        return $response = [
+                            'status'=>'saved'
+                        ];
+                    }    
+                }
+            }else{
+                return $response = [
+                    'status'=>'error'
+                ];
+            }
+        }catch (Exception $e) {
+            DB::rollBack();
+            return 'error';
+        }
+    }
 
     // Print Letter of Undertaking
     public function printGenerateLetterOfUndertaking(Request $request){
@@ -159,21 +191,11 @@ class LetterOfUndertakingController extends Controller
                         $pdf->SetXY($current_x,172.5 + 5);
                         $pdf->SetFont('Arial', '', 8);
                         $pdf->Cell(47.9 + 46.4 + 35.5,5, utf8_decode($inventory_info->processor) ,1,'C');
-
-                        // $current_x = $pdf->getx();
-                        // $pdf->SetXY($current_x,172.5 + 5);
-                        // $pdf->SetFont('Arial', '', 8);
-                        // $pdf->Cell(46.4,5, "" ,1,'C');
-
-                        // $current_x = $pdf->getx();
-                        // $pdf->SetXY($current_x,172.5 + 5);
-                        // $pdf->SetFont('Arial', '', 8);
-                        // $pdf->Cell(35.5,5, "" ,1,'C');
                    
                     //Operating System Installation:
                         $pdf->SetXY(24.7,200);
                         $pdf->SetFont('Arial', '', 8);
-                        $pdf->Cell(160.5,5, utf8_decode($inventory_info->os_name_and_version) ,1,'C');
+                        $pdf->Cell(160.7,5, utf8_decode($inventory_info->os_name_and_version) ,1,'C');
 
                     //CONFORME
                         $pdf->SetXY(24.7,235);

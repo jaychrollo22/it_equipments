@@ -27,6 +27,9 @@
                     </div>
                     <!--end::Heading-->
                 </div>
+                <div class="d-flex align-items-center">
+                    <a href="#" @click="getInventories" class="btn btn-transparent-white font-weight-bold py-3 px-6 mr-2">Refresh</a>
+                </div>
             </div>
         </div>
 
@@ -40,22 +43,22 @@
                             <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                         </div>
                         <div class="card-toolbar">
-                            <button class="btn btn-primary mr-2" @click="addInventory">New</button>
-                            <button class="btn btn-info mr-2" @click="uploadInventory">Upload Excel</button>
+                            <button class="btn btn-primary mr-2 mt-1" @click="addInventory">New</button>
+                            <button class="btn btn-info mr-2 mt-1" @click="uploadInventory">Upload Excel</button>
                              <download-excel
                                 :data   = "filteredInventories"
                                 :fields = "exportInventories"
-                                class   = "btn btn-success mr-2"
+                                class   = "btn btn-success mr-2 mt-1"
                                 name    = "Inventories.xls">
-                                    Download Excel ({{ filteredInventories.length }})
+                                    Download ({{ filteredInventories.length }})
                             </download-excel>
-                            <button class="btn btn-warning mr-2" @click="getInventories">Refresh</button>
+                            <!-- <button class="btn btn-warning mr-2" @click="getInventories">Refresh</button> -->
                         </div>
                     </div>
 
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 mt-2">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="cursor:pointer" @click="showFilter">
@@ -65,7 +68,7 @@
                                     <input type="text" class="form-control" placeholder="Search"  v-model="keywords">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 mt-2">
                                 <div class="form-group">
                                     <select class="form-control form-control-primary" v-model="filter_status">
                                         <option value="">Choose Availability</option>
@@ -484,7 +487,7 @@
                    </div>
                 </div>
                 <div class="modal-footer" v-if="selectedItem">
-                    <a v-if="selectedItem.is_borrowed && selectedItem.type== 'Laptop'" :href="'/generate-letter-of-undertaking?id=' + selectedItem.is_borrowed.id" class="btn btn-sm btn-primary">Generate LOU</a>
+                    <a v-if="selectedItem.is_borrowed && selectedItem.type== 'Laptop'" :href="'/generate-letter-of-undertaking?id=' + selectedItem.is_borrowed.id" target="_blank" class="btn btn-sm btn-primary">Letter of Undertaking</a>
                 </div>
             </div>
         </div>
@@ -702,7 +705,7 @@ export default {
                 'rfid_64' : '',
                 'type' : '',
                 'old_inventory_number' : 'N/A',
-                'new_it_tag_qr_code_bar_code' : 'N/A',
+                // 'new_it_tag_qr_code_bar_code' : 'N/A',
                 'serial_number' : '',
                 'model' : '',
                 'processor' : 'N/A',
@@ -1350,7 +1353,7 @@ export default {
                         }
                     }else if(self.filter_status == 'Borrowed'){
                         if(item.is_borrowed){
-                            if(item.is_borrowed.status == 'Borrowed'){
+                            if(item.is_borrowed.status == 'Borrowed' && !item.is_borrowed.is_assigned){
                                 return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
                             }
                         }
