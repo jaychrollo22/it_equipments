@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-success" @click="generateLOU">Generate</button>
+                        <button class="btn btn-success" @click="generateLOU">Print</button>
                     </div>
 
                 </div>
