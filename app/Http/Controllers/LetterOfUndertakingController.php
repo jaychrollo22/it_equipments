@@ -119,7 +119,7 @@ class LetterOfUndertakingController extends Controller
                     $full_name = ucfirst($employee_info->first_name) . ' ' . ucfirst($employee_info->last_name);
                     $pdf->SetXY(74,39);
                     $pdf->SetFont('Arial', '', 7);
-                    $pdf->MultiCell(59,3, ucwords($full_name) ,0,'C');
+                    $pdf->MultiCell(59,3, utf8_decode($full_name) ,0,'C');
 
                     $company = $employee_info->companies[0]->name;
                     $pdf->SetXY(12,46);
@@ -139,7 +139,7 @@ class LetterOfUndertakingController extends Controller
                         $current_x = $pdf->getx();
                         $pdf->SetXY($current_x,172.5);
                         $pdf->SetFont('Arial', '', 8);
-                        $pdf->Cell(47.9,5, $inventory_info->model . '' ,1,'C');
+                        $pdf->Cell(47.9,5, utf8_decode($inventory_info->model) . '' ,1,'C');
 
                         $current_x = $pdf->getx();
                         $pdf->SetXY($current_x,172.5);
@@ -158,7 +158,7 @@ class LetterOfUndertakingController extends Controller
                         $current_x = $pdf->getx();
                         $pdf->SetXY($current_x,172.5 + 5);
                         $pdf->SetFont('Arial', '', 8);
-                        $pdf->Cell(47.9,5, $inventory_info->processor ,1,'C');
+                        $pdf->Cell(47.9,5, utf8_decode($inventory_info->processor) ,1,'C');
 
                         $current_x = $pdf->getx();
                         $pdf->SetXY($current_x,172.5 + 5);
@@ -173,7 +173,7 @@ class LetterOfUndertakingController extends Controller
                     //Operating System Installation:
                         $pdf->SetXY(24.7,200);
                         $pdf->SetFont('Arial', '', 8);
-                        $pdf->Cell(160.5,5, $inventory_info->os_name_and_version ,1,'C');
+                        $pdf->Cell(160.5,5, utf8_decode($inventory_info->os_name_and_version) ,1,'C');
 
                     //CONFORME
                         $pdf->SetXY(24.7,235);

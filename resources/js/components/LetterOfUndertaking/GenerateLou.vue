@@ -54,16 +54,19 @@
                                     </tbody>
                                 </table>
                                 <b>B.	Operating System Installation:</b>
-                                <button class="btn btn-primary btn-sm mb-2 float-right" @click="addNewOSIntallation">Add New</button>
+                                <!-- <button class="btn btn-primary btn-sm mb-2 float-right" @click="addNewOSIntallation">Add New</button> -->
                                 <table class="table table-bordered">
                                     <thead>
                                         <th>Software</th>
                                         <th>Version</th>
                                         <th>Serial Number</th>
-                                        <th></th>
+                                        <!-- <th></th> -->
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(row,index) in os_installations" v-bind:key="index">
+                                        <tr>
+                                            <td colspan="3"><small>{{user_inventory.inventory_info.os_name_and_version}}</small> </td>
+                                        </tr>
+                                        <!-- <tr v-for="(row,index) in os_installations" v-bind:key="index">
                                             <td>
                                                 <input class="form-control" placeholder="Software" type="text" v-model="row.software">
                                             </td>
@@ -76,7 +79,7 @@
                                             <td align="center">
                                                 <button type="button" class="btn btn-danger btn-sm mt-2" @click="removeOSIntallation(index)">Remove</button>
                                             </td>
-                                        </tr>
+                                        </tr> -->
                                     </tbody>
                                 </table>
                                 <b>Inclusions</b>
