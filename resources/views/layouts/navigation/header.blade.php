@@ -46,7 +46,7 @@
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{{ url('inventory-transfer') }}" class="menu-link" disabled>
-                                                <span class="menu-text">Transfer</span>
+                                                <span class="menu-text">Transfer Location</span>
                                                 <span class="menu-desc"></span>
                                             </a>
                                         </li>
@@ -54,7 +54,7 @@
                                     @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
                                     <li class="menu-item" aria-haspopup="true">
                                         <a href="{{ url('inventory-receive') }}" class="menu-link" disabled>
-                                            <span class="menu-text">Receive</span>
+                                            <span class="menu-text">Receive Transfer</span>
                                             <span class="menu-desc"></span>
                                         </a>
                                     </li>
