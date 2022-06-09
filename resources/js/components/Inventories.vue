@@ -71,11 +71,12 @@
                             <div class="col-md-3 mt-2">
                                 <div class="form-group">
                                     <select class="form-control form-control-primary" v-model="filter_status">
-                                        <option value="">Choose Availability</option>
+                                        <option value="">Choose Filter</option>
                                         <option value="Assigned">Assigned</option>
                                         <option value="Available">Available</option>
                                         <option value="Borrowed">Borrowed</option>
                                         <option value="For Transfer">For Transfer</option>
+                                        <option value="With RFID">With RFID</option>
                                     </select>
                                 </div>
                             </div>
@@ -83,14 +84,14 @@
                         
                         <div class="mt-2">
                             Show
-                            <select v-model="itemsPerPage">
+                            <select v-model="itemsPerPage" @change="showPage">
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
                             </select>
-                            Total : {{ filteredInventories.length }}
+                            Total : <strong>{{ filteredInventories.length }}</strong> | With RFID : <strong>{{inventoriesWithRFID.length}}</strong>
                         </div>
 
                         <div class="float-right" v-if="check_selected_items.length > 0">
@@ -128,7 +129,7 @@
                                             </label>
                                         </td>
                                         <td align="center">
-                                            <i class="fas fa-check text-success" v-if="item.epc" :title="item.epc"></i> <small>{{item.epc}}</small>
+                                            <small>{{item.epc}}</small>
                                         </td>
                                         <td align="center"><small>{{item.id}}</small></td>
                                         <td align="center"><small>{{item.type}}</small></td>
@@ -828,6 +829,9 @@ export default {
         this.getEmployees();
     },
     methods : {
+        showPage(){
+            this.currentPage = 0;
+        },
         getColorIsBorrow(item){
             if(item.is_borrowed.is_assigned == 'true'){
                 return 'label label-primary label-pill label-inline mr-2';
@@ -1362,6 +1366,10 @@ export default {
                         if(item.is_transfer){
                             return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
                         }
+                    }else if(self.filter_status == 'With RFID'){
+                        if(item.epc){
+                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
+                        }
                     }else{
                          return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
                     }
@@ -1383,6 +1391,19 @@ export default {
                 this.currentPage = 0;
             }
             return queues_array;
+        },
+        inventoriesWithRFID(){
+            let self = this;
+            if(self.inventories){
+                self.resetStartRowUser();
+                return Object.values(self.inventories).filter(item => {
+                    if(item.epc){
+                        return item;
+                    }
+                });
+            }else{
+                return [];
+            }
         },
     },
 }
