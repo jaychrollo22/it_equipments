@@ -20,7 +20,7 @@
                             <!--end::Item-->
                             <!--begin::Item-->
                             <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
-                            <a href="" class="text-white text-hover-white opacity-75 hover-opacity-100">Asset Logs</a>
+                            <a href="" class="text-white text-hover-white opacity-75 hover-opacity-100">Employee Asset Logs | Active Assigned and Borrowed Items</a>
                             <!--end::Item-->
                         </div>
                         <!--end::Breadcrumb-->
@@ -36,7 +36,7 @@
                 <div class="card card-custom gutter-b">
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title">
-                            <h3 class="card-label">Asset Logs
+                            <h3 class="card-label">Logs
                             <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                         </div>
                         <div class="card-toolbar">

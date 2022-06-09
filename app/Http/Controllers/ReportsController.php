@@ -17,7 +17,7 @@ class ReportsController extends Controller
 {
     public function borrowLogs(){
         session([
-            'title' => 'Borrow Logs',
+            'title' => 'Borrowed Items',
         ]);
         return view('pages.reports.borrow_logs');
     }
@@ -38,7 +38,7 @@ class ReportsController extends Controller
 
     public function returnLogs(){
         session([
-            'title' => 'Return Logs',
+            'title' => 'Returned Items',
         ]);
         return view('pages.reports.return_logs');
     }
@@ -58,7 +58,7 @@ class ReportsController extends Controller
 
     public function assetLogs(){
         session([
-            'title' => 'Asset Logs',
+            'title' => 'Employee Assets',
         ]);
         return view('pages.reports.asset_logs');
     }

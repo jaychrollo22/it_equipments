@@ -71,6 +71,49 @@
                             </div>
                         </li>
                         @endif
+                        {{-- Reports --}}
+                        @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
+                        <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+                            <a href="javascript:;" class="menu-link menu-toggle">
+                                <span class="menu-text">Reports</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                <ul class="menu-subnav">
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('reports-asset-handover-forms') }}" class="menu-link">
+                                            <span class="menu-text">Asset Handover Forms</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('reports-asset-logs') }}" class="menu-link">
+                                            <span class="menu-text">Employee Assets</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('reports-borrow-logs') }}" class="menu-link">
+                                            <span class="menu-text">Borrowed Inventories</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('reports-return-logs') }}" class="menu-link">
+                                            <span class="menu-text">Returned Inventories</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('reports-disposed-logs') }}" class="menu-link">
+                                            <span class="menu-text">Disposed Logs</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        @endif
                         {{-- Settings --}}
                         @if(session('user_role') == "Administrator")
                             <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
@@ -149,49 +192,7 @@
                             </a>
                         </li>
                         @endif
-                        {{-- Reports --}}
-                        @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
-                        <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
-                            <a href="javascript:;" class="menu-link menu-toggle">
-                                <span class="menu-text">Reports</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            <div class="menu-submenu menu-submenu-classic menu-submenu-left">
-                                <ul class="menu-subnav">
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('reports-asset-handover-forms') }}" class="menu-link">
-                                            <span class="menu-text">Asset Handover Forms</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('reports-asset-logs') }}" class="menu-link">
-                                            <span class="menu-text">Asset Logs</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('reports-borrow-logs') }}" class="menu-link">
-                                            <span class="menu-text">Borrow Logs</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('reports-return-logs') }}" class="menu-link">
-                                            <span class="menu-text">Return Logs</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('reports-disposed-logs') }}" class="menu-link">
-                                            <span class="menu-text">Disposed Logs</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        @endif
+                        
                         {{-- Activity Logs --}}
                         @if(session('user_role') == "Administrator")
                         <li class="menu-item menu-item-submenu menu-item-rel">
