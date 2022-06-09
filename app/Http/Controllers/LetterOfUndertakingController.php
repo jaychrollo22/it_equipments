@@ -358,7 +358,7 @@ class LetterOfUndertakingController extends Controller
                     
                 }
                 //Portable Printer
-                if($inventory_info->type == 'Portable Printer'){
+                else if($inventory_info->type == 'Portable Printer'){
                     $pdf->setSourceFile("letter_of_undertaking_template/Portable_Printer.pdf");
                     $tplIdx = $pdf->importPage(1);
                     $pdf->useTemplate($tplIdx, 0, 0, 210);
