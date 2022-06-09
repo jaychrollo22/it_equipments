@@ -486,8 +486,8 @@
                         </div>
                    </div>
                 </div>
-                <div class="modal-footer" v-if="selectedItem">
-                    <a v-if="selectedItem.is_borrowed && selectedItem.type== 'Laptop'" :href="'/generate-letter-of-undertaking?id=' + selectedItem.is_borrowed.id" target="_blank" class="btn btn-sm btn-primary">Letter of Undertaking</a>
+                <div class="modal-footer" v-if="selectedItem && selectedItem.is_borrowed">
+                    <a v-if="selectedItem.type== 'Laptop' || selectedItem.type== 'Desktop' || selectedItem.type== 'Headset' || selectedItem.type== 'Portable Printer'" :href="'/generate-letter-of-undertaking?id=' + selectedItem.is_borrowed.id" target="_blank" class="btn btn-sm btn-primary">Letter of Undertaking</a>
                 </div>
             </div>
         </div>
