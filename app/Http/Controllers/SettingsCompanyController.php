@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\SettingCompany;
+use App\Company;
 use DB;
 
 class SettingsCompanyController extends Controller
@@ -25,7 +26,7 @@ class SettingsCompanyController extends Controller
 
     public function indexData()
     {
-        return SettingCompany::orderBy('name','ASC')->get();
+        return Company::orderBy('name','ASC')->get();
     }
 
     public function store(Request $request)

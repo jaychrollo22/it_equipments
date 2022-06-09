@@ -1,40 +1,26 @@
 <template>
 <div>
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-        <!--begin::Subheader-->
         <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
             <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap inventories-container">
-                <!--begin::Info-->
                 <div class="d-flex align-items-center flex-wrap mr-1">
-                    <!--begin::Heading-->
                     <div class="d-flex flex-column">
-                        <!--begin::Title-->
                         <h2 class="text-white font-weight-bold my-2 mr-5">Inventories</h2>
-                        <!--end::Title-->
-                        <!--begin::Breadcrumb-->
                         <div class="d-flex align-items-center font-weight-bold my-2">
-                            <!--begin::Item-->
                             <a href="#" class="opacity-75 hover-opacity-100">
                                 <i class="flaticon2-shelter text-white icon-1x"></i>
                             </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
                             <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
                             <a href="" class="text-white text-hover-white opacity-75 hover-opacity-100">Configuration Settings</a>
-                            <!--end::Item-->
                         </div>
-                        <!--end::Breadcrumb-->
                     </div>
-                    <!--end::Heading-->
                 </div>
                 <div class="d-flex align-items-center">
                     <a href="#" @click="getInventories" class="btn btn-transparent-white font-weight-bold py-3 px-6 mr-2">Refresh</a>
                 </div>
             </div>
         </div>
-
         <div class="d-flex flex-column-fluid">
-            <!--begin::Container-->
             <div class="container inventories-container">
                 <div class="card card-custom gutter-b">
                     <div class="card-header flex-wrap py-3">
@@ -52,20 +38,18 @@
                                 name    = "Inventories.xls">
                                     Download ({{ filteredInventories.length }})
                             </download-excel>
-                            <!-- <button class="btn btn-warning mr-2" @click="getInventories">Refresh</button> -->
                         </div>
                     </div>
-
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3 mt-2">
+                            <div class="col-md-5 mt-2">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="cursor:pointer" @click="showFilter">
-                                            <i class="fas fa-filter text-dark-50"></i>&nbsp;Filter
+                                            <i class="fas fa-filter text-dark-50"></i>&nbsp;Advance Filter
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Search"  v-model="keywords">
+                                    <input type="text" class="form-control" placeholder="Search ID | Serial Number | Model | Type | RFID"  v-model="keywords">
                                 </div>
                             </div>
                             <div class="col-md-3 mt-2">
@@ -81,7 +65,6 @@
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="mt-2">
                             Show
                             <select v-model="itemsPerPage" @change="showPage">
@@ -93,19 +76,16 @@
                             </select>
                             Total : <strong>{{ filteredInventories.length }}</strong> | With RFID : <strong>{{inventoriesWithRFID.length}}</strong>
                         </div>
-
                         <div class="float-right" v-if="check_selected_items.length > 0">
                             <a href="#" class="text-danger" @click="forDisposal">For Disposal ({{check_selected_items.length}})</a>
                             <a href="#" class="text-success" @click="clearSelection">Clear Selection ({{check_selected_items.length}})</a>
                         </div>
-
-                        <!--begin: Datatable-->
                         <div class="table-responsive">
                             <table class="table table-checkable" id="kt_datatable">
                                 <thead>
                                     <tr>
-                                        <th class="text-center"></th>
-                                        <th class="text-center">RFID</th>
+                                        <th class="text-center" width="10px">Select</th>
+                                        <th class="text-center" width="50px">RFID</th>
                                         <th class="text-center">ID</th>
                                         <th class="text-center">TYPE</th>
                                         <th class="text-center">SERIAL NUMBER</th>
@@ -140,8 +120,8 @@
                                             <span v-if="item.is_borrowed" :class="getColorIsBorrow(item)" style="cursor:pointer" :title="item.is_borrowed.status" @click="viewBorrowItem(item)">{{ item.is_borrowed.is_assigned == 'true' ? "Assigned" : item.is_borrowed.status }}</span>
                                             <span v-else-if="item.is_transfer" class="label label-primary label-pill label-inline mr-2" style="cursor:pointer">For Transfer</span>
                                             <span v-else class="label label-success label-pill label-inline mr-2" title="Available to Borrow" style="cursor:pointer" @click="assignItem(item)">Available</span>
-                                            </td>
-                                            <td align="center"><small>{{item.location}}</small></td>
+                                        </td>
+                                        <td align="center"><small>{{item.location}}</small></td>
                                         <td align="center">
                                             <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editInventory(item)" title="Edit">
                                                 <i class="flaticon-edit"></i>
@@ -161,9 +141,6 @@
                                     <span class="text-dark">Page {{ currentPage + 1 }} of {{ totalPages }}</span>
                                 <button :disabled="!showNextLink()" class="btn btn-default btn-sm btn-fill" v-on:click="setPage(currentPage + 1)"> Next </button>
                             </div>
-                            <!-- <div class="col-6 text-right">
-                                <span class="mr-2">Total Inventories : {{ filteredInventories.length }} </span><br>
-                            </div> -->
                         </div>
                     </div>
                 </div>  
@@ -467,7 +444,7 @@
                             <h5>Cluster : {{selectedItem.is_borrowed.employee_info.new_cluster}}</h5>  
                         </div>
                         <div class="col-md-12">
-                            <h5>Borrow Date : {{selectedItem.is_borrowed.borrow_date}}</h5>  
+                            <h5>Borrow/Assign Date : {{selectedItem.is_borrowed.borrow_date}}</h5>  
                         </div>
                         <div class="col-md-12">
                             <h5>Ticket No. : {{selectedItem.is_borrowed.ticket_number}}</h5>  
@@ -663,7 +640,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="role">Borrow Date</label> 
+                                <label for="role">Borrow/Assign Date</label> 
                                 <input type="date" v-model="assign.borrow_date" class="form-control">
                             </div>
                         </div>
@@ -1348,30 +1325,30 @@ export default {
                 return Object.values(self.inventories).filter(item => {
                     if(self.filter_status == 'Available'){
                         if(item.is_borrowed == null){
-                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
+                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
                         }
                     }else if(self.filter_status == 'Assigned'){
                         if(item.is_borrowed){
                             if(item.is_borrowed.is_assigned == 'true'){
-                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
+                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
                             }
                         }
                     }else if(self.filter_status == 'Borrowed'){
                         if(item.is_borrowed){
                             if(item.is_borrowed.status == 'Borrowed' && !item.is_borrowed.is_assigned){
-                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
+                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
                             }
                         }
                     }else if(self.filter_status == 'For Transfer'){
                         if(item.is_transfer){
-                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
+                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
                         }
                     }else if(self.filter_status == 'With RFID'){
                         if(item.epc){
-                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
+                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
                         }
                     }else{
-                         return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase())
+                         return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
                     }
                 });
             }else{
@@ -1394,9 +1371,9 @@ export default {
         },
         inventoriesWithRFID(){
             let self = this;
-            if(self.inventories){
+            if(self.filteredInventories){
                 self.resetStartRowUser();
-                return Object.values(self.inventories).filter(item => {
+                return Object.values(self.filteredInventories).filter(item => {
                     if(item.epc){
                         return item;
                     }

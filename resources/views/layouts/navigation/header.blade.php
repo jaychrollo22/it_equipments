@@ -135,7 +135,7 @@
                                                 <span class="menu-desc"></span>
                                             </a>
                                         </li>
-                                        <li class="menu-item" aria-haspopup="true">
+                                        {{-- <li class="menu-item" aria-haspopup="true">
                                             <a href="{{ url('setting-companies') }}" class="menu-link">
                                                 <span class="menu-text">Companies</span>
                                                 <span class="menu-desc"></span>
@@ -146,7 +146,7 @@
                                                 <span class="menu-text">Departments</span>
                                                 <span class="menu-desc"></span>
                                             </a>
-                                        </li>
+                                        </li> --}}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{{ url('setting-locations') }}" class="menu-link">
                                                 <span class="menu-text">Locations</span>

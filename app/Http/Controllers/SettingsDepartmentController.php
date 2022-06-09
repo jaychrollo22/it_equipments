@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\SettingDepartment;
+use App\Department;
 use DB;
 
 class SettingsDepartmentController extends Controller
@@ -25,7 +26,7 @@ class SettingsDepartmentController extends Controller
 
     public function indexData()
     {
-        return SettingDepartment::orderBy('name','ASC')->get();
+        return Department::orderBy('name','ASC')->get();
     }
 
     public function store(Request $request)
