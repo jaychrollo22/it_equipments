@@ -203,6 +203,7 @@
                                 <table class="table table-bordered table-checkable" id="kt_datatable">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">ID</th>
                                             <th class="text-center">Type</th>
                                             <th class="text-center">Model</th>
                                             <th class="text-center">Serial No.</th>
@@ -211,6 +212,7 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="(item, i) in items" :key="i" >
+                                            <td style="text-align: center; vertical-align: middle;"><small>{{item.id}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
@@ -220,7 +222,7 @@
                                             </td>
                                         </tr>
                                         <tr v-if="items.length == 0">
-                                            <td colspan="4" align="center">No Items Found</td>
+                                            <td colspan="5" align="center">No Items Found</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -233,6 +235,7 @@
                                 <table class="table table-bordered table-checkable" id="kt_datatable">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">ID</th>
                                             <th class="text-center">Type</th>
                                             <th class="text-center">Model</th>
                                             <th class="text-center">Serial No.</th>
@@ -241,6 +244,7 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="(item, i) in selectedItems" :key="i" >
+                                            <td style="text-align: center; vertical-align: middle;"><small>{{item.id}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
@@ -275,6 +279,7 @@
                             <table class="table table-bordered table-checkable" id="kt_datatable">
                                 <thead>
                                         <tr>
+                                            <th class="text-center">ID</th>
                                             <th class="text-center">Type</th>
                                             <th class="text-center">Model</th>
                                             <th class="text-center">Serial No.</th>
@@ -282,12 +287,13 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, i) in selectedItems" :key="i" >
+                                        <td style="text-align: center; vertical-align: middle;"><small>{{item.id}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
                                     </tr>
                                     <tr v-if="selectedItems.length == 0">
-                                        <td colspan="4" align="center">No Items Found</td>
+                                        <td colspan="5" align="center">No Items Found</td>
                                     </tr>
                                 </tbody>
                             </table>

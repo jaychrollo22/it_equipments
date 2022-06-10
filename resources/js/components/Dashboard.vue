@@ -22,7 +22,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xl-4">
-                        <a href="/inventories" class="card card-custom bg-success bg-hover-state-success bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
+                        <a href="#" class="card card-custom bg-success bg-hover-state-success bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url(assets/media/svg/shapes/abstract-3.svg)">
                             <div class="card-body">
                                 <i class="icon-xl fas fa-th-large text-inverse-success"></i>
                                 <span class="text-inverse-success card-title font-weight-bolder font-size-h2 mb-0 mt-6 d-block">{{overall_total_inventory.length}}</span>

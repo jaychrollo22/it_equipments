@@ -20,9 +20,19 @@ class InventoryTransfer extends Model implements AuditableContract
     }
 
     public function requested_by_info(){
-        return $this->belongsTo('App\User','requested_by','id');
+        return $this->belongsTo('App\User','requested_by','id')->select('id','name','email');
     }
     public function received_by_info(){
-        return $this->belongsTo('App\User','received_by','id');
+        return $this->belongsTo('App\User','received_by','id')->select('id','name','email');
+    }
+
+    public function approved_by_it_head_info(){
+        return $this->belongsTo('App\User','approved_by_it_head','id')->select('id','name','email');
+    }
+    public function approved_by_finance_info(){
+        return $this->belongsTo('App\User','approved_by_finance','id')->select('id','name','email');
+    }
+    public function department_info(){
+        return $this->belongsTo('App\Department','transfer_department','id')->select('id','name');
     }
 }

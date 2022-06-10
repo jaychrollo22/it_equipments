@@ -15,6 +15,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="d-flex align-items-center">
+                    <a href="#" @click="getForDisposal" class="btn btn-transparent-white font-weight-bold py-3 px-6 mr-2">Refresh</a>
+                </div>
             </div>
         </div>
 
@@ -55,18 +58,18 @@
                                 <tbody>
                                     <tr v-for="(item, i) in filteredForDisposalQueues" :key="i" >
                                         <td align="center">
-                                            {{item.requested_date}}
+                                            <small>{{item.requested_date}}</small>
                                         </td>
                                         <td align="center">
-                                            {{item.requested_by_info.name}}
+                                            <small>{{item.requested_by_info.name}}</small>
                                         </td>
                                         <td align="center">
                                             <a v-if="item.items.length > 0" :href="'/for-disposal-items?id=' + item.id" target='_blank'>
-                                                 {{item.items.length}}
+                                                <small>{{item.items.length}}</small> 
                                             </a>
                                         </td>
                                         <td align="center">
-                                            <a  :href="'/for-disposal-items?id=' + item.id" target='_blank' class="label label-warning label-pill label-inline mr-2" style="cursor:pointer"> {{item.status}} </a>
+                                            <a  :href="'/for-disposal-approval?id=' + item.id" target='_blank' :class="getColorStatus(item.status)" style="cursor:pointer"> {{item.status}} </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -106,8 +109,22 @@
             this.getForDisposal();
         },
         methods: {
+            getColorStatus(item){
+                if(item == 'For Approval'){
+                    return 'label label-warning label-pill label-inline mr-2';
+                }else if(item == 'Pre-approved'){
+                    return 'label label-info label-pill label-inline mr-2';
+                }else if(item == 'Approved'){
+                    return 'label label-primary label-pill label-inline mr-2';
+                }else if(item == 'Disapproved'){
+                    return 'label label-danger label-pill label-inline mr-2';
+                }else{
+                    return 'label label-default label-pill label-inline mr-2';
+                }
+            },
             getForDisposal() {
                 let v  = this;
+                v.for_disposals = [];
                 axios.get('/for-disposal-data')
                 .then(response => { 
                     v.for_disposals = response.data;
@@ -162,5 +179,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+    @media (min-width: 1400px){
+        .inventories-container{
+            max-width: 1840px!important;
+        }
+    }
 </style>

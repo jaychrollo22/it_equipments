@@ -123,8 +123,9 @@ class InventoriesForDisposalController extends Controller
         try {
             $validate = InventoriesForDisposal::where('id',$data['id'])->first();
             if($validate){
-                $data['status'] = 'For Approval';
                 $data['approved_by_it_head_status'] = 'Pending';
+                $data['approved_by_finance_status'] = 'Pending';
+                $data['status'] = 'For Approval';
                 unset($data['id']);
                 if($validate->update($data)){
                     DB::commit();
@@ -254,10 +255,12 @@ class InventoriesForDisposalController extends Controller
             if($for_disposal){
                 if($data['approval_type'] == 'IT'){
                     $data['approved_by_it_head_status'] = 'Disapproved';
+                    $data['approved_by_it_head_date'] = date('Y-m-d');
                     $data['status'] = 'Disapproved';
                 }
                 if($data['approval_type'] == 'Finance'){
                     $data['approved_by_finance_status'] = 'Disapproved';
+                    $data['approved_by_finance_date'] = date('Y-m-d');
                     $data['status'] = 'Disapproved';
                 }
                 if(count($for_disposal->items) > 0){
@@ -392,6 +395,13 @@ class InventoriesForDisposalController extends Controller
                 'status'=>'error'
             ];
         }
+    }
+
+    public function forDisposalApproval(){
+        session([
+            'title'=>'For Disposal Approval',
+        ]);
+        return view('pages.for_disposal.for_disposal_approval');
     }
 
 }

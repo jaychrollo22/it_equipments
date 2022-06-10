@@ -159,6 +159,12 @@
                                                 <span class="menu-desc"></span>
                                             </a>
                                         </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{{ url('setting-system-approvers') }}" class="menu-link">
+                                                <span class="menu-text">System Approvers</span>
+                                                <span class="menu-desc"></span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>

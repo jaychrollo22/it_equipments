@@ -75,17 +75,19 @@
                                 </tr>
                             </table>
                           
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label>Search</label>
                                 <input type="text" class="form-control" placeholder="Input here..." v-model="keywords">
                             </div>
-                              
+                               -->
+                            <h5>Items Lists</h5>
                             <table class="table table-bordered" id="kt_datatable">
                                 <thead>
                                     <tr>
                                         <th>Inventory Details</th>
-                                        <th class="text-center" v-if="for_disposal.status ==null || for_disposal.status == '' || for_disposal.status == 'For Approval' && isCurrentUserRequestorVisible">Action</th>
                                         <th class="text-center">File</th>
+                                        <th class="text-center" v-if="for_disposal.status ==null || for_disposal.status == '' || for_disposal.status == 'For Approval' && isCurrentUserRequestorVisible">Action</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -97,10 +99,7 @@
                                             <small>MODEL : {{item.inventory.model}}</small>
                                         </div>
                                        </td>
-                                        <td align="center" v-if="for_disposal.status ==null || for_disposal.status == '' || for_disposal.status == 'For Approval' && isCurrentUserRequestorVisible">
-                                            <button class="btn btn-sm btn-danger" @click="deleteForDisposalItem(item)">Remove</button>
-                                        </td>
-                                        <td width="200" align="center">
+                                       <td width="200" align="center">
                                             <span class="text-center" v-if="for_disposal.status ==null || for_disposal.status == '' || for_disposal.status == 'For Approval' && isCurrentUserRequestorVisible">
                                                 <input v-if="item.attachment == '' || item.attachment == '' || item.attachment == null" type="file" :id="'picture_item_' + item.id" class="form-control" v-on:change="uploadPictureAttachment(item)">
                                                 <small v-else>
@@ -115,6 +114,10 @@
                                                 </small>
                                             </span>
                                         </td>
+                                        <td align="center" v-if="for_disposal.status ==null || for_disposal.status == '' || for_disposal.status == 'For Approval' && isCurrentUserRequestorVisible">
+                                            <button class="btn btn-sm btn-danger" @click="deleteForDisposalItem(item)">Remove</button>
+                                        </td>
+                                        
                                     </tr>
                                 </tbody>
                             </table>
@@ -131,14 +134,14 @@
                                     <td v-else>
                                         <small>{{for_disposal.approved_by_it_head_info.name}}</small>
                                     </td>
-                                    <td align="center" v-if="for_disposal.approved_by_it_head_status">
+                                    <!-- <td align="center" v-if="for_disposal.approved_by_it_head_status">
                                         <span v-if="for_disposal.approved_by_it_head_status =='Pending' && isCurrentUserRequestorVisible" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" @click="showApproval('IT')"> {{for_disposal.approved_by_it_head_status}} </span>
                                         <span v-else class="label label-default label-pill label-inline mr-2"> {{for_disposal.approved_by_it_head_status}} </span>
                                         <br>
                                         <small v-if="for_disposal.approved_by_it_head_remarks">
                                              Remarks: {{for_disposal.approved_by_it_head_remarks}}
                                         </small>
-                                    </td>
+                                    </td> -->
                                 </tr>
                                 <tr>
                                     <td><small>Finance Head Approver</small> </td>
@@ -152,14 +155,14 @@
                                     <td v-else>
                                         <small>{{for_disposal.approved_by_finance_info.name}}</small>
                                     </td>
-                                    <td align="center" v-if="for_disposal.approved_by_finance_status">
+                                    <!-- <td align="center" v-if="for_disposal.approved_by_finance_status">
                                         <span v-if="for_disposal.approved_by_finance_status =='Pending' && isCurrentUserRequestorVisible" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" @click="showApproval('Finance')"> {{for_disposal.approved_by_finance_status}} </span>
                                         <span v-else class="label label-default label-pill label-inline mr-2"> {{for_disposal.approved_by_finance_status}} </span>
                                         <br>
                                         <small v-if="for_disposal.approved_by_finance_remarks">
                                             Remarks: {{for_disposal.approved_by_finance_remarks}}
                                         </small>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             </table>
                            
@@ -591,7 +594,7 @@
                 const queryString = window.location.search;
                 const urlParams = new URLSearchParams(queryString);
                 v.for_disposal_id = urlParams.get('id');
-                
+                v.for_disposal = [];
                 axios.get('/for-disposal-items-data?id='+v.for_disposal_id)
                 .then(response => { 
                     if(response.data){
@@ -659,5 +662,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+    @media (min-width: 1400px){
+        .inventories-container{
+            max-width: 1840px!important;
+        }
+    }
 </style>

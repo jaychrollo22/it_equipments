@@ -74,12 +74,20 @@ Route::get('/', function () {
     Route::post('/save-picture-for-disposal-item', 'InventoriesForDisposalController@savePictureForDisposalItem');
     Route::post('/delete-picture-for-disposal-item', 'InventoriesForDisposalController@deletePictureForDisposalItem');
 
+    Route::get('/for-disposal-approval','InventoriesForDisposalController@forDisposalApproval');
+
     //Transfer Inventories
     Route::get('/inventory-transfer', 'InventoryController@transfer')->name('transfer');
     Route::get('/inventory-transfer-data', 'InventoryController@transferData');
     Route::post('/save-inventory-transfer', 'InventoryController@saveTransfer');
     Route::post('/update-inventory-transfer', 'InventoryController@updateTransfer');
     Route::post('/remove-inventory-transfer-item', 'InventoryController@removeTransferItem');
+
+    Route::get('/transfer-approval', 'InventoryController@transferApproval');
+    Route::get('/transfer-approval-data', 'InventoryController@transferApprovalData');
+
+    Route::post('/approve-request-for-transfer', 'InventoryController@approveRequestForTransfer');
+    Route::post('/disapprove-request-for-transfer', 'InventoryController@disapproveRequestForTransfer');
 
     Route::get('/print-inventory-transfer', 'InventoryController@printTransfer');
 
@@ -168,6 +176,11 @@ Route::get('/', function () {
     Route::post('/rfid-registration-geovision-devices-activate', 'RfidRegistrationDeviceController@activatedGeovisionReaderData');
 
     //System Approver
+    Route::get('/setting-system-approvers', 'SystemApproverController@systemApprovers');
+    Route::get('/setting-system-approvers-data', 'SystemApproverController@systemApproversData');
+    Route::post('/setting-system-approvers-store', 'SystemApproverController@store');
+    Route::post('/setting-system-approvers-update', 'SystemApproverController@update');
+
     Route::get('/system-approver-it-data', 'SystemApproverController@systemApproverITData');
     Route::get('/system-approver-finance-data', 'SystemApproverController@systemApproverFinanceData');
 

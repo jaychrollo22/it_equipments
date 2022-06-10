@@ -243,6 +243,8 @@ class InventoryController extends Controller
             'date_requested' => 'required',
             'date_of_transfer' => 'required',
             'transfer_inventories' => 'required',
+            'approved_by_it_head' => 'required',
+            'approved_by_finance' => 'required',
         ]);
 
         $data = $request->all();
@@ -260,7 +262,11 @@ class InventoryController extends Controller
                     'date_requested' => $data['date_requested'],
                     'date_of_transfer' => $data['date_of_transfer'],
                     'transfer_location' => $data['transfer_location'],
-                    'status' => 'Pending',
+                    'approved_by_it_head' => $data['approved_by_it_head'],
+                    'approved_by_it_head_status' => 'Pending',
+                    'approved_by_finance' => $data['approved_by_finance'],
+                    'approved_by_finance_status' => 'Pending',
+                    'status' => 'For Approval',
                 ];
 
                 if($save_transfer = InventoryTransfer::create($transfer_data)){
@@ -318,6 +324,8 @@ class InventoryController extends Controller
             'date_requested' => 'required',
             'date_of_transfer' => 'required',
             'transfer_inventories' => 'required',
+            'approved_by_it_head' => 'required',
+            'approved_by_finance' => 'required',
         ]);
 
         $data = $request->all();
@@ -339,6 +347,11 @@ class InventoryController extends Controller
                         'transfer_location' => $data['transfer_location'],
                         'remarks' => $data['remarks'],
                         'effective_date' => $data['effective_date'],
+                        'approved_by_it_head' => $data['approved_by_it_head'],
+                        'approved_by_it_head_status' => 'Pending',
+                        'approved_by_finance' => $data['approved_by_finance'],
+                        'approved_by_finance_status' => 'Pending',
+                        'status' => 'For Approval',
                     ];
 
                     if($save_transfer = $check_transfer->update($transfer_data)){
@@ -411,6 +424,91 @@ class InventoryController extends Controller
         }
     }
 
+    public function transferApproval(){
+        session([
+            'title' => 'Transfer Approval'
+        ]);
+        return view('pages.inventories.transfer_approval');
+    }
+
+    public function transferApprovalData(Request $request){
+        return $inventory_transfer = InventoryTransfer::with('inventory_transfer_items.inventory_info',
+                                                                'requested_by_info',
+                                                                'received_by_info',
+                                                                'approved_by_it_head_info',
+                                                                'approved_by_finance_info'
+                                                        )
+                                                        ->where('transfer_code',$request->transfer_code)
+                                                        ->first();
+    }
+
+    public function approveRequestForTransfer(Request $request){
+        $data = $request->all();
+        DB::beginTransaction();
+        try {
+            $inventory_transfer = InventoryTransfer::where('id',$data['id'])->first();
+            if($inventory_transfer){
+                if($data['approval_type'] == 'IT'){
+                    $data['approved_by_it_head_status'] = 'Approved';
+                    $data['approved_by_it_head_date'] = date('Y-m-d');
+                    $data['approved_by_it_head_remarks'] = $request->approved_by_it_head_remarks;
+                    $data['status'] = 'Pre-approved';
+                }
+                if($data['approval_type'] == 'Finance'){
+                    $data['approved_by_finance_status'] = 'Approved';
+                    $data['approved_by_finance_date'] = date('Y-m-d');
+                    $data['approved_by_finance_remarks'] = $request->approved_by_finance_remarks;
+                    $data['status'] = 'Approved';
+                }
+                unset($data['approval_type']);
+                if($inventory_transfer->update($data)){
+                    DB::commit();
+                    return $response = [
+                        'status'=>'saved'
+                    ];
+                }
+            }
+        }catch (Exception $e) {
+            DB::rollBack();
+            return $data = [
+                'status'=>'error'
+            ];
+        }
+    }
+    public function disapproveRequestForTransfer(Request $request){
+        $data = $request->all();
+        DB::beginTransaction();
+        try {
+            $inventory_transfer = InventoryTransfer::where('id',$data['id'])->first();
+            if($inventory_transfer){
+                if($data['approval_type'] == 'IT'){
+                    $data['approved_by_it_head_status'] = 'Disapproved';
+                    $data['approved_by_it_head_date'] = date('Y-m-d');
+                    $data['approved_by_it_head_remarks'] = $request->approved_by_it_head_remarks;
+                    $data['status'] = 'Disapproved';
+                }
+                if($data['approval_type'] == 'Finance'){
+                    $data['approved_by_finance_status'] = 'Disapproved';
+                    $data['approved_by_finance_date'] = date('Y-m-d');
+                    $data['approved_by_finance_remarks'] = $request->approved_by_finance_remarks;
+                    $data['status'] = 'Disapproved';
+                }
+                unset($data['approval_type']);
+                if($inventory_transfer->update($data)){
+                    DB::commit();
+                    return $response = [
+                        'status'=>'saved'
+                    ];
+                }
+            }
+        }catch (Exception $e) {
+            DB::rollBack();
+            return $data = [
+                'status'=>'error'
+            ];
+        }
+    }
+
     public function printTransfer(Request $request){
         $data = $request->all();
         $transfer_data = InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by_info','received_by_info')->where('transfer_code',$data['transfer_code'])->first();
@@ -423,7 +521,10 @@ class InventoryController extends Controller
 
     public function searchTransferCode(Request $request){
         $data = $request->all();
-        $inventory_transfer = InventoryTransfer::with('inventory_transfer_items.inventory_info')->where('transfer_code',$data['transfer_code'])->first();
+        $inventory_transfer = InventoryTransfer::with('inventory_transfer_items.inventory_info')
+                                                ->where('transfer_code',$data['transfer_code'])
+                                                ->where('status','Approved')
+                                                ->first();
         return $inventory_transfer;
     }
 

@@ -1,31 +1,22 @@
 <template>
 <div>
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-        <!--begin::Subheader-->
         <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
             <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap inventories-container">
-                <!--begin::Info-->
                 <div class="d-flex align-items-center flex-wrap mr-1">
-                    <!--begin::Heading-->
                     <div class="d-flex flex-column">
-                        <!--begin::Title-->
                         <h2 class="text-white font-weight-bold my-2 mr-5">Receive</h2>
-                        <!--end::Title-->
-                        <!--begin::Breadcrumb-->
                         <div class="d-flex align-items-center font-weight-bold my-2">
-                            <!--begin::Item-->
                             <a href="#" class="opacity-75 hover-opacity-100">
                                 <i class="flaticon2-shelter text-white icon-1x"></i>
                             </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
                             <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
                             <a href="" class="text-white text-hover-white opacity-75 hover-opacity-100">Transaction Logs</a>
-                            <!--end::Item-->
                         </div>
-                        <!--end::Breadcrumb-->
                     </div>
-                    <!--end::Heading-->
+                </div>
+                <div class="d-flex align-items-center">
+                    <a href="#" @click="getInventoryTransferData" class="btn btn-transparent-white font-weight-bold py-3 px-6 mr-2">Refresh</a>
                 </div>
             </div>
         </div>
@@ -64,6 +55,7 @@
                                         <th class="text-center">Date Requested</th>
                                         <th class="text-center">Location</th>
                                         <th class="text-center">Items</th>
+                                        <th class="text-center">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -74,6 +66,8 @@
                                        <td class="text-center"><small>{{transfer.date_requested}}</small></td>
                                        <td class="text-center"><small>{{transfer.transfer_location}}</small></td>
                                        <td class="text-center"><a href="#" @click="viewReceiveItems(transfer)" title="View Items">{{transfer.inventory_transfer_items.length}}</a></td>
+                                       <td class="text-center"><span @click="viewReceiveItems(transfer)" style="cursor:pointer;" :class="getColorStatus(viewStatus(transfer.inventory_transfer_items))">{{viewStatus(transfer.inventory_transfer_items)}}</span></td>
+                                       
                                     </tr>
                                 </tbody>
                             </table>
@@ -184,6 +178,7 @@
                                 <table class="table table-bordered table-checkable" id="kt_datatable">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">ID</th>
                                             <th class="text-center">Type</th>
                                             <th class="text-center">Model</th>
                                             <th class="text-center">Serial No.</th>
@@ -194,6 +189,7 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="(item, i) in transferData.inventory_transfer_items" :key="i" >
+                                            <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.id}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.type}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.model}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.serial_number}}</small></td>
@@ -243,6 +239,29 @@
             this.getInventoryTransferData();
         },
         methods: {
+            getColorStatus(status){
+                if(status == 'Received'){
+                    return 'label label-primary label-pill label-inline mr-2';
+                }else if(status == 'Partial Received'){
+                    return 'label label-info label-pill label-inline mr-2';
+                }else{
+                    return 'label label-warning label-pill label-inline mr-2';
+                }
+            },
+            viewStatus(items){
+                var item_received = Object.values(items).filter(item => {
+                    if(item.status == 'Received'){
+                        return item;
+                    }
+                });
+                if(item_received.length == 0){
+                    return 'Pending';
+                }else if(item_received.length == items.length){
+                    return 'Received';
+                }else{
+                    return 'Partial Received';
+                }
+            },
             viewReceiveItems(item){
                 let v = this;
                 v.receive_step_1 = 'done';
@@ -302,6 +321,13 @@
                 }  
             },
             receiveItems() {
+                this.keywords = '',
+                this.transferCode = '',
+                this.transferData = '',
+
+                //Receive
+                this.receive_step_1 = 'current',
+                this.receive_step_2 = '',
                 $('#receive-modal').modal('show');
             },
             previousStep1Receive(){

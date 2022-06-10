@@ -1,31 +1,22 @@
 <template>
 <div>
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-        <!--begin::Subheader-->
         <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
             <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap inventories-container">
-                <!--begin::Info-->
                 <div class="d-flex align-items-center flex-wrap mr-1">
-                    <!--begin::Heading-->
                     <div class="d-flex flex-column">
-                        <!--begin::Title-->
                         <h2 class="text-white font-weight-bold my-2 mr-5">Transfer</h2>
-                        <!--end::Title-->
-                        <!--begin::Breadcrumb-->
                         <div class="d-flex align-items-center font-weight-bold my-2">
-                            <!--begin::Item-->
                             <a href="#" class="opacity-75 hover-opacity-100">
                                 <i class="flaticon2-shelter text-white icon-1x"></i>
                             </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
                             <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
                             <a href="" class="text-white text-hover-white opacity-75 hover-opacity-100">Asset Transfer</a>
-                            <!--end::Item-->
                         </div>
-                        <!--end::Breadcrumb-->
                     </div>
-                    <!--end::Heading-->
+                </div>
+                <div class="d-flex align-items-center">
+                    <a href="#" @click="getInventoryTransfers" class="btn btn-transparent-white font-weight-bold py-3 px-6 mr-2">Refresh</a>
                 </div>
             </div>
         </div>
@@ -46,10 +37,20 @@
 
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 mt-2">
                                 <div class="form-group">
-                                    <label>Search</label>
-                                    <input type="text" class="form-control" placeholder="Input here..." v-model="keywords">
+                                    <input type="text" class="form-control" placeholder="Search here..." v-model="keywords">
+                                </div>
+                            </div>
+                             <div class="col-md-3 mt-2">
+                                <div class="form-group">
+                                    <select class="form-control form-control-primary" v-model="filter_status">
+                                        <option value="">Choose Filter</option>
+                                        <option value="For Approval">For Approval</option>
+                                        <option value="Pre-approved">Pre-approved</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Disapproved">Disapproved</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -64,6 +65,7 @@
                                         <th class="text-center">Date Requested</th>
                                         <th class="text-center">Location</th>
                                         <th class="text-center">Items</th>
+                                        <th class="text-center">Status</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -75,11 +77,18 @@
                                        <td class="text-center"><small>{{transfer.date_requested}}</small></td>
                                        <td class="text-center"><small>{{transfer.transfer_location}}</small></td>
                                        <td class="text-center"><small>{{transfer.inventory_transfer_items.length}}</small></td>
+                                       <td class="text-center"><a :href="'/transfer-approval?transfer_code='+transfer.transfer_code" target="_blank" :class="getColorStatus(transfer.status)">{{transfer.status}}</a></td>
                                        <td class="text-center">
-                                            <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editTransfer(transfer)" title="Update">
+                                            <button v-if="transfer.status == 'Approved' || transfer.status == 'Pre-approved'" type="button" class="btn btn-light-primary btn-icon btn-sm" disabled title="Not Available">
                                                 <i class="flaticon-edit"></i>
                                             </button>
-                                            <a :href="'print-inventory-transfer?transfer_code='+transfer.transfer_code" target="_blank" type="button" class="btn btn-light-primary btn-icon btn-sm" title="Print">
+                                            <button v-else type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editTransfer(transfer)" title="Update">
+                                                <i class="flaticon-edit"></i>
+                                            </button>
+                                            <a v-if="transfer.status == 'Approved'" :href="'print-inventory-transfer?transfer_code='+transfer.transfer_code" target="_blank" type="button" class="btn btn-light-primary btn-icon btn-sm" title="Print">
+                                                <i class="flaticon2-printer"></i>
+                                            </a>
+                                            <a v-else type="button" class="btn btn-light-default btn-icon btn-sm" title="Not Available" >
                                                 <i class="flaticon2-printer"></i>
                                             </a>
                                        </td>
@@ -198,15 +207,17 @@
                         <table class="table table-bordered" id="kt_datatable">
                             <thead>
                                 <tr>
+                                   <th class="text-center">ID</th>
                                    <th class="text-center">Type</th>
                                     <th class="text-center">Model</th>
                                     <th class="text-center">Serial No.</th>
-                                    <th class="text-center">Location</th>
+                                    <th class="text-center">Current Location</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(item, i) in items" :key="i" >
+                                    <td style="text-align: center; vertical-align: middle;"><small>{{item.id}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
@@ -217,7 +228,7 @@
                                     </td>
                                 </tr>
                                 <tr v-if="items.length == 0">
-                                    <td colspan="5" align="center">No Items Found</td>
+                                    <td colspan="6" align="center">No Items Found</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -228,15 +239,17 @@
                             <table class="table table-bordered table-checkable" id="kt_datatable">
                                 <thead>
                                     <tr>
+                                        <th class="text-center">ID</th>
                                         <th class="text-center">Type</th>
                                         <th class="text-center">Model</th>
                                         <th class="text-center">Serial No.</th>
-                                        <th class="text-center">Location</th>
+                                        <th class="text-center">Current Location</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, i) in selectedItems" :key="i" >
+                                        <td style="text-align: center; vertical-align: middle;"><small>{{item.id}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
@@ -246,6 +259,31 @@
                                         </td>
                                     </tr>
                                 </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td><small>IT Head Approver</small> </td>
+                                    <td>
+                                        <select class="form-control" v-model="transfer.approved_by_it_head">
+                                           <option value="">Choose IT Approver</option>
+                                           <option v-for="(item, i) in systemApproversIT" :key="i"  :value="item.user_id" >{{item.user.name}}</option>
+                                       </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><small>Finance Head Approver</small> </td>
+                                    <td>
+                                        <select class="form-control" v-model="transfer.approved_by_finance">
+                                           <option value="">Choose Finance Approver</option>
+                                           <option v-for="(item, i) in systemApproversFinance" :key="i"  :value="item.user_id" >{{item.user.name}}</option>
+                                       </select>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </div>
@@ -374,6 +412,7 @@
                         <table class="table table-bordered" id="kt_datatable">
                             <thead>
                                 <tr>
+                                   <th class="text-center">ID</th>
                                    <th class="text-center">Type</th>
                                     <th class="text-center">Model</th>
                                     <th class="text-center">Serial No.</th>
@@ -383,6 +422,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(item, i) in items" :key="i" >
+                                    <td style="text-align: center; vertical-align: middle;"><small>{{item.id}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
@@ -393,7 +433,7 @@
                                     </td>
                                 </tr>
                                 <tr v-if="items.length == 0">
-                                    <td colspan="5" align="center">No Items Found</td>
+                                    <td colspan="6" align="center">No Items Found</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -404,6 +444,7 @@
                             <table class="table table-bordered table-checkable" id="kt_datatable">
                                 <thead>
                                     <tr>
+                                        <th class="text-center">ID</th>
                                         <th class="text-center">Type</th>
                                         <th class="text-center">Model</th>
                                         <th class="text-center">Serial No.</th>
@@ -413,6 +454,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, i) in selectedEditItems" :key="i" >
+                                        <td style="text-align: center; vertical-align: middle;"><small>{{item.id}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
@@ -426,8 +468,31 @@
                             </table>
                         </div>
                     </div>
-
-                    <button v-if="selectedEditItems.length > 0" class="btn btn-md btn-primary float-right" @click="saveEditTransfer">Update Transfer</button>
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td><small>IT Head Approver</small> </td>
+                                    <td>
+                                        <select class="form-control" v-model="transfer.approved_by_it_head">
+                                           <option value="">Choose IT Approver</option>
+                                           <option v-for="(item, i) in systemApproversIT" :key="i"  :value="item.user_id" >{{item.user.name}}</option>
+                                       </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><small>Finance Head Approver</small> </td>
+                                    <td>
+                                        <select class="form-control" v-model="transfer.approved_by_finance">
+                                           <option value="">Choose Finance Approver</option>
+                                           <option v-for="(item, i) in systemApproversFinance" :key="i"  :value="item.user_id" >{{item.user.name}}</option>
+                                       </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <button v-if="selectedEditItems.length > 0 && (transfer.status == 'For Approval' || transfer.status == 'Disapproved')" class="btn btn-md btn-primary float-right" @click="saveEditTransfer">Update Transfer</button>
                     <button v-else class="btn btn-md btn-primary float-right" disabled>Update Transfer</button>
                 </div>
             </div>
@@ -448,6 +513,7 @@
         },
         data() {
             return {
+                filter_status : '',
                 keywords: '',
                 action : '',
                 inventoryTransfers : [],
@@ -475,6 +541,9 @@
                 companyOptions : [],
                 locationOptions : [],
 
+                systemApproversIT : [],
+                systemApproversFinance : [],
+
                 //User
                 currentPage: 0,
                 itemsPerPage: 10, 
@@ -486,8 +555,49 @@
             this.getDepartments();
             this.getCompanies();
             this.getLocations();
+            this.getSystemApproversIT();
+            this.getSystemApproversFinance();
         },
         methods: {
+            getColorStatus(item){
+                if(item == 'For Approval'){
+                    return 'label label-warning label-pill label-inline mr-2';
+                }else if(item == 'Pre-approved'){
+                    return 'label label-info label-pill label-inline mr-2';
+                }else if(item == 'Approved'){
+                    return 'label label-primary label-pill label-inline mr-2';
+                }else if(item == 'Disapproved'){
+                    return 'label label-danger label-pill label-inline mr-2';
+                }else{
+                    return 'label label-default label-pill label-inline mr-2';
+                }
+            },
+            getSystemApproversIT(){
+                this.systemApproversIT = [];
+                 axios.get('/system-approver-it-data')
+                .then(response => { 
+                    if(response.data){
+                        this.systemApproversIT = response.data;
+                    }
+                   
+                })
+                .catch(error => { 
+                    this.errors = error.response.data.error;
+                })
+            },
+            getSystemApproversFinance(){
+                this.systemApproversFinance = [];
+                 axios.get('/system-approver-finance-data')
+                .then(response => { 
+                    if(response.data){
+                        this.systemApproversFinance = response.data;
+                    }
+                   
+                })
+                .catch(error => { 
+                    this.errors = error.response.data.error;
+                })
+            },
             saveEditTransfer(){
                 let v = this;
                   Swal.fire({
@@ -510,6 +620,8 @@
                         formData.append('transfer_inventories', v.selectedEditItems ? JSON.stringify(v.selectedEditItems) : "");
                         formData.append('remarks', v.transfer.remarks ? v.transfer.remarks : "");
                         formData.append('effective_date', v.transfer.effective_date ? v.transfer.effective_date : "");
+                        formData.append('approved_by_it_head', v.transfer.approved_by_it_head ? v.transfer.approved_by_it_head : "");
+                        formData.append('approved_by_finance', v.transfer.approved_by_finance ? v.transfer.approved_by_finance : "");
                         axios.post(`/update-inventory-transfer`, formData)
                         .then(response =>{
                             if(response.data.status == "success"){
@@ -546,6 +658,9 @@
                 denyButtonText: `No`,
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        var index = this.selectedEditItems.findIndex(item_select => item_select.id == item.id);
+                        this.selectedEditItems.splice(index, 1);
+
                         let formData = new FormData();
                         formData.append('inventory_id', item.id ? item.id : "");
                         formData.append('inventory_transfer_id', v.transfer.id? v.transfer.id : "");
@@ -590,6 +705,9 @@
                 v.transfer.transfer_location = transfer.transfer_location;
                 v.transfer.remarks = transfer.remarks;
                 v.transfer.effective_date = transfer.effective_date;
+                v.transfer.approved_by_it_head = transfer.approved_by_it_head;
+                v.transfer.approved_by_finance = transfer.approved_by_finance;
+                v.transfer.status = transfer.status;
 
                 if(transfer.inventory_transfer_items){
                     v.selectedEditItems = [];
@@ -629,6 +747,8 @@
                         formData.append('transfer_inventories', v.selectedItems ? JSON.stringify(v.selectedItems) : "");
                         formData.append('remarks', v.transfer.remarks ? v.transfer.remarks : "");
                         formData.append('effective_date', v.transfer.effective_date ? v.transfer.effective_date : "");
+                        formData.append('approved_by_it_head', v.transfer.approved_by_it_head ? v.transfer.approved_by_it_head : "");
+                        formData.append('approved_by_finance', v.transfer.approved_by_finance ? v.transfer.approved_by_finance : "");
                         axios.post(`/save-inventory-transfer`, formData)
                         .then(response =>{
                             if(response.data.status == "success"){
@@ -759,6 +879,7 @@
             },
             getInventoryTransfers(){
                 let v = this;
+                v.inventoryTransfers = [];
                 axios.get('/inventory-transfer-data')
                 .then(response => { 
                     v.inventoryTransfers = response.data;
@@ -801,7 +922,31 @@
                 let self = this;
                 if(self.inventoryTransfers){
                     return Object.values(self.inventoryTransfers).filter(transfer => {
-                        return transfer.transfer_code.toLowerCase().includes(this.keywords.toLowerCase())
+                        if(self.filter_status){
+                            if(self.filter_status == 'For Approval'){
+                                if(transfer.status == 'For Approval'){
+                                    return transfer.transfer_code.toLowerCase().includes(this.keywords.toLowerCase())
+                                }
+                            }
+                            if(self.filter_status == 'Approved'){
+                                if(transfer.status == 'Approved'){
+                                    return transfer.transfer_code.toLowerCase().includes(this.keywords.toLowerCase())
+                                }
+                            }
+                            if(self.filter_status == 'Pre-approved'){
+                                if(transfer.status == 'Pre-approved'){
+                                    return transfer.transfer_code.toLowerCase().includes(this.keywords.toLowerCase())
+                                }
+                            }
+                            if(self.filter_status == 'Disapproved'){
+                                if(transfer.status == 'Disapproved'){
+                                    return transfer.transfer_code.toLowerCase().includes(this.keywords.toLowerCase())
+                                }
+                            }
+                        }else{
+                            return transfer.transfer_code.toLowerCase().includes(this.keywords.toLowerCase())
+                        }
+                        
                     });
                 }else{
                     return [];

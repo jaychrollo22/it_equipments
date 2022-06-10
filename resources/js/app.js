@@ -26,6 +26,8 @@ Vue.component('inventories', require('./components/Inventories.vue').default);
 Vue.component('inventory-transfer', require('./components/InventoryTransfer.vue').default);
 Vue.component('inventory-receive', require('./components/InventoryReceive.vue').default);
 
+Vue.component('transfer-approval', require('./components/TransferApproval.vue').default);
+
 Vue.component('users', require('./components/Users.vue').default);
 Vue.component('activity-logs', require('./components/ActivityLogs.vue').default);
 
@@ -36,6 +38,7 @@ Vue.component('departments', require('./components/Settings/Departments.vue').de
 Vue.component('buildings', require('./components/Settings/Buildings.vue').default);
 Vue.component('types', require('./components/Settings/Types.vue').default);
 Vue.component('categories', require('./components/Settings/Categories.vue').default);
+Vue.component('system-approvers', require('./components/Settings/SystemApprovers.vue').default);
 
 //Reports
 Vue.component('borrow-logs', require('./components/Reports/BorrowLogs.vue').default);
@@ -51,6 +54,7 @@ Vue.component('rfid-registration-device', require('./components/Rfid/RfidRegistr
 //For Disposal
 Vue.component('for-disposal', require('./components/ForDisposal/ForDisposal.vue').default);
 Vue.component('for-disposal-items', require('./components/ForDisposal/ForDisposalItems.vue').default);
+Vue.component('for-disposal-approval', require('./components/ForDisposal/ForDisposalApproval.vue').default);
 
 //Generate LOU
 Vue.component('generate-lou', require('./components/LetterOfUndertaking/GenerateLou.vue').default);
