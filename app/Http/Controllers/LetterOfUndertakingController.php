@@ -150,17 +150,17 @@ class LetterOfUndertakingController extends Controller
 
                     $full_name = ucfirst($employee_info->first_name) . ' ' . ucfirst($employee_info->last_name);
                     $pdf->SetXY(74,39);
-                    $pdf->SetFont('Arial', '', 7);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->MultiCell(59,3, utf8_decode($full_name) ,0,'C');
 
                     $company = $employee_info->companies[0]->name;
                     $pdf->SetXY(12,46);
-                    $pdf->SetFont('Arial', '', 7);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->MultiCell(95,3, ucwords($company) ,0,'C');
 
                     $address = $inventory_info->setting_location ? $inventory_info->setting_location->address : "";
                     $pdf->SetXY(47,53);
-                    $pdf->SetFont('Arial', '', 7);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->MultiCell(150,3, ucwords($address) ,0,'C');
 
                     //Computer Identification
@@ -224,17 +224,17 @@ class LetterOfUndertakingController extends Controller
 
                     $full_name = ucfirst($employee_info->first_name) . ' ' . ucfirst($employee_info->last_name);
                     $pdf->SetXY(74,39);
-                    $pdf->SetFont('Arial', '', 7);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->MultiCell(59,3, utf8_decode($full_name) ,0,'C');
 
                     $company = $employee_info->companies[0]->name;
                     $pdf->SetXY(12,46);
-                    $pdf->SetFont('Arial', '', 7);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->MultiCell(95,3, ucwords($company) ,0,'C');
 
                     $address = $inventory_info->setting_location ? $inventory_info->setting_location->address : "";
                     $pdf->SetXY(47,53);
-                    $pdf->SetFont('Arial', '', 7);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->MultiCell(150,3, ucwords($address) ,0,'C');
 
                     //Computer Identification
@@ -298,12 +298,12 @@ class LetterOfUndertakingController extends Controller
 
                     $full_name = ucfirst($employee_info->first_name) . ' ' . ucfirst($employee_info->last_name);
                     $pdf->SetXY(77.5,19.5);
-                    $pdf->SetFont('Arial', '', 7);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->MultiCell(59,3, utf8_decode($full_name) ,0,'C');
 
                     $address = $inventory_info->setting_location ? $inventory_info->setting_location->address : "";
                     $pdf->SetXY(32,24);
-                    $pdf->SetFont('Arial', '', 7);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->MultiCell(166,3, ucwords($address) ,0,'C');
 
                     //Computer Identification
@@ -368,17 +368,17 @@ class LetterOfUndertakingController extends Controller
 
                     $full_name = ucfirst($employee_info->first_name) . ' ' . ucfirst($employee_info->last_name);
                     $pdf->SetXY(73,33);
-                    $pdf->SetFont('Arial', '', 7);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->MultiCell(59,3, utf8_decode($full_name) ,0,'C');
 
                     $company = $employee_info->companies[0]->name;
                     $pdf->SetXY(12,40);
-                    $pdf->SetFont('Arial', '', 7);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->MultiCell(76,3, ucwords($company) ,0,'C');
 
                     $address = $inventory_info->setting_location ? $inventory_info->setting_location->address : "";
                     $pdf->SetXY(33,47);
-                    $pdf->SetFont('Arial', '', 7);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->MultiCell(160,3, ucwords($address) ,0,'C');
 
                     //Computer Identification
