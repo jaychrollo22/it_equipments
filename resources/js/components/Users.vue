@@ -1,37 +1,24 @@
 <template>
 <div>
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-        <!--begin::Subheader-->
         <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
             <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-                <!--begin::Info-->
                 <div class="d-flex align-items-center flex-wrap mr-1">
-                    <!--begin::Heading-->
                     <div class="d-flex flex-column">
-                        <!--begin::Title-->
                         <h2 class="text-white font-weight-bold my-2 mr-5">Users</h2>
-                        <!--end::Title-->
-                        <!--begin::Breadcrumb-->
                         <div class="d-flex align-items-center font-weight-bold my-2">
-                            <!--begin::Item-->
                             <a href="#" class="opacity-75 hover-opacity-100">
                                 <i class="flaticon2-shelter text-white icon-1x"></i>
                             </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
                             <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
                             <a href="" class="text-white text-hover-white opacity-75 hover-opacity-100">User Roles</a>
-                            <!--end::Item-->
                         </div>
-                        <!--end::Breadcrumb-->
                     </div>
-                    <!--end::Heading-->
                 </div>
             </div>
         </div>
 
         <div class="d-flex flex-column-fluid">
-            <!--begin::Container-->
             <div class="container">
                 <div class="card card-custom gutter-b">
                     <div class="card-header flex-wrap py-3">
@@ -64,13 +51,13 @@
                                     <select class="form-control form-control-primary" v-model="filterRole" id="filterRole">
                                         <option value="">Filter by Role</option>
                                         <option value="Administrator">Administrator</option>
+                                        <option value="Finance">Finance</option>
                                         <option value="IT Support">IT Support</option>
                                         <option value="User">User</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <!--begin: Datatable-->
                         <div class="table-responsive">
                             <table class="table table-bordered table-checkable" id="kt_datatable">
                                 <thead>
@@ -141,6 +128,7 @@
                                 <select name="select" v-model="user.role" class="form-control">
                                     <option value="">Select Role</option>
                                     <option value="Administrator">Administrator</option>
+                                    <option value="Finance">Finance</option>
                                     <option value="IT Support">IT Support</option>
                                     <option value="User">User</option>
                                 </select>
