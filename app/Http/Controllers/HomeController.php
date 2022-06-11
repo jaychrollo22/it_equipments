@@ -11,6 +11,7 @@ use App\SettingLocation;
 use App\SettingType;
 
 use Auth;
+use DB;
 
 class HomeController extends Controller
 {
@@ -97,5 +98,9 @@ class HomeController extends Controller
     }
     public function inventoriesMaintenanceData(){
         return $inventories = Inventory::where('status','For Repair')->get();
+    }
+
+    public function inventoriesStatusCountData(){
+        return $inventories = Inventory::select('status', DB::raw('count(*) as total'))->groupBy('status')->get();
     }
 }

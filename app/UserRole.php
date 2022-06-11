@@ -14,7 +14,5 @@ class UserRole extends Model implements AuditableContract
     protected $auditIncluded = [];
     protected $auditTimestamps = true;
     
-    protected $fillable = [
-        'user_id', 'role'
-    ];
+    protected $guarded = [];
 }

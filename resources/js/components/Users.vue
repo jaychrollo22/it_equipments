@@ -135,6 +135,140 @@
                                 <span class="text-danger" v-if="errors.role">{{ errors.role[0] }}</span>
                             </div>
                         </div>
+                        <strong>Inventories</strong><br>
+                        <div class="col-md-12">
+                            
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.inventory_masterlist" id="inventory_masterlist"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Masterlist
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.inventory_transfer_location" id="inventory_transfer_location"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Transfer Location
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.inventory_receive_transfer" id="inventory_receive_transfer"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Receive Transfer
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.report_for_disposal" id="report_for_disposal"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        For Disposal
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <strong>Reports</strong><br>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.report_asset_handover_form" id="report_asset_handover_form"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Asset Hand Over Forms
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.report_employee_asset" id="report_employee_asset"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Employee Asset
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.report_borrowed_inventories" id="report_borrowed_inventories"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Borrowed Inventories
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.report_returned_inventories" id="report_returned_inventories"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Returned Inventories
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.report_disposed_logs" id="report_disposed_logs"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Disposed Logs
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.activity_logs" id="activity_logs"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Activity Logs
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <strong>Configuration</strong><br>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.rfid_registration_devices" id="rfid_registration_devices"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        RFID Registration Devices
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.users" id="users"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Users
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.items" id="items"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Items
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -201,6 +335,19 @@
                         let formData = new FormData();
                         formData.append('user_id', v.user.id ? v.user.id : "");
                         formData.append('role', v.user.role ? v.user.role : "");
+                        formData.append('inventory_masterlist', v.user.inventory_masterlist ? v.user.inventory_masterlist : "");
+                        formData.append('inventory_transfer_location', v.user.inventory_transfer_location ? v.user.inventory_transfer_location : "");
+                        formData.append('inventory_receive_transfer', v.user.inventory_receive_transfer ? v.user.inventory_receive_transfer : "");
+                        formData.append('report_for_disposal', v.user.report_for_disposal ? v.user.report_for_disposal : "");
+                        formData.append('report_asset_handover_form', v.user.report_asset_handover_form ? v.user.report_asset_handover_form : "");
+                        formData.append('report_employee_asset', v.user.report_employee_asset ? v.user.report_employee_asset : "");
+                        formData.append('report_borrowed_inventories', v.user.report_borrowed_inventories ? v.user.report_borrowed_inventories : "");
+                        formData.append('report_returned_inventories', v.user.report_returned_inventories ? v.user.report_returned_inventories : "");
+                        formData.append('report_disposed_logs', v.user.report_disposed_logs ? v.user.report_disposed_logs : "");
+                        formData.append('rfid_registration_devices', v.user.rfid_registration_devices ? v.user.rfid_registration_devices : "");
+                        formData.append('users', v.user.users ? v.user.users : "");
+                        formData.append('activity_logs', v.user.activity_logs ? v.user.activity_logs : "");
+                        formData.append('items', v.user.items ? v.user.items : "");
 
                         axios.post(`/save-change-user-role`, formData)
                         .then(response =>{
@@ -225,6 +372,19 @@
                 let v = this;
                 v.user = user;
                 v.user.role = user.user_role ? user.user_role.role : "User"; 
+                v.user.inventory_masterlist = user.user_role ? user.user_role.inventory_masterlist : ""; 
+                v.user.inventory_transfer_location = user.user_role ? user.user_role.inventory_transfer_location : ""; 
+                v.user.inventory_receive_transfer = user.user_role ? user.user_role.inventory_receive_transfer : ""; 
+                v.user.report_for_disposal = user.user_role ? user.user_role.report_for_disposal : ""; 
+                v.user.report_asset_handover_form = user.user_role ? user.user_role.report_asset_handover_form : ""; 
+                v.user.report_employee_asset = user.user_role ? user.user_role.report_employee_asset : ""; 
+                v.user.report_borrowed_inventories = user.user_role ? user.user_role.report_borrowed_inventories : ""; 
+                v.user.report_returned_inventories = user.user_role ? user.user_role.report_returned_inventories : ""; 
+                v.user.report_disposed_logs = user.user_role ? user.user_role.report_disposed_logs : ""; 
+                v.user.rfid_registration_devices = user.user_role ? user.user_role.rfid_registration_devices : ""; 
+                v.user.users = user.user_role ? user.user_role.users : ""; 
+                v.user.activity_logs = user.user_role ? user.user_role.activity_logs : ""; 
+                v.user.items = user.user_role ? user.user_role.items : ""; 
                 $('#change-user-role-modal').modal('show');
             },
             getUsers() {

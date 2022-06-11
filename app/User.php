@@ -42,7 +42,7 @@ class User extends Authenticatable
 
     public function user_role()
     {
-    	return $this->hasOne('App\UserRole','user_id','id')->select('id','user_id','role');
+    	return $this->hasOne('App\UserRole','user_id','id');
     }
 
     public function employee(){
