@@ -62,6 +62,7 @@ class LoginController extends Controller
                 session([
                     'user' => $employee,
                     'user_role' => $employee->user->user_role->role,
+                    'user_permissions' => $employee->user->user_role,
                 ]); 
             }
         }
