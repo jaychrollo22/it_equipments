@@ -198,8 +198,24 @@ Route::get('/', function () {
     Route::get('/print-generate-letter-of-undertaking', 'LetterOfUndertakingController@printGenerateLetterOfUndertaking');
     Route::post('/save-lou-attachment', 'LetterOfUndertakingController@saveLetterofUndertakingAttachment');
 
+    //Requests
+    Route::get('/borrow-requests', 'RequestsController@borrowRequests');
+    Route::get('/borrow-requests-data', 'RequestsController@borrowRequestsData');
+    Route::post('/borrow-requests-update-approver', 'RequestsController@borrowRequestsUpdateApprover');
+    Route::post('/borrow-requests-disapprove-by-it-support', 'RequestsController@borrowRequestsDisapproveByItSupport');
+    Route::get('/borrow-request-for-approval', 'RequestsController@borrowRequestForApproval');
+    Route::get('/borrow-request-for-approval-data', 'RequestsController@borrowRequestForApprovalData');
+    Route::post('/approve-borrow-request', 'RequestsController@borrowRequestApprove');
+    Route::post('/disapprove-borrow-request', 'RequestsController@borrowRequestDisapprove');
     
-
+    //Home User
+    Route::get('/home-user','HomeUserController@index');
+    Route::get('/home-user-data','HomeUserController@indexData');
+    Route::get('/home-borrow-requests','HomeUserController@homeBorrowRequest');
+    Route::get('/home-borrow-requests-data','HomeUserController@homeBorrowRequestData');
+    Route::post('/borrowed-request-store','HomeUserController@borrowedRequestStore');
+    Route::post('/borrowed-request-update','HomeUserController@borrowedRequestUpdate');
+    Route::post('/borrowed-request-delete','HomeUserController@borrowedRequestDelete');
 
 
 

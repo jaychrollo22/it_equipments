@@ -65,6 +65,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-left">Employee Name</th>
+                                        <th class="text-left">Ticket No.</th>
                                         <th class="text-left">Serial No.</th>
                                         <th class="text-left">Model</th>
                                         <th class="text-left">Type</th>
@@ -77,6 +78,7 @@
                                 <tbody>
                                     <tr v-for="(item, i) in filteredAssetLogs" :key="i" >
                                         <td align="left"><small>{{item.employee_info.first_name + ' ' + item.employee_info.last_name}}</small></td>
+                                        <td align="left"><small>{{item.ticket_number}}</small></td>
                                         <td align="left"><small>{{item.inventory_info.serial_number}}</small></td>
                                         <td align="left"><small>{{item.inventory_info.model}}</small></td>
                                         <td align="left"><small>{{item.inventory_info.type}}</small></td>
@@ -194,7 +196,11 @@
                 return Object.values(self.assetLogs).filter(item => {
                     if(item.employee_info && item.inventory_info){
                         let full_name = item.employee_info.first_name + ' ' +  item.employee_info.last_name;
-                        return item.employee_info.first_name.toLowerCase().includes(this.keywords.toLowerCase()) || item.employee_info.last_name.toLowerCase().includes(this.keywords.toLowerCase()) || full_name.toLowerCase().includes(this.keywords.toLowerCase()) || item.inventory_info.serial_number.toLowerCase().includes(this.keywords.toLowerCase())
+                        return item.employee_info.first_name.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.employee_info.last_name.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || full_name.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.inventory_info.serial_number.toLowerCase().includes(this.keywords.toLowerCase())
+                                || item.ticket_number == this.keywords
                     }
                 });
             },

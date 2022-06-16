@@ -190,7 +190,7 @@
             },
             getColorStatus(item){
                 if(item == 'For Approval' || item == 'Pending'){
-                    return 'label label-default label-pill label-inline mr-2';
+                    return 'label label-warning label-pill label-inline mr-2';
                 }else if(item == 'Pre-approved'){
                     return 'label label-info label-pill label-inline mr-2';
                 }else if(item == 'Approved'){

@@ -271,7 +271,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="role">Delivery Date</label> 
-                                <input type="date" class="form-control" placeholder="Delivery Date" v-model="inventory.delivery_date">
+                                <input type="text" class="form-control" placeholder="Delivery Date" v-model="inventory.delivery_date">
                                 <span class="text-danger" v-if="errors.delivery_date">{{ errors.delivery_date[0] }}</span>
                             </div>
                         </div>
@@ -285,14 +285,14 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="role">Retired Date</label> 
-                                <input type="date" class="form-control" placeholder="Retired Date" v-model="inventory.retired_date">
+                                <input type="text" class="form-control" placeholder="Retired Date" v-model="inventory.retired_date">
                                 <span class="text-danger" v-if="errors.retired_date">{{ errors.retired_date[0] }}</span>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="role">Estimated Retirement Date</label> 
-                                <input type="date" class="form-control" placeholder="Estimated Retirement Date" v-model="inventory.estimated_retirement_date">
+                                <input type="text" class="form-control" placeholder="Estimated Retirement Date" v-model="inventory.estimated_retirement_date">
                                 <span class="text-danger" v-if="errors.estimated_retirement_date">{{ errors.estimated_retirement_date[0] }}</span>
                             </div>
                         </div>
@@ -320,7 +320,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="role">Insurance Date</label> 
-                                <input type="date" class="form-control" placeholder="Insurance Date" v-model="inventory.insurance_date">
+                                <input type="text" class="form-control" placeholder="Insurance Date" v-model="inventory.insurance_date">
                                 <span class="text-danger" v-if="errors.insurance_date">{{ errors.insurance_date[0] }}</span>
                             </div>
                         </div>
@@ -335,13 +335,6 @@
                     <h5>Others</h5>
                     <hr>
                     <div class="row">
-                        <!-- <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="role">Tab Name</label> 
-                                <input type="text" class="form-control" placeholder="Tab Name" v-model="inventory.tab_name">
-                                <span class="text-danger" v-if="errors.tab_name">{{ errors.tab_name[0] }}</span>
-                            </div>
-                        </div> -->
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="role">Area</label> 

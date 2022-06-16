@@ -64,7 +64,19 @@ class LoginController extends Controller
                     'user_role' => $employee->user->user_role->role,
                     'user_permissions' => $employee->user->user_role,
                 ]); 
+            }else{
+                session([
+                    'user' => $employee,
+                    'user_role' => 'User',
+                ]);
+                return redirect('/home-user');
             }
+        }else{
+            session([
+                'user' => $employee,
+                'user_role' => 'User',
+            ]);
+            return redirect('/home-user');
         }
     }
 }

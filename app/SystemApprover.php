@@ -10,6 +10,6 @@ class SystemApprover extends Model
     protected $guarded = [];
 
     public function user(){
-        return $this->belongsTo('App\User','user_id','id')->select('id','name');
+        return $this->belongsTo('App\User','user_id','id')->select('id','name','email');
     }
 }

@@ -59,6 +59,14 @@ Vue.component('for-disposal-approval', require('./components/ForDisposal/ForDisp
 //Generate LOU
 Vue.component('generate-lou', require('./components/LetterOfUndertaking/GenerateLou.vue').default);
 
+//Requests
+Vue.component('borrow-requests', require('./components/Requests/BorrowRequests.vue').default);
+Vue.component('borrow-request-for-approval', require('./components/Requests/BorrowRequestForApproval.vue').default);
+
+// User Page
+Vue.component('home-user', require('./components/HomeUser/HomeUser.vue').default);
+Vue.component('home-user-borrowed-requests', require('./components/HomeUser/BorrowedRequests.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -79,18 +79,18 @@
                             </a>
                             <div class="menu-submenu menu-submenu-classic menu-submenu-left">
                                 <ul class="menu-subnav">
-                                    @if(session('user_permissions.report_asset_handover_form') == 'true')
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{{ url('reports-asset-handover-forms') }}" class="menu-link">
-                                                <span class="menu-text">Asset Handover Forms</span>
-                                                <span class="menu-desc"></span>
-                                            </a>
-                                        </li>
-                                    @endif
                                     @if(session('user_permissions.report_employee_asset') == 'true')
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{{ url('reports-asset-logs') }}" class="menu-link">
                                                 <span class="menu-text">Employee Assets</span>
+                                                <span class="menu-desc"></span>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if(session('user_permissions.report_asset_handover_form') == 'true')
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{{ url('reports-asset-handover-forms') }}" class="menu-link">
+                                                <span class="menu-text">Asset Handover Forms</span>
                                                 <span class="menu-desc"></span>
                                             </a>
                                         </li>
@@ -226,6 +226,28 @@
                                 </li>
                             @endif
                         @endif
+                        <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+                            <a href="javascript:;" class="menu-link menu-toggle">
+                                <span class="menu-text">Requests</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                <ul class="menu-subnav">
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('borrow-requests') }}" class="menu-link">
+                                            <span class="menu-text">Borrow Requests</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="{{ url('return-requests') }}" class="menu-link">
+                                            <span class="menu-text">Return Requests (Not Available)</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
