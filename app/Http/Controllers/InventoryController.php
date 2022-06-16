@@ -128,7 +128,7 @@ class InventoryController extends Controller
 
         DB::beginTransaction();
         try {
-            return $data = $request->all();
+            $data = $request->all();
             $inventory = Inventory::where('id',$data['id'])->first();
             if($inventory){
                 // unset($data['id']);
