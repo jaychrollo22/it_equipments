@@ -128,15 +128,15 @@ class InventoryController extends Controller
 
         DB::beginTransaction();
         try {
-            $data = $request->all();
+            return $data = $request->all();
             $inventory = Inventory::where('id',$data['id'])->first();
             if($inventory){
-                unset($data['id']);
-                if($data['status'] == 'Disposed'){
-                    $data['disposed_by'] = Auth::user()->id;
-                }else{
-                    $data['disposal_date'] = null;
-                }
+                // unset($data['id']);
+                // if($data['status'] == 'Disposed'){
+                //     $data['disposed_by'] = Auth::user()->id;
+                // }else{
+                //     $data['disposal_date'] = null;
+                // }
                 $inventory->update($data);
                 DB::commit();
 
@@ -185,12 +185,12 @@ class InventoryController extends Controller
                         'purchase_company'=> isset($item['purchase_company']) ? $item['purchase_company'] : "",
                         'delivery_date'=> isset($item['delivery_date']) ? $item['delivery_date'] : null,
                         'order_number'=> isset($item['order_number']) ? $item['order_number'] : "",
-                        'retired_date'=> isset($item['retired_date']) ? $item['retired_date'] : "",
-                        'estimated_retirement_date'=> isset($item['estimated_retirement_date']) ? $item['estimated_retirement_date'] : "",
+                        'retired_date'=> isset($item['retired_date']) ? date('Y-m-d',strtotime($item['retired_date'])) : "",
+                        'estimated_retirement_date'=> isset($item['estimated_retirement_date']) ? date('Y-m-d',strtotime($item['estimated_retirement_date'])) : "",
                         'warranty_period'=> isset($item['warranty_period']) ? $item['warranty_period'] : "",
                         'asset_code'=> isset($item['asset_code']) ? $item['asset_code'] : "",
                         'purchase_cost'=> isset($item['purchase_cost']) ? $item['purchase_cost'] : "",
-                        'insurance_date'=> isset($item['insurance_date']) ? $item['insurance_date'] : null,
+                        'insurance_date'=> isset($item['insurance_date']) ? date('Y-m-d',strtotime($item['insurance_date'])) : null,
                         'os_name_and_version'=> isset($item['os_name_and_version']) ? $item['os_name_and_version'] : "",
                         'tab_name'=>  isset($item['tab_name']) ? $item['tab_name'] : "",
                         'area'=> isset($item['area']) ? $item['area'] : "",
@@ -198,7 +198,7 @@ class InventoryController extends Controller
                         'building'=> isset($item['building']) ? $item['building'] : "",
                         'category'=> isset($item['category']) ? $item['category'] : "",
                         'status'=> isset($item['status']) ? $item['status'] : "",
-                        'disposal_date'=> isset($item['disposal_date']) ? $item['disposal_date'] : null,
+                        'disposal_date'=> isset($item['disposal_date']) ? date('Y-m-d',strtotime($item['disposal_date'])) : null,
                         'remarks'=> isset($item['remarks']) ? $item['remarks'] : null,
                     ];
 
