@@ -40,6 +40,7 @@
                                         <th class="text-center">Ticket No.</th>
                                         <th class="text-center">Item Details</th>
                                         <th class="text-center">Borrow Date</th>
+                                        <th class="text-center">Validity End Date</th>
                                         <th class="text-center">Return Date</th>
                                         <th class="text-center">Status</th>
                                     </tr>
@@ -53,8 +54,9 @@
                                            <small>Type : {{item.inventory_info.type}}</small>
                                         </td>
                                         <td align="center"><small>{{item.borrow_date}}</small></td>
+                                        <td align="center"><small>{{item.validity_end_date}}</small></td>
                                         <td align="center"><small>{{item.return_date}}</small></td>
-                                        <td align="center"><small>{{item.status}}</small></td>
+                                        <td align="center"><small>{{item.is_assigned == 'true' ? 'Assigned' : item.status}}</small></td>
                                     </tr>
                                 </tbody>
                             </table>

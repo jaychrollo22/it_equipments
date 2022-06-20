@@ -23,6 +23,10 @@ class Inventory extends Model implements AuditableContract
         return $this->hasOne('App\InventoryTransferItem','inventory_id','id')->where('status','Pending');
     }
 
+    public function is_borrowed_request_for_approval(){
+        return $this->hasOne('App\UserBorrowRequestItem','inventory_id','id')->where('status','For Approval')->orderBy('created_at','DESC');
+    }
+
     public function setting_location(){
         return $this->hasOne('App\SettingLocation','name','location');
     }

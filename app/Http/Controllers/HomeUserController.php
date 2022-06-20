@@ -79,18 +79,33 @@ class HomeUserController extends Controller
 
                 //Send Notification
                 $borrow_request = UserBorrowRequest::where('id',$borrow_request->id)->first();
-                $message = "<span>We have a <strong>new</strong> borrow request. Please check details below. Thank you. </span>
+                $message = "<span><strong>New</strong> borrow request has been received. Please check details below. Thank you. </span>
                             <ul>
                                 <li>Request No: ". $borrow_request->request_number."</li>
+                                <li>Ticket No: ". $borrow_request->ticket_number."</li>
                                 <li>Employee: ". $user->employee->first_name . ' ' . $user->employee->last_name ."</li>
                                 <li>Details: ".$borrow_request->details."</li>
                                 <li>Location: ".$borrow_request->location."</li>
                                 <li>Date: ".date('Y-m-d')."</li>
                             </ul>
-                            <p>Link : http://10.96.4.168:8676/login</p>
+                            <p>Link : http://10.96.4.168:8676/borrow-requests</p>
                             <hr>";
                 $send_webex = $this->sendGroupWebexMessage($message);
 
+                $message_to_user = "<span>Hi ".$user->employee->first_name.", your IT asset request has been received. We will check and validate this request. Thank you.</span>
+                            <ul>
+                                <li>Request No: ". $borrow_request->request_number."</li>
+                                <li>Ticket No: ". $borrow_request->ticket_number."</li>
+                                <li>Details: ".$borrow_request->details."</li>
+                                <li>Location: ".$borrow_request->location."</li>
+                                <li>Date: ".date('Y-m-d')."</li>
+                            </ul>
+                            <p>Link : http://10.96.4.168:8676/login</p>
+                            <small><i>This is an auto generated message. Please do not reply.</i></small>
+                            <hr>";
+
+                //Send Notification to User
+                $send_webex_to_user = $this->sendWebexMessage($user->email,$message_to_user);
                 return $status_data = [
                     'status'=>'success',
                     'borrow_request'=>$borrow_request,
@@ -191,6 +206,46 @@ class HomeUserController extends Controller
                         RequestOptions::HEADERS => [
                             'Content-Type' => 'application/json',
                             //prod
+                            'Authorization' => 'Bearer YjdhZjU5YmItYzRmOC00NzJkLWIyZjgtYWFkOWJhYWY4MDMzMmE2YWRmYTItN2I4_PF84_72c16376-f5a4-4a5c-ad51-a60a7b78a790',
+                        ],
+                    ]
+                );
+
+            return 'sent';
+
+            }catch(ServerException $e){
+                return 'not';
+            }
+            catch(RequestException $e){
+                return 'not';
+            }
+            catch(ConnectException $e){
+                return 'not';
+            }
+            catch(ClientException $e){
+                return 'not';
+            }
+
+        }
+    }
+
+    public function sendWebexMessage($email,$message){
+
+        $httpClient = new Client(); 
+
+        if($email && $message){
+            $body = [
+                'toPersonEmail' => $email,
+                'html' => $message
+            ];
+
+            try{
+                $response = $httpClient->post(
+                    'https://api.ciscospark.com/v1/messages',
+                    [
+                        RequestOptions::BODY => json_encode($body),
+                        RequestOptions::HEADERS => [
+                            'Content-Type' => 'application/json',
                             'Authorization' => 'Bearer YjdhZjU5YmItYzRmOC00NzJkLWIyZjgtYWFkOWJhYWY4MDMzMmE2YWRmYTItN2I4_PF84_72c16376-f5a4-4a5c-ad51-a60a7b78a790',
                         ],
                     ]

@@ -5,7 +5,7 @@
                 <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap inventories-container">
                     <div class="d-flex align-items-center flex-wrap mr-1">
                         <div class="d-flex flex-column">
-                            <h2 class="text-white font-weight-bold my-2 mr-5">All Borrow Requests</h2>
+                            <h2 class="text-white font-weight-bold my-2 mr-5">All Assign/Borrow Requests</h2>
                         </div>
                     </div>
                     <div class="d-flex align-items-center">
@@ -29,10 +29,10 @@
 
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Search</label>
-                                        <input type="text" class="form-control" placeholder="Input here..." v-model="keywords">
+                                        <input type="text" class="form-control" placeholder="Search Request No. | Ticket No. | Details | Location" v-model="keywords">
                                     </div>
                                 </div>
                             </div>
@@ -89,14 +89,14 @@
                                                 </tr>
                                             </td>
                                             <td align="center">
-                                                <button type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button>
-                                                <!-- <button v-if="item.status=='For Approval'" type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button>
-                                                <button v-else disabled type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button> -->
+                                                <!-- <button type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button> -->
+                                                <button v-if="item.status=='For Approval'" type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button>
+                                                <button v-else disabled type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button>
 
                                                 <button v-if="item.status=='For Approval'" type="button" class="btn btn-light-primary btn-icon btn-sm" @click="showDisapprove(item)" title="Disapprove"><i class="flaticon-cancel"></i></button>
                                                 <button v-else disabled type="button" class="btn btn-light-primary btn-icon btn-sm" @click="showDisapprove(item)" title="Disapprove"><i class="flaticon-cancel"></i></button>
                                            
-                                                <a :href="'/borrow-request-for-approval?id='+item.id" class="btn btn-light-info btn-icon btn-sm" title="For Approval"><i class="flaticon-list"></i></a>
+                                                <a :href="'/borrow-request-for-approval?id='+item.id" class="btn btn-light-info btn-icon btn-sm" :title="item.status =='Approved' ? 'Approved' : 'For Approval'"><i class="flaticon-list"></i></a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -186,6 +186,7 @@
                                                     <th class="text-center">Model</th>
                                                     <th class="text-center">Serial No.</th>
                                                     <th class="text-center">Assign/Borrow</th>
+                                                    <th class="text-center">Validity Until</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -203,6 +204,11 @@
                                                                     Is Assigned?
                                                                 </label>
                                                             </div>
+                                                        </div>
+                                                    </td>
+                                                    <td style="text-align: center; vertical-align: middle;">
+                                                        <div class="form-group mt-3" v-if="item.is_assigned == false" >
+                                                            <input type="date" v-model="item.validity_end_date">
                                                         </div>
                                                     </td>
                                                     <td style="text-align: center; vertical-align: middle;">
@@ -318,6 +324,7 @@
                     serial_number : item.serial_number,
                     type : item.type,
                     is_assigned : '',
+                    validity_end_date : '',
                 });
                 this.items.splice(item, 1);
             },
@@ -464,6 +471,9 @@
             getBorrowRequestsData() {
                 let v = this;
                 v.borrowRequestsData = [];
+                v.itemName = '';
+                v.items = '';
+                v.selectedItems = [];
                 axios.get('/borrow-requests-data')
                 .then(response => { 
                     v.borrowRequestsData = response.data;

@@ -5,7 +5,7 @@
                 <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap inventories-container">
                     <div class="d-flex align-items-center flex-wrap mr-1">
                         <div class="d-flex flex-column">
-                            <h2 class="text-white font-weight-bold my-2 mr-5">For Approval : Borrow Request</h2>
+                            <h2 class="text-white font-weight-bold my-2 mr-5">{{borrow_request.status == 'Approved' ? 'Approved' : 'For Approval' }} : Borrow/Assigned Request</h2>
                         </div>
                     </div>
                     <div class="d-flex align-items-center">
@@ -77,6 +77,7 @@
                                                 <th class="text-center">Model</th>
                                                 <th class="text-center">Serial No.</th>
                                                 <th class="text-center">Is Assigned?</th>
+                                                <th class="text-center">Validity End Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -85,7 +86,8 @@
                                                 <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.type}}</small></td>
                                                 <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.model}}</small></td>
                                                 <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.serial_number}}</small></td>
-                                                <td style="text-align: center; vertical-align: middle;"><small>{{item.is_assigned == 'true' ? 'Yes' : '' }}</small></td>
+                                                <td style="text-align: center; vertical-align: middle;"><small>{{item.is_assigned == 'true' ? 'Yes' : 'No' }}</small></td>
+                                                <td style="text-align: center; vertical-align: middle;"><small>{{item.validity_end_date }}</small></td>
                                             </tr>
                                         </tbody>
                                     </table>

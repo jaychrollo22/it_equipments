@@ -74,6 +74,7 @@ class RequestsController extends Controller
                                 'user_borrow_request_id' => $request->id,
                                 'inventory_id' => $item['id'],
                                 'is_assigned' => $is_assigned,
+                                'validity_end_date' => $item['validity_end_date'] ? $item['validity_end_date'] : null,
                                 'status' => 'For Approval'
                             ];
                             UserBorrowRequestItem::create($newData);
@@ -143,6 +144,13 @@ class RequestsController extends Controller
                 DB::commit();
 
                 $borrow_request = UserBorrowRequest::with('employee','user','acknowledge_by_it_support_info','approved_by_it_head_info','borrow_request_items')->where('id',$request->id)->first();
+                
+                //Notify User
+                $message = "<p>Hi ".$borrow_request->employee->first_name.", this is to inform you that your IT asset request (<b>".$borrow_request->request_number."</b>) has been disapproved due to; Remarks : ".$borrow_request->acknowledge_by_it_support_remarks.". Thank you. </p>
+                            <p>Link : http://10.96.4.168:8676/home-borrow-requests</p>
+                            <small><i>This is an auto generated message. Please do not reply.</i></small>";
+
+                $send = $this->sendWebexMessage($borrow_request->user->email,$message);        
 
                 return $status_data = [
                     'status'=>'success',
@@ -193,6 +201,7 @@ class RequestsController extends Controller
                                 'borrow_date' => date('Y-m-d h:i:s'),
                                 'status' => 'Borrowed',
                                 'is_assigned' => $item->is_assigned,
+                                'validity_end_date' => $item->validity_end_date ? $item->validity_end_date : null,
                                 'ticket_number' => $borrow_request->ticket_number,
                             ];
                             UserInventory::create($newData);  
@@ -243,7 +252,13 @@ class RequestsController extends Controller
                     DB::commit();
 
                     $borrow_request = UserBorrowRequest::with('employee','user','acknowledge_by_it_support_info','approved_by_it_head_info','borrow_request_items')->where('id',$request->id)->first();
-
+                    
+                    //Notify User
+                    $message = "<p>Hi ".$borrow_request->employee->first_name.", this is to inform you that your IT asset request (<b>".$borrow_request->request_number."</b>) has been disapproved due to; Remarks : ".$borrow_request->approved_by_it_head_remarks.". Thank you. </p>
+                                <p>Link : http://10.96.4.168:8676/home-borrow-requests</p>
+                                <small><i>This is an auto generated message. Please do not reply.</i></small>";
+                    $send = $this->sendWebexMessage($borrow_request->user->email,$message);   
+                    
                     return $response = [
                         'borrowed_request' => $borrow_request,
                         'status'=>'saved'

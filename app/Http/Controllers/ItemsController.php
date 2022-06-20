@@ -42,12 +42,13 @@ class ItemsController extends Controller
         $item = Inventory::select('id','model','serial_number','type','location')
                                 ->doesnthave('is_borrowed')
                                 ->doesnthave('is_transfer')
+                                ->doesnthave('is_borrowed_request_for_approval')
                                 ->where(function($q) use($data){
                                         $q->where('model', 'like','%'.$data['item_name'].'%')
                                         ->orWhere('serial_number', 'like','%'.$data['item_name'].'%')
-                                        ->orWhere('type', 'like','%'.$data['item_name'].'%');
+                                        ->orWhere('type', 'like','%'.$data['item_name'].'%')
+                                        ->orWhere('id', '=',$data['item_name']);
                                 })
-                                ->orWhere('id', '=',$data['item_name'])
                                 ->take(5)
                                 ->get();
 

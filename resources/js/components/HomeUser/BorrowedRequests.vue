@@ -30,10 +30,10 @@
 
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Search</label>
-                                        <input type="text" class="form-control" placeholder="Input here..." v-model="keywords">
+                                        <input type="text" class="form-control" placeholder="Search Request No. | Ticket No. | Details" v-model="keywords">
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +59,8 @@
                                                 <button v-if="item.status == 'For Approval'" type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editRequest(item)"><i class="flaticon-edit"></i></button>
                                                 <button v-else disabled type="button" class="btn btn-light-primary btn-icon btn-sm"><i class="flaticon-edit"></i></button>
 
-                                                <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="deleteRequest(item)"><i class="flaticon-delete"></i></button>
+                                                <button v-if="item.status == 'For Approval' || item.status == 'Disapproved'" type="button" class="btn btn-light-primary btn-icon btn-sm" @click="deleteRequest(item)"><i class="flaticon-delete"></i></button>
+                                                <button v-else disabled type="button" class="btn btn-light-primary btn-icon btn-sm" @click="deleteRequest(item)"><i class="flaticon-delete"></i></button>
                                             </td>
                                         </tr>
                                     </tbody>
