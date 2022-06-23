@@ -23,7 +23,7 @@
                                 <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                             </div>
                             <div class="card-toolbar">
-                                <!-- <button class="btn btn-primary mr-2 mt-1" @click="newRequest">New</button> -->
+                                <a v-if="borrow_request.approved_by_it_head_status == 'Approved'" :href="'/letter-of-undertaking?request_number='+borrow_request.request_number" target="_blank" class="btn btn-primary mr-2 mt-1" >Letter of Undertaking</a>
                             </div>
                         </div>
 

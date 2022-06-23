@@ -26,5 +26,9 @@ class Employee extends Model
     {
         return $this->belongsToMany('App\Department')->withTimestamps();
     }
+    public function locations()
+    {
+        return $this->belongsToMany('App\Location')->withTimestamps();
+    }
     
 }

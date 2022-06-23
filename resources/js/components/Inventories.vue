@@ -87,10 +87,10 @@
                                         <th class="text-center" width="10px">Select</th>
                                         <th class="text-center" width="50px">RFID</th>
                                         <th class="text-center">ID</th>
-                                        <th class="text-center">TYPE</th>
-                                        <th class="text-center">SERIAL NUMBER</th>
-                                        <th class="text-center">MODEL</th>
-                                        <th class="text-center">STATUS</th>
+                                        <th>TYPE</th>
+                                        <th>SERIAL NUMBER</th>
+                                        <th>MODEL</th>
+                                        <th>STATUS</th>
                                         <th class="text-center">AVAILABILITY</th>
                                         <th class="text-center">LOCATION</th>
                                         <th class="text-center">ACTION</th>
@@ -112,10 +112,10 @@
                                             <small>{{item.epc}}</small>
                                         </td>
                                         <td align="center"><small>{{item.id}}</small></td>
-                                        <td align="center"><small>{{item.type}}</small></td>
-                                        <td align="center"><small>{{item.serial_number}}</small></td>
-                                        <td align="center"><small>{{item.model}}</small></td>
-                                        <td align="center"><small>{{item.status}}</small></td>
+                                        <td><small>{{item.type}}</small></td>
+                                        <td><small>{{item.serial_number}}</small></td>
+                                        <td><small>{{item.model}}</small></td>
+                                        <td><small>{{item.status}}</small></td>
                                         <td align="center">
                                             <span v-if="item.is_borrowed" :class="getColorIsBorrow(item)" style="cursor:pointer" :title="item.is_borrowed.status" @click="viewBorrowItem(item)">{{ item.is_borrowed.is_assigned == 'true' ? "Assigned" : item.is_borrowed.status }}</span>
                                             <span v-else-if="item.is_transfer" class="label label-primary label-pill label-inline mr-2" style="cursor:pointer">For Transfer</span>
@@ -1241,8 +1241,18 @@ export default {
                 }   
             })
         },
+        refresh(){
+            window.location.href = '/inventories';
+        },
         getInventories() {
             let v = this;
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            var status = urlParams.get('status');
+            if(status){
+                v.filter.status = status;
+            }
+
             v.inventories = [];
             axios.get('/inventories-data?type='+v.filter.type+'&location='+v.filter.location+'&category='+v.filter.category+'&status='+v.filter.status)
             .then(response => { 

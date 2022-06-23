@@ -198,7 +198,7 @@ Route::get('/', function () {
     Route::get('/print-generate-letter-of-undertaking', 'LetterOfUndertakingController@printGenerateLetterOfUndertaking');
     Route::post('/save-lou-attachment', 'LetterOfUndertakingController@saveLetterofUndertakingAttachment');
 
-    //Requests
+    //Requests (Borrow/Letter of Undertaking/Return)
     Route::get('/borrow-requests', 'RequestsController@borrowRequests');
     Route::get('/borrow-requests-data', 'RequestsController@borrowRequestsData');
     Route::post('/borrow-requests-update-approver', 'RequestsController@borrowRequestsUpdateApprover');
@@ -207,15 +207,34 @@ Route::get('/', function () {
     Route::get('/borrow-request-for-approval-data', 'RequestsController@borrowRequestForApprovalData');
     Route::post('/approve-borrow-request', 'RequestsController@borrowRequestApprove');
     Route::post('/disapprove-borrow-request', 'RequestsController@borrowRequestDisapprove');
+
+    Route::get('/letter-of-undertaking', 'RequestsController@letterOfUndertaking');
+    Route::get('/letter-of-undertaking-data', 'RequestsController@letterOfUndertakingData');
+    Route::post('/letter-of-undetaking-accept', 'RequestsController@letterOfUndertakingAccept');
+    Route::post('/letter-of-undetaking-notification', 'RequestsController@letterOfUndertakingNotification');
+
+    Route::get('/return-requests', 'RequestsController@returnRequests');
+    Route::get('/return-requests-data', 'RequestsController@returnRequestsData');
+    Route::post('/return-request-accept', 'RequestsController@returnRequestsAccept');
     
     //Home User
     Route::get('/home-user','HomeUserController@index');
     Route::get('/home-user-data','HomeUserController@indexData');
     Route::get('/home-borrow-requests','HomeUserController@homeBorrowRequest');
     Route::get('/home-borrow-requests-data','HomeUserController@homeBorrowRequestData');
+
     Route::post('/borrowed-request-store','HomeUserController@borrowedRequestStore');
     Route::post('/borrowed-request-update','HomeUserController@borrowedRequestUpdate');
     Route::post('/borrowed-request-delete','HomeUserController@borrowedRequestDelete');
+    
+    Route::get('/home-return-requests','HomeUserController@homeReturnRequest');
+    Route::get('/home-return-requests-data','HomeUserController@homeReturnRequestData');
+    Route::get('/home-return-requests-assigned-items','HomeUserController@homeReturnRequestAssignedItems');
+    Route::post('/return-request-store','HomeUserController@returnedRequestStore');
+    Route::post('/return-request-delete','HomeUserController@returnedRequestDelete');
+    Route::post('/return-request-item-delete','HomeUserController@returnedRequestitemDelete');
+    
+
 
 
 

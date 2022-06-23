@@ -5,7 +5,7 @@
                 <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap inventories-container">
                     <div class="d-flex align-items-center flex-wrap mr-1">
                         <div class="d-flex flex-column">
-                            <h2 class="text-white font-weight-bold my-2 mr-5">Assigned/Borrowed</h2>
+                            <h2 class="text-white font-weight-bold my-2 mr-5">Assigned / Borrowed / Returned</h2>
                         </div>
                     </div>
                     <div class="d-flex align-items-center">

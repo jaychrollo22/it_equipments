@@ -62,10 +62,13 @@ Vue.component('generate-lou', require('./components/LetterOfUndertaking/Generate
 //Requests
 Vue.component('borrow-requests', require('./components/Requests/BorrowRequests.vue').default);
 Vue.component('borrow-request-for-approval', require('./components/Requests/BorrowRequestForApproval.vue').default);
+Vue.component('letter-of-undertaking', require('./components/Requests/LetterOfUndertaking.vue').default);
+Vue.component('return-requests', require('./components/Requests/ReturnRequests.vue').default);
 
 // User Page
 Vue.component('home-user', require('./components/HomeUser/HomeUser.vue').default);
 Vue.component('home-user-borrowed-requests', require('./components/HomeUser/BorrowedRequests.vue').default);
+Vue.component('home-user-returned-requests', require('./components/HomeUser/ReturnedRequests.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -9,12 +9,11 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center">
-                        <a href="#" @click="getBorrowRequestsData" class="btn btn-transparent-white font-weight-bold py-3 px-6 mr-2">Refresh</a>
+                        <a href="#" @click="refresh" class="btn btn-transparent-white font-weight-bold py-3 px-6 mr-2">Refresh</a>
                     </div>
                 </div>
             </div>
             
-
             <div class="d-flex flex-column-fluid">
                 <div class="container">
                     <div class="card card-custom gutter-b">
@@ -55,12 +54,15 @@
                                                 <small>Location : {{item.location}}</small>
                                             </td>
                                             <td align="center"><span :class="getColorStatus(item.status)">{{item.status}}</span></td>
-                                            <td align="center">
+                                            <td style="text-align: center; vertical-align: middle;">
                                                 <button v-if="item.status == 'For Approval'" type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editRequest(item)"><i class="flaticon-edit"></i></button>
                                                 <button v-else disabled type="button" class="btn btn-light-primary btn-icon btn-sm"><i class="flaticon-edit"></i></button>
 
-                                                <button v-if="item.status == 'For Approval' || item.status == 'Disapproved'" type="button" class="btn btn-light-primary btn-icon btn-sm" @click="deleteRequest(item)"><i class="flaticon-delete"></i></button>
-                                                <button v-else disabled type="button" class="btn btn-light-primary btn-icon btn-sm" @click="deleteRequest(item)"><i class="flaticon-delete"></i></button>
+                                                <button v-if="item.status == 'For Approval' || item.status == 'Disapproved'" type="button" class="btn btn-light-danger btn-icon btn-sm" @click="deleteRequest(item)"><i class="flaticon-delete"></i></button>
+                                                <button v-else disabled type="button" class="btn btn-light-danger btn-icon btn-sm" @click="deleteRequest(item)"><i class="flaticon-delete"></i></button>
+
+                                                <a v-if="item.status == 'Approved'" :href="'/letter-of-undertaking?request_number='+item.request_number" target="_blank" class="btn btn-light-info btn-icon btn-sm" title="Letter of Undertaking"><i class="flaticon-list"></i></a>
+                                                <button v-else disabled class="btn btn-light-info btn-icon btn-sm" title="Letter of Undertaking"><i class="flaticon-list"></i></button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -121,6 +123,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary btn-md" @click="save" :disabled="saveDisable">Save</button>
+                        <button class="btn btn-danger btn-md" data-dismiss="modal" aria-label="Close">Close</button>
                     </div>
                 </div>
             </div>
@@ -275,8 +278,19 @@
                     v.errors = error.response.data.error;
                 })
             },
+            refresh(){
+                window.location.href = '/home-borrow-requests';
+            },
             getBorrowRequestsData() {
                 let v = this;
+
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                var request_number = urlParams.get('request_number');
+                if(request_number){
+                    v.keywords = request_number;
+                }
+
                 v.borrowRequestsData = [];
                 axios.get('/home-borrow-requests-data')
                 .then(response => { 

@@ -9,7 +9,7 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center">
-                        <a href="#" @click="getBorrowRequestsData" class="btn btn-transparent-white font-weight-bold py-3 px-6 mr-2">Refresh</a>
+                        <a href="#" @click="refresh" class="btn btn-transparent-white font-weight-bold py-3 px-6 mr-2">Refresh</a>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,6 @@
                                 <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                             </div>
                             <div class="card-toolbar">
-                                <!-- <button class="btn btn-primary mr-2 mt-1" @click="newRequest">New</button> -->
                             </div>
                         </div>
 
@@ -47,7 +46,7 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="(item, i) in filteredQueues" :key="i" >
-                                            <td align="center">
+                                            <td style="text-align: center; vertical-align: middle;">
                                                 <small>{{item.request_number}}</small>
                                             </td>
                                             <td align="center">
@@ -88,13 +87,13 @@
                                                     </td>
                                                 </tr>
                                             </td>
-                                            <td align="center">
+                                            <td style="text-align: center; vertical-align: middle;">
                                                 <!-- <button type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button> -->
                                                 <button v-if="item.status=='For Approval'" type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button>
                                                 <button v-else disabled type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button>
 
-                                                <button v-if="item.status=='For Approval'" type="button" class="btn btn-light-primary btn-icon btn-sm" @click="showDisapprove(item)" title="Disapprove"><i class="flaticon-cancel"></i></button>
-                                                <button v-else disabled type="button" class="btn btn-light-primary btn-icon btn-sm" @click="showDisapprove(item)" title="Disapprove"><i class="flaticon-cancel"></i></button>
+                                                <button v-if="item.status=='For Approval'" type="button" class="btn btn-light-danger btn-icon btn-sm" @click="showDisapprove(item)" title="Disapprove"><i class="flaticon-cancel"></i></button>
+                                                <button v-else disabled type="button" class="btn btn-light-danger btn-icon btn-sm" @click="showDisapprove(item)" title="Disapprove"><i class="flaticon-cancel"></i></button>
                                            
                                                 <a :href="'/borrow-request-for-approval?id='+item.id" class="btn btn-light-info btn-icon btn-sm" :title="item.status =='Approved' ? 'Approved' : 'For Approval'"><i class="flaticon-list"></i></a>
                                             </td>
@@ -122,7 +121,7 @@
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div>
-                        <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div> 
@@ -164,8 +163,8 @@
                                                 <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                                 <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
                                                 <td style="text-align: center; vertical-align: middle;">
-                                                    <button v-if="validateBorrowItem(item)" class="btn btn-sm btn-primary" @click="addBorrowItem(item)">Select</button>
-                                                    <button v-else class="btn btn-sm btn-primary" disabled>Selected</button>
+                                                    <button v-if="validateBorrowItem(item)" class="btn btn-light-primary btn-icon btn-sm" @click="addBorrowItem(item)"><i class="flaticon-plus"></i></button>
+                                                    <button v-else class="btn btn-light-primary btn-icon btn-sm" disabled><i class="flaticon-plus"></i></button>
                                                 </td>
                                             </tr>
                                             <tr v-if="items.length == 0">
@@ -208,11 +207,11 @@
                                                     </td>
                                                     <td style="text-align: center; vertical-align: middle;">
                                                         <div class="form-group mt-3" v-if="item.is_assigned == false" >
-                                                            <input type="date" v-model="item.validity_end_date">
+                                                            <small><input type="date" v-model="item.validity_end_date"></small>
                                                         </div>
                                                     </td>
                                                     <td style="text-align: center; vertical-align: middle;">
-                                                        <button class="btn btn-sm btn-danger" @click="removeBorrowItem(item)">Remove</button>
+                                                        <button class="btn btn-light-danger btn-icon btn-sm" @click="removeBorrowItem(item)"><i class="flaticon-cancel"></i></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -255,6 +254,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary btn-md" @click="saveSetupApprover" :disabled="saveDisable">Save</button>
+                        <button class="btn btn-danger btn-md" data-dismiss="modal" aria-label="Close">Close</button>
                     </div>
                 </div>
             </div>
@@ -468,8 +468,18 @@
                     return 'label label-default label-pill label-inline mr-2';
                 }
             },
+            refresh(){
+                window.location.href = '/borrow-requests';
+            },
             getBorrowRequestsData() {
                 let v = this;
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                var request_number = urlParams.get('request_number');
+                if(request_number){
+                    v.keywords = request_number;
+                }
+
                 v.borrowRequestsData = [];
                 v.itemName = '';
                 v.items = '';

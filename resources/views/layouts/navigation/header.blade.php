@@ -241,7 +241,7 @@
                                     </li>
                                     <li class="menu-item" aria-haspopup="true">
                                         <a href="{{ url('return-requests') }}" class="menu-link">
-                                            <span class="menu-text">Return Requests (Not Available)</span>
+                                            <span class="menu-text">Return Requests</span>
                                             <span class="menu-desc"></span>
                                         </a>
                                     </li>

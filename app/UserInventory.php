@@ -27,4 +27,8 @@ class UserInventory extends Model implements AuditableContract
         return $this->hasOne('App\LetterOfUndertaking');
     }
 
+    public function is_return_for_checking(){
+        return $this->hasOne('App\UserReturnRequestItem','user_inventory_id','id')->where('status','For Checking');
+    }
+
 }

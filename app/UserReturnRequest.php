@@ -8,7 +8,8 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 use OwenIt\Auditing\Auditable;
 use DateTimeInterface;
 
-class UserBorrowRequestItem extends Model implements AuditableContract
+
+class UserReturnRequest extends Model implements AuditableContract
 {
     protected $connection = 'mysql';
     protected $guarded = [];
@@ -19,12 +20,13 @@ class UserBorrowRequestItem extends Model implements AuditableContract
     protected $auditIncluded = [];
     protected $auditTimestamps = true;
 
-    public function inventory_info(){
-        return $this->belongsTo('App\Inventory','inventory_id','id')->select('id','model','serial_number','type','location','processor','os_name_and_version');
+    public function employee(){
+        return $this->belongsTo('App\Employee')->select('id','user_id','first_name','last_name','position');
     }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
+    public function user(){
+        return $this->belongsTo('App\User')->select('id','email','name');
+    }
+    public function return_request_items(){
+        return $this->hasMany('App\UserReturnRequestItem');
     }
 }

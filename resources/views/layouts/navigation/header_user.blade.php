@@ -11,7 +11,7 @@
                     <ul class="menu-nav">
                         <li class="menu-item menu-item-submenu menu-item-rel">
                             <a href="{{ url('/home-user') }}" class="menu-link">
-                                <span class="menu-text">Assigned/Borrowed</span>
+                                <span class="menu-text">Home</span>
                                 <span class="menu-desc"></span>
                                 <i class="menu-arrow"></i>
                             </a>
