@@ -53,7 +53,7 @@
                                                 <small>Details : {{item.details}}</small><br>
                                                 <small>Location : {{item.location}}</small>
                                             </td>
-                                            <td align="center"><span :class="getColorStatus(item.status)">{{item.status}}</span></td>
+                                            <td style="text-align: center; vertical-align: middle;"><span :class="getColorStatus(item.status)">{{item.status}}</span></td>
                                             <td style="text-align: center; vertical-align: middle;">
                                                 <button v-if="item.status == 'For Approval'" type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editRequest(item)"><i class="flaticon-edit"></i></button>
                                                 <button v-else disabled type="button" class="btn btn-light-primary btn-icon btn-sm"><i class="flaticon-edit"></i></button>

@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <a href="#" @click="getInventories" class="btn btn-transparent-white font-weight-bold py-3 px-6 mr-2">Refresh</a>
+                    <a href="#" @click="refresh" class="btn btn-transparent-white font-weight-bold py-3 px-6 mr-2">Refresh</a>
                 </div>
             </div>
         </div>
@@ -550,6 +550,7 @@
                                     <option value="Owned">Owned</option>
                                     <option value="Replacement">Replacement</option>
                                     <option value="Spare">Spare</option>
+                                    <option value="No Status">No Status</option>
                                 </select>
                             </div>
                         </div>

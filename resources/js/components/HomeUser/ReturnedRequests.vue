@@ -236,7 +236,7 @@
             this.getBorrowedItems();
         },
         methods: {
-             getColorStatus(item){
+            getColorStatus(item){
                 if(item == 'For Checking'){
                     return 'label label-warning label-pill label-inline mr-2';
                 }else if(item == 'Checked'){

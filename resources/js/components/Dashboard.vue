@@ -41,7 +41,13 @@
                                             </span>
                                         </div>
                                         <div class="d-flex flex-column flex-grow-1 mr-2">
-                                            <a :href="'/inventories?status='+item.status" class="text-dark text-hover-primary mb-1 font-size-lg"><strong>{{item.status}}</strong></a>
+                                            <div v-if="item.status">
+                                                <a :href="'/inventories?status='+item.status" class="text-dark text-hover-primary mb-1 font-size-lg"><strong>{{item.status}}</strong></a>
+                                            </div>
+                                            <div v-else>
+                                                <a :href="'/inventories?status='+'No Status'" class="text-dark text-hover-primary mb-1 font-size-lg"><strong>No Status</strong></a>
+                                            </div>
+                                            
                                         </div>
                                         <span class="label label-xl label-primary label-inline my-lg-0 my-2 text-white font-weight-bolder">{{item.total}}</span>
                                     </div>

@@ -101,6 +101,6 @@ class HomeController extends Controller
     }
 
     public function inventoriesStatusCountData(){
-        return $inventories = Inventory::select('status', DB::raw('count(*) as total'))->groupBy('status')->get();
+        return $inventories = Inventory::select('status', DB::raw('count(*) as total'))->groupBy('status')->orderBy('status','ASC')->get();
     }
 }

@@ -56,8 +56,12 @@ class InventoryController extends Controller
                                 ->when(!empty($data['category']),function($q) use($data){
                                     $q->where('category','LIKE','%'.$data['category'].'%');
                                 })
-                                ->when(!empty($data['status']),function($q) use($data){
+                                ->when(!empty($data['status']) && $data['status'] != 'No Status',function($q) use($data){
                                     $q->where('status','LIKE','%'.$data['status'].'%');
+                                })
+                                ->when($data['status'] == 'No Status',function($q) use($data){
+                                    $q->whereNull('status');
+                                    $q->OrWhere('status','=','');
                                 })
                                 ->orderBy('type','ASC')
                                 ->get();

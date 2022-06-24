@@ -37,7 +37,7 @@
                                     <!--end::Svg Icon-->
                                 </span>
                             </span>
-                            <span class="navi-text text-hover-primary">{{ Auth::user()->email }}</span>
+                            <small>{{ Auth::user()->email }}</small>
                         </span>
                     </a>
                     @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
