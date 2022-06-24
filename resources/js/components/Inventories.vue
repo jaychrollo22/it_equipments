@@ -724,6 +724,17 @@ export default {
 
 
             exportInventories : {
+                'ASSIGNEE' :  {
+                    callback: (value) => {
+                        if(value.is_borrowed){
+                            if(value.is_borrowed){
+                                if(value.is_borrowed.employee_info){
+                                    return value.is_borrowed.employee_info.first_name + ' ' + value.is_borrowed.employee_info.last_name;
+                                }
+                            }
+                        }
+                    }
+                },
                 'EPC' : 'epc',
                 'TID' : 'tid',
                 'RFID 64' : 'rfid_64',
