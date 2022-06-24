@@ -6,13 +6,13 @@
                     <div class="d-flex align-items-center flex-wrap mr-1">
                         <div class="d-flex flex-column">
                             <h2 class="text-white font-weight-bold my-2 mr-5">Transfer Approval</h2>
-                            <div class="d-flex align-items-center font-weight-bold my-2">
+                            <!-- <div class="d-flex align-items-center font-weight-bold my-2">
                                 <a href="#" class="opacity-75 hover-opacity-100">
                                     <i class="flaticon2-shelter text-white icon-1x"></i>
                                 </a>
                                 <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
                                 <a href="" class="text-white text-hover-white opacity-75 hover-opacity-100">View</a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -168,8 +168,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary mr-3" @click="approveTransfer">Approve</button>
-                        <button class="btn btn-danger" @click="disapproveTransfer">Disapprove</button>
+                        <button class="btn btn-primary mr-3" @click="approveTransfer" :disabled="approveDisable">Approve</button>
+                        <button class="btn btn-danger" @click="disapproveTransfer" :disabled="approveDisable">Disapprove</button>
                     </div>
                 </div>
             </div>
@@ -193,6 +193,8 @@
                     'approved_by_it_head_remarks' : '',
                     'approved_by_finance_remarks' : '',
                 },
+
+                approveDisable : false,
             }
         },
         created () {
@@ -215,6 +217,7 @@
             },
             approveTransfer(){
                 let v = this;
+                v.approveDisable = true;
                 Swal.fire({
                 title: 'Are you sure you want to approve?',
                 icon: 'question',
@@ -244,22 +247,27 @@
                                             this.approval_type = '';
                                             this.approval_form.approved_by_it_head_remarks = '';
                                             this.approval_form.approved_by_finance_remarks = '';
-                                            
+                                            v.approveDisable = false;
                                         }
                                     });
                             }else{
                                 Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
+                                v.approveDisable = false;
                             }
                         })
                         .catch(error => {
                             v.errors = error.response.data.errors;
+                            v.approveDisable = false;
                         })
 
+                    }else{
+                        v.approveDisable = false;
                     }
                 })
             },
             disapproveTransfer(){
                 let v = this;
+                v.approveDisable = true;
                 Swal.fire({
                 title: 'Are you sure you want to disapprove?',
                 icon: 'question',
@@ -289,17 +297,21 @@
                                             this.approval_type = '';
                                             this.approval_form.approved_by_it_head_remarks = '';
                                             this.approval_form.approved_by_finance_remarks = '';
-                                            
+                                            v.approveDisable = false;
                                         }
                                     });
                             }else{
-                                Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
+                                Swal.fire('Error: Cannot saved. Please try again.', '', 'error'); 
+                                v.approveDisable = false;  
                             }
                         })
                         .catch(error => {
                             v.errors = error.response.data.errors;
+                            v.approveDisable = false;
                         })
 
+                    }else{
+                        v.approveDisable = false;
                     }
                 })
             },

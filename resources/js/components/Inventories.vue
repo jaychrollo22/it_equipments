@@ -77,8 +77,8 @@
                             Total : <strong>{{ filteredInventories.length }}</strong> | With RFID : <strong>{{inventoriesWithRFID.length}}</strong>
                         </div>
                         <div class="float-right" v-if="check_selected_items.length > 0">
-                            <a href="#" class="text-danger" @click="forDisposal">For Disposal ({{check_selected_items.length}})</a>
-                            <a href="#" class="text-success" @click="clearSelection">Clear Selection ({{check_selected_items.length}})</a>
+                            <a href="#" class="btn btn-sm btn-light-warning font-weight-bolder py-2 px-5 mt-2" @click="forDisposal">For Disposal ({{check_selected_items.length}})</a>
+                            <a href="#" class="btn btn-sm btn-light-success font-weight-bolder py-2 px-5 mt-2" @click="clearSelection">Clear Selection ({{check_selected_items.length}})</a>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-checkable" id="kt_datatable">
@@ -917,7 +917,7 @@ export default {
             let v = this;
             v.forDisposalDisable = true;
             Swal.fire({
-            title: 'Are you sure you want to upload this Inventory?',
+            title: 'Are you sure you want to request for disposal?',
             icon: 'question',
             showDenyButton: true,
             confirmButtonText: `Yes`,
@@ -946,7 +946,7 @@ export default {
                         v.errors = error.response.data.errors;
                     })
                 }else if (result.isDenied) {
-                    Swal.fire('Changes are not saved', '', 'info');
+                    // Swal.fire('Changes are not saved', '', 'info');
                     v.forDisposalDisable = false;
                 }
             })  

@@ -8,13 +8,19 @@ use App\InventoryTransferItem;
 use App\UserInventory;
 
 use App\Imports\InventoriesImport;
-
 use Illuminate\Http\Request;
 use DB;
 use Excel;
 use PDF;
 use Auth;
 use QRCode;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
+use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\ClientException;
 
 use setasign\Fpdi\Fpdi;
 
@@ -189,12 +195,12 @@ class InventoryController extends Controller
                         'purchase_company'=> isset($item['purchase_company']) ? $item['purchase_company'] : "",
                         'delivery_date'=> isset($item['delivery_date']) ? $item['delivery_date'] : null,
                         'order_number'=> isset($item['order_number']) ? $item['order_number'] : "",
-                        'retired_date'=> isset($item['retired_date']) ? date('Y-m-d',strtotime($item['retired_date'])) : "",
-                        'estimated_retirement_date'=> isset($item['estimated_retirement_date']) ? date('Y-m-d',strtotime($item['estimated_retirement_date'])) : "",
+                        'retired_date'=> isset($item['retired_date']) ? $item['retired_date'] : "",
+                        'estimated_retirement_date'=> isset($item['estimated_retirement_date']) ? $item['estimated_retirement_date'] : "",
                         'warranty_period'=> isset($item['warranty_period']) ? $item['warranty_period'] : "",
                         'asset_code'=> isset($item['asset_code']) ? $item['asset_code'] : "",
                         'purchase_cost'=> isset($item['purchase_cost']) ? $item['purchase_cost'] : "",
-                        'insurance_date'=> isset($item['insurance_date']) ? date('Y-m-d',strtotime($item['insurance_date'])) : null,
+                        'insurance_date'=> isset($item['insurance_date']) ? $item['insurance_date'] : null,
                         'os_name_and_version'=> isset($item['os_name_and_version']) ? $item['os_name_and_version'] : "",
                         'tab_name'=>  isset($item['tab_name']) ? $item['tab_name'] : "",
                         'area'=> isset($item['area']) ? $item['area'] : "",
@@ -202,7 +208,7 @@ class InventoryController extends Controller
                         'building'=> isset($item['building']) ? $item['building'] : "",
                         'category'=> isset($item['category']) ? $item['category'] : "",
                         'status'=> isset($item['status']) ? $item['status'] : "",
-                        'disposal_date'=> isset($item['disposal_date']) ? date('Y-m-d',strtotime($item['disposal_date'])) : null,
+                        'disposal_date'=> isset($item['disposal_date']) ? $item['disposal_date'] : null,
                         'remarks'=> isset($item['remarks']) ? $item['remarks'] : null,
                     ];
 
@@ -240,7 +246,7 @@ class InventoryController extends Controller
     public function saveTransfer(Request $request){
 
         $this->validate($request, [
-            'requested_by' => 'required',
+            // 'requested_by' => 'required',
             'transfer_department' => 'required',
             'transfer_company' => 'required',
             'local_number' => 'required',
@@ -259,7 +265,7 @@ class InventoryController extends Controller
 
                 //Save Transfer Header
                 $transfer_data = [
-                    'requested_by' => $data['requested_by'],
+                    'requested_by' => Auth::user()->id,
                     'transfer_department' => $data['transfer_department'],
                     'transfer_company' => $data['transfer_company'],
                     'local_number' => $data['local_number'],
@@ -270,6 +276,7 @@ class InventoryController extends Controller
                     'approved_by_it_head_status' => 'Pending',
                     'approved_by_finance' => $data['approved_by_finance'],
                     'approved_by_finance_status' => 'Pending',
+                    'remarks' => $data['remarks'],
                     'status' => 'For Approval',
                 ];
 
@@ -295,6 +302,15 @@ class InventoryController extends Controller
                     }
                     if($save_count > 0){
                         DB::commit();
+                        $inventory_transfer = InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by_info','approved_by_it_head_info')
+                                                                ->where('id',$save_transfer->id)
+                                                                ->first();
+
+                        //Send Notification
+                        $message = "Hi ".$inventory_transfer->approved_by_it_head_info->name.", sending this request for approval. Thank you.";
+                        $link = "http://10.96.4.168:8676/transfer-approval?transfer_code=".$inventory_transfer->transfer_code;        
+                        $send = $this->sendWebexMessageTransfer($inventory_transfer->approved_by_it_head_info->email,'For Transfer',$message,$inventory_transfer,$link);     
+
                         return $data = [
                             'status'=>'success',
                             'save_count'=>$save_count,
@@ -321,7 +337,7 @@ class InventoryController extends Controller
     public function updateTransfer(Request $request){
 
         $this->validate($request, [
-            'requested_by' => 'required',
+            // 'requested_by' => 'required',
             'transfer_department' => 'required',
             'transfer_company' => 'required',
             'local_number' => 'required',
@@ -342,7 +358,7 @@ class InventoryController extends Controller
                 if($check_transfer){
                     //Save Transfer Header
                     $transfer_data = [
-                        'requested_by' => $data['requested_by'],
+                        // 'requested_by' => $data['requested_by'],
                         'transfer_department' => $data['transfer_department'],
                         'transfer_company' => $data['transfer_company'],
                         'local_number' => $data['local_number'],
@@ -467,6 +483,16 @@ class InventoryController extends Controller
                 unset($data['approval_type']);
                 if($inventory_transfer->update($data)){
                     DB::commit();
+                    $inventory_transfer = InventoryTransfer::with('inventory_transfer_items.inventory_info','requested_by_info','approved_by_it_head_info','approved_by_finance_info')
+                                                                ->where('id',$inventory_transfer->id)
+                                                                ->first();
+                    //Send Notification
+                    if($request->approval_type == 'IT'){
+                        $message = "Hi ".$inventory_transfer->approved_by_finance_info->name.", sending this request for approval. Thank you.";
+                        $link = "http://10.96.4.168:8676/transfer-approval?transfer_code=".$inventory_transfer->transfer_code;        
+                        $send = $this->sendWebexMessageTransfer($inventory_transfer->approved_by_finance_info->email,'For Transfer',$message,$inventory_transfer,$link);     
+                    }
+
                     return $response = [
                         'status'=>'saved'
                     ];
@@ -673,6 +699,153 @@ class InventoryController extends Controller
                 'status'=>'saved',
                 'inventory' => $inventory,
             ];
+        }
+    }
+
+
+
+    //
+    public function sendWebexMessageTransfer($email,$title,$message,$details=array(),$link){
+
+        $httpClient = new Client(); 
+
+        if($email && $message){
+
+            $cards = [
+                array(
+                    "contentType" => "application/vnd.microsoft.card.adaptive",
+                    "content" => array(
+                        "type" => "AdaptiveCard",
+                        "body" => [
+                            array(
+                            "type" => "ColumnSet",
+                            "columns" => [
+                                    array( 
+                                    "type" => "Column",
+                                    "items" => [
+                                        array(
+                                            "type" => "TextBlock",
+                                            "text" =>  $message,
+                                            "wrap" => true,
+                                            "spacing" => "Small",
+                                            "color" => "Light"
+                                        ),
+                                        array(
+                                            "type" => "TextBlock",
+                                            "weight" => "Bolder",
+                                            "text" => $title,
+                                            "wrap" => true,
+                                            "color" => "Attention",
+                                            "size" => "Large",
+                                            "spacing" => "Small"
+                                        )
+                                    ],
+                                    "width" => "stretch"
+                                    )
+                                ]
+                            ),
+                            array( 
+                            "type" => "ColumnSet",
+                            "columns" => [
+                                array(
+                                "type" => "Column",
+                                "width" => 50,
+                                "items" => [
+                                    array(
+                                        "type" => "TextBlock",
+                                        "text" => "Transfer Code : " . $details->transfer_code,
+                                        "color" => "Light",
+                                        "spacing" => "Small"
+                                    ),
+                                    array(
+                                        "type" => "TextBlock",
+                                        "text" => "Requested By : " . $details->requested_by_info->name,
+                                        "weight" => "Lighter",
+                                        "color" => "Light",
+                                        "spacing" => "Small"
+                                    ),
+                                    array(
+                                        "type" => "TextBlock",
+                                        "text" => "Total Items : " . count($details->inventory_transfer_items),
+                                        "weight" => "Lighter",
+                                        "color" => "Light",
+                                        "spacing" => "Small"
+                                    ),
+                                    array(
+                                        "type" => "TextBlock",
+                                        "text" => "Date of Transfer : " . $details->date_of_transfer,
+                                        "weight" => "Lighter",
+                                        "color" => "Light",
+                                        "spacing" => "Small"
+                                    ),
+                                    array(
+                                        "type" => "TextBlock",
+                                        "text" => "Transfer Location : " . $details->transfer_location ,
+                                        "weight" => "Lighter",
+                                        "color" => "Light",
+                                        "spacing" => "Small"
+                                    ),
+                                    array(
+                                        "type" => "TextBlock",
+                                        "text" => "Remarks : " . $details->remarks,
+                                        "weight" => "Lighter",
+                                        "color" => "Light",
+                                        "spacing" => "Small"
+                                    ),
+                                ]
+                                ),
+                            ],
+                            "spacing" => "Padding",
+                            "horizontalAlignment" => "Center"
+                            )
+                        ],
+                        "schema" => "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "version" => "1.2",
+                        "actions" => [
+                            array(
+                                "type" => "Action.OpenUrl",
+                                "title" => $title == 'Approved' ? "For Acceptance" : "More info.",
+                                "url" => $link,
+                            )
+                            
+                        ]
+                    )
+                )
+            ];
+
+            $body = [
+                'toPersonEmail' => $email,
+                'attachments' => $cards,
+                "text" => "IT Asset and Inventory"
+            ];
+
+            try{
+                $response = $httpClient->post(
+                    'https://api.ciscospark.com/v1/messages',
+                    [
+                        RequestOptions::BODY => json_encode($body),
+                        RequestOptions::HEADERS => [
+                            'Content-Type' => 'application/json',
+                            'Authorization' => 'Bearer YjdhZjU5YmItYzRmOC00NzJkLWIyZjgtYWFkOWJhYWY4MDMzMmE2YWRmYTItN2I4_PF84_72c16376-f5a4-4a5c-ad51-a60a7b78a790',
+                        ],
+                    ]
+                );
+
+            return 'sent';
+
+            }catch(ServerException $e){
+                return 'not';
+            }
+            catch(RequestException $e){
+                return 'not';
+            }
+            catch(ConnectException $e){
+                return 'not';
+            }
+            catch(ClientException $e){
+                return 'not';
+            }
+
         }
     }
 }

@@ -15,7 +15,7 @@
             </div>
 
             <div class="d-flex flex-column-fluid">
-                <div class="container">
+                <div class="container inventories-container">
                     <div class="card card-custom gutter-b">
                         <div class="card-header flex-wrap py-3">
                             <div class="card-title">
@@ -285,7 +285,10 @@
         }
     }
 </script>
-
 <style lang="scss" scoped>
-
+    @media (min-width: 1400px){
+        .inventories-container{
+            max-width: 1840px!important;
+        }
+    }
 </style>

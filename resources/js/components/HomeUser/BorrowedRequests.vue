@@ -15,7 +15,7 @@
             </div>
             
             <div class="d-flex flex-column-fluid">
-                <div class="container">
+                <div class="container inventories-container">
                     <div class="card card-custom gutter-b">
                         <div class="card-header flex-wrap py-3">
                             <div class="card-title">
@@ -122,7 +122,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-md" @click="save" :disabled="saveDisable">Save</button>
+                        <button class="btn btn-primary btn-md" @click="save" :disabled="saveDisable">{{saveDisableLabel}}</button>
                         <button class="btn btn-danger btn-md" data-dismiss="modal" aria-label="Close">Close</button>
                     </div>
                 </div>
@@ -150,6 +150,7 @@
                 itemsPerPage: 10,
 
                 saveDisable : false,
+                saveDisableLabel : 'Save',
                 locations: [],
             }
         },
@@ -209,6 +210,7 @@
             save(){
                 let v = this;
                 v.saveDisable = true;
+                
                 Swal.fire({
                 title: 'Are you sure you want to save this request?',
                 icon: 'question',
@@ -217,6 +219,8 @@
                 denyButtonText: `No`,
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        v.saveDisableLabel = 'Saving...Please Wait...';
+
                         let formData = new FormData();
                         var postURL = `/borrowed-request-store`;
                         if(v.action == "Update"){
@@ -235,25 +239,22 @@
                                 v.request.details = '';  
                                 v.request.location = '';  
                                 v.saveDisable = false;
-                                if(v.action == "Update"){
-                                    var index = this.borrowRequestsData.findIndex(item => item.id == v.request.id);
-                                    this.borrowRequestsData.splice(index,1,response.data.borrow_request);
-                                }
-                                else{
-                                    this.getBorrowRequestsData();
-                                }
-                                
+                                v.saveDisableLabel = 'Save';
+                                this.getBorrowRequestsData();
                             }else{
                                 Swal.fire('Error: Cannot changed. Please try again.', '', 'error'); 
                                 v.saveDisable = false;  
+                                v.saveDisableLabel = 'Save';
                             }
                         })
                         .catch(error => {
                             this.errors = error.response.data.errors;
                             v.saveDisable = false;
+                            v.saveDisableLabel = 'Save';
                         })
                     }else{
                         v.saveDisable = false;
+                        v.saveDisableLabel = 'Save';
                     }
                 })
             },
@@ -347,5 +348,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+    @media (min-width: 1400px){
+        .inventories-container{
+            max-width: 1840px!important;
+        }
+    }
 </style>

@@ -117,7 +117,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                             <div class="form-group">
                                 <label for="role">Requested Name</label> 
                                 <multiselect
@@ -131,7 +131,7 @@
                                 </multiselect>
                                 <span class="text-danger" v-if="errors.requested_by">{{ errors.requested_by[0] }}</span>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="role">Department</label> 
@@ -174,7 +174,7 @@
                             </div>
                         </div>
 
-                         <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="role">Transfer Location</label> 
                                 <select class="form-control" v-model="transfer.transfer_location">
@@ -182,6 +182,21 @@
                                     <option v-for="(location,b) in locationOptions" v-bind:key="b" :value="location.name"> {{ location.name }}</option>
                                 </select>
                                 <span class="text-danger" v-if="errors.transfer_location">{{ errors.transfer_location[0] }}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Remarks</label> 
+                                <textarea class="form-control" v-model="transfer.remarks" placeholder="Remarks"></textarea>
+                                <span class="text-danger" v-if="errors.remarks">{{ errors.remarks[0] }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="role">Effective Date</label> 
+                                <input type="date" class="form-control" placeholder="Date of Transfer" v-model="transfer.effective_date">
+                                <span class="text-danger" v-if="errors.effective_date">{{ errors.effective_date[0] }}</span>
                             </div>
                         </div>
                     </div>
@@ -288,7 +303,7 @@
                         </div>
                     </div>
 
-                    <button v-if="selectedItems.length > 0" class="btn btn-md btn-primary float-right" @click="saveTransfer">Save Transfer</button>
+                    <button v-if="selectedItems.length > 0" class="btn btn-md btn-primary float-right" @click="saveTransfer" :disabled="transferDisable">{{transferDisableLabel}}</button>
                     <button v-else class="btn btn-md btn-primary float-right" disabled>Save Transfer</button>
                 </div>
             </div>
@@ -308,7 +323,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                             <div class="form-group">
                                 <label for="role">Requested Name</label> 
                                 <multiselect
@@ -322,7 +337,7 @@
                                 </multiselect>
                                 <span class="text-danger" v-if="errors.requested_by">{{ errors.requested_by[0] }}</span>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="role">Department</label> 
@@ -492,7 +507,7 @@
                             </table>
                         </div>
                     </div>
-                    <button v-if="selectedEditItems.length > 0 && (transfer.status == 'For Approval' || transfer.status == 'Disapproved')" class="btn btn-md btn-primary float-right" @click="saveEditTransfer">Update Transfer</button>
+                    <button v-if="selectedEditItems.length > 0 && (transfer.status == 'For Approval' || transfer.status == 'Disapproved')" class="btn btn-md btn-primary float-right" @click="saveEditTransfer" :disabled="transferDisable">{{transferDisableLabel}}</button>
                     <button v-else class="btn btn-md btn-primary float-right" disabled>Update Transfer</button>
                 </div>
             </div>
@@ -547,6 +562,11 @@
                 //User
                 currentPage: 0,
                 itemsPerPage: 10, 
+
+                currentUser : '',
+
+                transferDisable : false,
+                transferDisableLabel : 'Save',
             }
         },
         created () {
@@ -557,8 +577,21 @@
             this.getLocations();
             this.getSystemApproversIT();
             this.getSystemApproversFinance();
+            this.getCurrentUser();
         },
         methods: {
+             getCurrentUser(){
+                this.currentUser = '';
+                axios.get('/current-user')
+                .then(response => { 
+                    if(response.data){
+                        this.currentUser = response.data;
+                    }
+                })
+                .catch(error => { 
+                    this.errors = error.response.data.error;
+                })
+            },
             getColorStatus(item){
                 if(item == 'For Approval'){
                     return 'label label-warning label-pill label-inline mr-2';
@@ -600,6 +633,7 @@
             },
             saveEditTransfer(){
                 let v = this;
+                v.transferDisable = true;
                   Swal.fire({
                     title: 'Are you sure you want to update this transfer?',
                     icon: 'question',
@@ -608,9 +642,10 @@
                     denyButtonText: `No`,
                     }).then((result) => {
                     if (result.isConfirmed) {
+                        v.transferDisableLabel = 'Saving...Please wait...';
                         let formData = new FormData();
                         formData.append('id', v.transfer.id ? v.transfer.id : "");
-                        formData.append('requested_by', v.transfer.requested_by ? v.transfer.requested_by.id : "");
+                        // formData.append('requested_by', v.transfer.requested_by ? v.transfer.requested_by.id : "");
                         formData.append('transfer_department', v.transfer.transfer_department ? v.transfer.transfer_department : "");
                         formData.append('transfer_company', v.transfer.transfer_company ? v.transfer.transfer_company : "");
                         formData.append('date_requested', v.transfer.date_requested ? v.transfer.date_requested : "");
@@ -634,17 +669,26 @@
                                     timer : 5000
                                 }).then(okay => {
                                     if (okay) {
+                                        v.transferDisable = false;
+                                        v.transferDisableLabel = 'Save';
                                         location.reload();
                                     }
                                 });      
                                 
                             }else{
                                 Swal.fire('Error: Cannot saved. Please try again.', '', 'error');
+                                v.transferDisable = false;
+                                v.transferDisableLabel = 'Save';
                             }
                         })
                         .catch(error => {
                             this.errors = error.response.data.errors;
+                            v.transferDisable = false;
+                            v.transferDisableLabel = 'Save';
                         })
+                    }else{
+                        v.transferDisable = false;
+                        v.transferDisableLabel = 'Save';
                     }
                 });
             },
@@ -696,7 +740,7 @@
                 let v = this;
                 v.action = 'Edit';
                 v.transfer.id = transfer.id;
-                v.transfer.requested_by = transfer.requested_by_info;
+                // v.transfer.requested_by = transfer.requested_by_info;
                 v.transfer.transfer_department = transfer.transfer_department;
                 v.transfer.transfer_company = transfer.transfer_company;
                 v.transfer.date_requested = transfer.date_requested;
@@ -728,6 +772,7 @@
             //Save New Transfer
             saveTransfer(){
                 let v = this;
+                v.transferDisable = true;
                   Swal.fire({
                     title: 'Are you sure you want to save this transfer?',
                     icon: 'question',
@@ -736,8 +781,9 @@
                     denyButtonText: `No`,
                     }).then((result) => {
                     if (result.isConfirmed) {
+                        v.transferDisableLabel = 'Saving...Please wait...';
                         let formData = new FormData();
-                        formData.append('requested_by', v.transfer.requested_by ? v.transfer.requested_by.id : "");
+                        // formData.append('requested_by', v.transfer.requested_by ? v.transfer.requested_by.id : "");
                         formData.append('transfer_department', v.transfer.transfer_department ? v.transfer.transfer_department : "");
                         formData.append('transfer_company', v.transfer.transfer_company ? v.transfer.transfer_company : "");
                         formData.append('date_requested', v.transfer.date_requested ? v.transfer.date_requested : "");
@@ -767,11 +813,19 @@
                                 
                             }else{
                                 Swal.fire('Error: Cannot saved. Please try again.', '', 'error');
+                                v.transferDisable = false;
+                                v.transferDisableLabel = 'Save';
                             }
                         })
                         .catch(error => {
+                            Swal.fire('Error: Cannot saved. Please try again.', '', 'error');
                             this.errors = error.response.data.errors;
+                            v.transferDisable = false;
+                            v.transferDisableLabel = 'Save';
                         })
+                    }else{
+                        v.transferDisable = false;
+                        v.transferDisableLabel = 'Save';
                     }
                 });
             },
@@ -891,7 +945,7 @@
             newTransfer() {
                 let v = this;
                 v.action = 'New';
-                v.transfer.requested_by = '';
+                // v.transfer.requested_by = '';
                 v.transfer.transfer_department = '';
                 v.transfer.transfer_company = '';
                 v.transfer.date_requested = '';

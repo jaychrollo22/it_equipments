@@ -15,7 +15,7 @@
             </div>
 
             <div class="d-flex flex-column-fluid">
-                <div class="container">
+                <div class="container inventories-container">
                     <div class="card card-custom gutter-b">
                         <div class="card-header flex-wrap py-3">
                             <div class="card-title">
@@ -195,7 +195,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-md" @click="save" :disabled="saveDisable">Save</button>
+                        <button class="btn btn-primary btn-md" @click="save" :disabled="saveDisable">{{saveDisableLabel}}</button>
                         <button class="btn btn-danger btn-md" data-dismiss="modal" aria-label="Close">Close</button>
                     </div>
                 </div>
@@ -220,6 +220,7 @@
                 itemsPerPage: 10,
             
                 saveDisable : false,
+                saveDisableLabel : 'Save',
 
                 keyword_borrowed_item: '',
                 currentPageBorrowedItem: 0,
@@ -330,6 +331,7 @@
                 denyButtonText: `No`,
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        v.saveDisableLabel = 'Saving...Please Wait...';
                         let formData = new FormData();
                         formData.append('details', v.request.details ? v.request.details : "");
                         formData.append('return_request_items', v.selectedItems ? JSON.stringify(v.selectedItems) : "");
@@ -339,18 +341,22 @@
                                 Swal.fire('Request has been saved!', '', 'success');  
                                 $('#return-request-modal').modal('hide');   
                                 v.saveDisable = false;
+                                v.saveDisableLabel = 'Save';
                                 this.getReturnRequestsData();
                                 this.getBorrowedItems();
                             }else{
                                 v.saveDisable = false;
+                                v.saveDisableLabel = 'Save';
                             }
                         })
                         .catch(error => {
                             this.errors = error.response.data.errors;
                             v.saveDisable = false;
+                            v.saveDisableLabel = 'Save';
                         })
                     }else{
                         v.saveDisable = false;
+                        v.saveDisableLabel = 'Save';
                     }
                 })
             },
@@ -471,5 +477,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+    @media (min-width: 1400px){
+        .inventories-container{
+            max-width: 1840px!important;
+        }
+    }
 </style>
