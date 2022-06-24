@@ -347,7 +347,7 @@
                                 <label for="role">Location</label> 
                                 <select class="form-control" v-model="inventory.location">
                                     <option value="N/A">N/A</option>
-                                    <option v-for="(location,b) in locations" v-bind:key="b" :value="location.name"> {{ location.name }}</option>
+                                    <option v-for="(location,b) in locations" v-bind:key="b" :value="location.location"> {{ location.location }}</option>
                                 </select>
                                 <span class="text-danger" v-if="errors.location">{{ errors.location[0] }}</span>
                             </div>
@@ -524,7 +524,7 @@
                                 <select class="form-control" v-model="filter.location">
                                     <option value="">Choose Location</option>
                                     <option value="N/A">N/A</option>
-                                    <option v-for="(location,b) in locations" v-bind:key="b" :value="location.name"> {{ location.name }}</option>
+                                    <option v-for="(location,b) in locations" v-bind:key="b" :value="location.location"> {{ location.location }}</option>
                                 </select>
                             </div>
                         </div>
@@ -1250,8 +1250,16 @@ export default {
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             var status = urlParams.get('status');
+            var location = urlParams.get('location');
+            var type = urlParams.get('type');
             if(status){
                 v.filter.status = status;
+            }
+            if(location){
+                v.filter.location = location;
+            }
+            if(type){
+                v.filter.type = type;
             }
 
             v.inventories = [];
@@ -1278,7 +1286,7 @@ export default {
         getLocations() {
             let v = this;
             v.locations = [];
-            axios.get('/setting-locations-data')
+            axios.get('/setting-locations-data-options')
             .then(response => { 
                 v.locations = response.data;
             })

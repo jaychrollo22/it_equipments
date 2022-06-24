@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\SettingLocation;
+use App\Inventory;
 use DB;
 
 class SettingsLocationController extends Controller
@@ -26,6 +27,15 @@ class SettingsLocationController extends Controller
     public function indexData()
     {
         return SettingLocation::orderBy('name','ASC')->get();
+    }
+    public function locationOptions()
+    {
+        return $locations = Inventory::select('location')
+                                        ->whereNotNull('location')
+                                        ->orWhere('location','!=','')
+                                        ->groupBy('location')
+                                        ->orderBy('location','ASC')
+                                        ->get();
     }
 
     public function store(Request $request)

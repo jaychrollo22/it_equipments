@@ -40,6 +40,8 @@ Route::get('/', function () {
     Route::get('/home', 'HomeController@dashboard')->name('dashboard');
     Route::get('/dashboard-data','HomeController@dashboardData');
     Route::get('/inventories-status-count-data','HomeController@inventoriesStatusCountData');
+    Route::get('/inventories-location-count-data','HomeController@inventoriesLocationCountData');
+    Route::get('/inventories-type-count-data','HomeController@inventoriesTypeCountData');
 
     Route::get('/inventories-active-data', 'HomeController@inventoriesActiveData');
     Route::get('/inventories-spare-data', 'HomeController@inventoriesSpareData');
@@ -119,6 +121,7 @@ Route::get('/', function () {
     //Settings - Location
     Route::get('/setting-locations', 'SettingsLocationController@index')->name('settings-locations');
     Route::get('/setting-locations-data', 'SettingsLocationController@indexData');
+    Route::get('/setting-locations-data-options', 'SettingsLocationController@locationOptions');
     Route::post('/setting-locations-store', 'SettingsLocationController@store');
     Route::post('/setting-locations-update', 'SettingsLocationController@update');
 

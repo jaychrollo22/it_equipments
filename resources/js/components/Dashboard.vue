@@ -85,7 +85,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <div class="card card-custom gutter-b">
                                         <div class="card-header">
                                             <div class="card-title">
@@ -93,11 +93,11 @@
                                             </div>
                                         </div>
                                         <div class="card-body">
-                                            <polar-chart :chart-data="location_chart" :height="200"/>
+                                            <bar-chart :chart-data="location_chart" :height="70"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <div class="card card-custom gutter-b">
                                         <div class="card-header">
                                             <div class="card-title">
@@ -105,7 +105,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body">
-                                            <polar-chart :chart-data="type_chart" :height="200"/>
+                                            <bar-chart :chart-data="type_chart" :height="70"/>
                                         </div>
                                     </div>
                                 </div>
@@ -118,11 +118,11 @@
             </div>
         </div>
     </div>
-    </template>
+</template>
 
     <script>
-        import BarChart from './Charts/BarChart.js'
-        import PolarChart from './Charts/PolarChart.js'
+        import BarChart from './Charts/BarChart.js';
+        import PolarChart from './Charts/PolarChart.js';
         export default {
             components: {
                 BarChart,PolarChart
@@ -164,6 +164,8 @@
                     inventoriesMaintenanceData : [],
 
                     inventoriesStatusCountsData : [],
+                    inventoriesLocationCountsData : [],
+                    inventoriesTypeCountsData : [],
                 }
             },
             created () {
@@ -172,7 +174,10 @@
                 this.getInventoriesSpareData();
                 this.getInventoriesLoanItemsData();
                 this.getInventoriesMaintenanceData();
+
                 this.getInventoriesStatusCountsData();
+                this.getInventoriesLocationCountsData();
+                this.getInventoriesTypeCountsData();
             },
             methods: {
                 refresh(){  
@@ -182,12 +187,30 @@
                     this.getInventoriesLoanItemsData();
                     this.getInventoriesMaintenanceData();
                     this.getInventoriesStatusCountsData();
+                    this.getInventoriesLocationCountsData();
+                    this.getInventoriesTypeCountsData();
                 },
                 getInventoriesStatusCountsData(){
                     this.inventoriesStatusCountsData = [];
                     axios.get('/inventories-status-count-data')
                     .then(response => { 
                         this.inventoriesStatusCountsData = response.data;
+                    })
+                },
+                getInventoriesLocationCountsData(){
+                    this.inventoriesLocationCountsData = [];
+                    axios.get('/inventories-location-count-data')
+                    .then(response => { 
+                        this.inventoriesLocationCountsData = response.data;
+                        this.perLocationData(response.data);
+                    })
+                },
+                getInventoriesTypeCountsData(){
+                    this.inventoriesTypeCountsData = [];
+                    axios.get('/inventories-type-count-data')
+                    .then(response => { 
+                        this.inventoriesTypeCountsData = response.data;
+                        this.perTypeData(response.data);
                     })
                 },
                 getInventoriesActiveData(){
@@ -229,10 +252,10 @@
                         v.overall_total_inventory = response.data.overall_total_inventory;
                         v.total_borrowed_items_today = response.data.total_borrowed_items_today;
                         v.total_returned_items_today = response.data.total_returned_items_today;
-                        if(response.data.per_location){
-                            v.perLocationData(response.data.per_location);
-                            v.perTypeData(response.data.per_type);
-                        }
+                        // if(response.data.per_location){
+                        //     // v.perLocationData(response.data.per_location);
+                        //     // v.perTypeData(response.data.per_type);
+                        // }
                         
                     })
                     .catch(error => { 
@@ -246,9 +269,9 @@
                     var bg_colors = [];
                     
                     per_location.forEach(entry => {
-                        names.push(entry.name + ' (' + entry.count + ')');
-                        counts.push(entry.count);
-                        bg_colors.push(entry.color);
+                        names.push(entry.location + ' (' + entry.total + ')');
+                        counts.push(entry.total);
+                        // bg_colors.push(entry.color);
 
                     });
                 
@@ -258,7 +281,7 @@
                         datasets: [
                             {
                                 label: 'Location',
-                                backgroundColor: bg_colors,
+                                backgroundColor: 'rgb(27,197,189)',
                                 pointBackgroundColor: 'white',
                                 borderWidth: 1,
                                 pointBorderColor: 'rgb(0,84,206)',
@@ -275,9 +298,9 @@
                     var names = [];
                     var bg_colors = [];
                     per_type.forEach(entry => {
-                        names.push(entry.name + ' (' + entry.count + ')');
-                        counts.push(entry.count);
-                        bg_colors.push(entry.color);
+                        names.push(entry.type + ' (' + entry.total + ')');
+                        counts.push(entry.total);
+                        // bg_colors.push(entry.color);
 
                     });
                     v.type_chart = {
@@ -285,7 +308,7 @@
                         datasets: [
                             {
                                 label: 'Type',
-                                backgroundColor: bg_colors,
+                                backgroundColor: 'rgb(105,147,255)',
                                 pointBackgroundColor: 'white',
                                 borderWidth: 1,
                                 pointBorderColor: 'rgb(0,84,206)',

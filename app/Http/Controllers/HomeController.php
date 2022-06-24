@@ -57,33 +57,33 @@ class HomeController extends Controller
         $total_borrowed_items_today = UserInventory::whereDate('borrow_date', '=' , $dateToday)->get();
         $total_returned_items_today = UserInventory::whereDate('return_date','=',$dateToday)->get();
 
-        $locations = SettingLocation::get();
-        $per_location = [];
-        if($locations){
-            foreach($locations as $k=> $item_location){
-                $count_per_location = Inventory::where('location','like' , '%'.$item_location['name'].'%')->count();
-                $per_location[$k]['name'] = $item_location['name'];
-                $per_location[$k]['color'] = $item_location['color'];
-                $per_location[$k]['count'] = $count_per_location;
-            }
-        }
+        // $locations = SettingLocation::get();
+        // $per_location = [];
+        // if($locations){
+        //     foreach($locations as $k=> $item_location){
+        //         $count_per_location = Inventory::where('location','like' , '%'.$item_location['name'].'%')->count();
+        //         $per_location[$k]['name'] = $item_location['name'];
+        //         $per_location[$k]['color'] = $item_location['color'];
+        //         $per_location[$k]['count'] = $count_per_location;
+        //     }
+        // }
 
-        $types = SettingType::get();
-        $per_type = [];
-        if($types){
-            foreach($types as $k=> $item_type){
-                $count_per_type = Inventory::where('type','like' , '%'.$item_type['name'].'%')->count();
-                $per_type[$k]['name'] = $item_type['name'];
-                $per_type[$k]['color'] = $item_type['color'];
-                $per_type[$k]['count'] = $count_per_type;
-            }
-        }
+        // $types = SettingType::get();
+        // $per_type = [];
+        // if($types){
+        //     foreach($types as $k=> $item_type){
+        //         $count_per_type = Inventory::where('type','like' , '%'.$item_type['name'].'%')->count();
+        //         $per_type[$k]['name'] = $item_type['name'];
+        //         $per_type[$k]['color'] = $item_type['color'];
+        //         $per_type[$k]['count'] = $count_per_type;
+        //     }
+        // }
         return $dashboard_data = [
             'overall_total_inventory' =>  $overall_total_inventory,
             'total_borrowed_items_today' => $total_borrowed_items_today,
             'total_returned_items_today' => $total_returned_items_today,
-            'per_location' => $per_location,
-            'per_type' => $per_type,
+            // 'per_location' => $per_location,
+            // 'per_type' => $per_type,
         ];
     }
 
@@ -102,5 +102,13 @@ class HomeController extends Controller
 
     public function inventoriesStatusCountData(){
         return $inventories = Inventory::select('status', DB::raw('count(*) as total'))->groupBy('status')->orderBy('status','ASC')->get();
+    }
+
+    public function inventoriesLocationCountData(){
+        return $inventories = Inventory::select('location', DB::raw('count(*) as total'))->groupBy('location')->orderBy('location','ASC')->get();
+    }
+
+    public function inventoriesTypeCountData(){
+        return $inventories = Inventory::select('type', DB::raw('count(*) as total'))->groupBy('type')->orderBy('type','ASC')->get();
     }
 }
