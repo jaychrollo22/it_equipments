@@ -11,117 +11,124 @@
                     <ul class="menu-nav">
                         {{-- Dashboard --}}
                         @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
-                        <li class="menu-item menu-item-submenu menu-item-rel">
-                            <a href="{{ url('/home') }}" class="menu-link">
-                                <span class="menu-text">Dashboard</span>
-                                <span class="menu-desc"></span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                        </li>
+                            <li class="menu-item menu-item-submenu menu-item-rel">
+                                <a href="{{ url('/home') }}" class="menu-link">
+                                    <span class="menu-text">Dashboard</span>
+                                    <span class="menu-desc"></span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                            </li>
                         @endif
                         {{-- Inventories --}}
                         @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
-                        <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
-                            <a href="javascript:;" class="menu-link menu-toggle">
-                                <span class="menu-text">Inventories</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            <div class="menu-submenu menu-submenu-classic menu-submenu-left">
-                                <ul class="menu-subnav">
-                                    @if(session('user_role') == "Administrator")
-                                        @if(session('user_permissions.inventory_masterlist') == 'true')
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{{ url('inventories') }}" class="menu-link">
-                                                    <span class="menu-text">Masterlist</span>
-                                                    <span class="menu-desc"></span>
-                                                </a>
-                                            </li>
-                                        @endif
-                                        @if(session('user_permissions.inventory_transfer_location') == 'true')
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{{ url('inventory-transfer') }}" class="menu-link" disabled>
-                                                    <span class="menu-text">Transfer Location</span>
-                                                    <span class="menu-desc"></span>
-                                                </a>
-                                            </li>
-                                        @endif
-                                    @endif
-                                    @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
-                                        @if(session('user_permissions.inventory_receive_transfer') == 'true')
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{{ url('inventory-receive') }}" class="menu-link" disabled>
-                                                    <span class="menu-text">Receive Transfer</span>
-                                                    <span class="menu-desc"></span>
-                                                </a>
-                                            </li>
-                                        @endif
-                                    @endif
-                                    @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
-                                        @if(session('user_permissions.report_for_disposal') == 'true')
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{{ url('for-disposal') }}" class="menu-link" disabled>
-                                                    <span class="menu-text">For Disposal</span>
-                                                    <span class="menu-desc"></span>
-                                                </a>
-                                            </li>
-                                        @endif
-                                    @endif
-                                </ul>
-                            </div>
-                        </li>
+                            @if(session('user_permissions.inventory_masterlist') == 'true' 
+                                || session('user_permissions.inventory_transfer_location') == 'true'
+                                || session('user_permissions.inventory_receive_transfer') == 'true'
+                                || session('user_permissions.report_for_disposal') == 'true'
+                            )
+                                <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <span class="menu-text">Inventories</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                        <ul class="menu-subnav">
+                                            @if(session('user_permissions.inventory_masterlist') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('inventories') }}" class="menu-link">
+                                                        <span class="menu-text">Masterlist</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if(session('user_permissions.inventory_transfer_location') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('inventory-transfer') }}" class="menu-link" disabled>
+                                                        <span class="menu-text">Transfer Location</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if(session('user_permissions.inventory_receive_transfer') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('inventory-receive') }}" class="menu-link" disabled>
+                                                        <span class="menu-text">Receive Transfer</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if(session('user_permissions.report_for_disposal') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('for-disposal') }}" class="menu-link" disabled>
+                                                        <span class="menu-text">For Disposal</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                </li>
+                            @endif
                         @endif
                         {{-- Reports --}}
                         @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
-                        <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
-                            <a href="javascript:;" class="menu-link menu-toggle">
-                                <span class="menu-text">Reports</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            <div class="menu-submenu menu-submenu-classic menu-submenu-left">
-                                <ul class="menu-subnav">
-                                    @if(session('user_permissions.report_employee_asset') == 'true')
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{{ url('reports-asset-logs') }}" class="menu-link">
-                                                <span class="menu-text">Employee Assets</span>
-                                                <span class="menu-desc"></span>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if(session('user_permissions.report_asset_handover_form') == 'true')
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{{ url('reports-asset-handover-forms') }}" class="menu-link">
-                                                <span class="menu-text">Asset Handover Forms</span>
-                                                <span class="menu-desc"></span>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if(session('user_permissions.report_borrowed_inventories') == 'true')
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{{ url('reports-borrow-logs') }}" class="menu-link">
-                                                <span class="menu-text">Borrowed Inventories</span>
-                                                <span class="menu-desc"></span>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if(session('user_permissions.report_returned_inventories') == 'true')
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{{ url('reports-return-logs') }}" class="menu-link">
-                                                <span class="menu-text">Returned Inventories</span>
-                                                <span class="menu-desc"></span>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if(session('user_permissions.report_disposed_logs') == 'true')
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{{ url('reports-disposed-logs') }}" class="menu-link">
-                                                <span class="menu-text">Disposed Logs</span>
-                                                <span class="menu-desc"></span>
-                                            </a>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </div>
-                        </li>
+                            @if(session('user_permissions.report_employee_asset') == 'true' 
+                                || session('user_permissions.report_asset_handover_form') == 'true' 
+                                || session('user_permissions.report_borrowed_inventories') == 'true' 
+                                || session('user_permissions.report_returned_inventories') == 'true'
+                                || session('user_permissions.report_disposed_logs') == 'true'
+                            )
+                                <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <span class="menu-text">Reports</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                        <ul class="menu-subnav">
+                                            @if(session('user_permissions.report_employee_asset') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('reports-asset-logs') }}" class="menu-link">
+                                                        <span class="menu-text">Employee Assets</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if(session('user_permissions.report_asset_handover_form') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('reports-asset-handover-forms') }}" class="menu-link">
+                                                        <span class="menu-text">Asset Handover Forms</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if(session('user_permissions.report_borrowed_inventories') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('reports-borrow-logs') }}" class="menu-link">
+                                                        <span class="menu-text">Borrowed Inventories</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if(session('user_permissions.report_returned_inventories') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('reports-return-logs') }}" class="menu-link">
+                                                        <span class="menu-text">Returned Inventories</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if(session('user_permissions.report_disposed_logs') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('reports-disposed-logs') }}" class="menu-link">
+                                                        <span class="menu-text">Disposed Logs</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                </li>
+                            @endif
                         @endif
                         {{-- Settings --}}
                         @if(session('user_role') == "Administrator")
@@ -226,28 +233,36 @@
                                 </li>
                             @endif
                         @endif
-                        <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
-                            <a href="javascript:;" class="menu-link menu-toggle">
-                                <span class="menu-text">Requests</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            <div class="menu-submenu menu-submenu-classic menu-submenu-left">
-                                <ul class="menu-subnav">
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('borrow-requests') }}" class="menu-link">
-                                            <span class="menu-text">Borrow Requests</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item" aria-haspopup="true">
-                                        <a href="{{ url('return-requests') }}" class="menu-link">
-                                            <span class="menu-text">Return Requests</span>
-                                            <span class="menu-desc"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                        @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
+                            @if(session('user_permissions.requests_borrow') == 'true' || session('user_permissions.requests_return') == 'true')
+                                <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <span class="menu-text">Requests</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                        <ul class="menu-subnav">
+                                            @if(session('user_permissions.requests_borrow') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('borrow-requests') }}" class="menu-link">
+                                                        <span class="menu-text">Borrow Requests</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if(session('user_permissions.requests_return') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('return-requests') }}" class="menu-link">
+                                                        <span class="menu-text">Return Requests</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                </li>
+                            @endif
+                        @endif
                     </ul>
                 </div>
             </div>

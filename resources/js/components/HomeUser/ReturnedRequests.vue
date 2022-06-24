@@ -68,7 +68,7 @@
                                                     <td><small>{{item_return.user_inventory.inventory_info.model}}</small> </td>
                                                     <td><small>{{item_return.user_inventory.inventory_info.serial_number}}</small> </td>
                                                     <td>
-                                                        <small>{{item_return.status}}</small>
+                                                        <label :class="getColorStatus(item_return.status)">{{item_return.status}}</label>
                                                     </td>
                                                     <td>
                                                         <button v-if="item_return.status == 'For Checking' && item.return_request_items.length > 1" type="button" class="btn btn-light-danger btn-icon btn-sm" @click="deleteRequestItem(item,item_return)" title="Delete Item"><i class="flaticon-cancel"></i></button>
@@ -178,8 +178,7 @@
                                                 <td><small>{{item.inventory_info.model}}</small></td>
                                                 <td><small>{{item.inventory_info.serial_number}}</small></td>
                                                 <td style="text-align: center; vertical-align: middle;">
-                                                    <button v-if="item.status == 'For Checking'" type="button" class="btn btn-light-danger btn-icon btn-sm" @click="removeBorrowItem(item)"><i class="flaticon-cancel"></i></button>
-                                                    <button v-else disabled type="button" class="btn btn-light-danger btn-icon btn-sm"><i class="flaticon-cancel"></i></button>
+                                                    <button type="button" class="btn btn-light-danger btn-icon btn-sm" @click="removeBorrowItem(item)"><i class="flaticon-cancel"></i></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -237,6 +236,15 @@
             this.getBorrowedItems();
         },
         methods: {
+             getColorStatus(item){
+                if(item == 'For Checking'){
+                    return 'label label-warning label-pill label-inline mr-2';
+                }else if(item == 'Checked'){
+                    return 'label label-success label-pill label-inline mr-2';
+                }else{
+                    return 'label label-default label-pill label-inline mr-2';
+                }
+            },
             refresh(){
                 window.location.href = '/home-return-requests';
             },

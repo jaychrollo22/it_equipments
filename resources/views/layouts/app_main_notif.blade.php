@@ -37,7 +37,11 @@
         <div class="d-flex flex-column flex-root">
             <div class="d-flex flex-row flex-column-fluid page">
                 <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-                    @include('layouts.navigation.header_user');
+                    @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
+                        @include('layouts.navigation.header');
+                    @else   
+                        @include('layouts.navigation.header_user');
+                    @endif
                     <div id="app">
                         @yield('content');
                     </div>

@@ -40,7 +40,11 @@
                             <span class="navi-text text-hover-primary">{{ Auth::user()->email }}</span>
                         </span>
                     </a>
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
+                    @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
+                        <a href="/home" class="btn btn-sm btn-light-success font-weight-bolder py-2 px-5 mt-2">Dashboard</a>
+                        <a href="/home-user" class="btn btn-sm btn-light-info font-weight-bolder py-2 px-5 mt-2">My Account</a>
+                    @endif
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5 mt-2">Sign Out</a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>

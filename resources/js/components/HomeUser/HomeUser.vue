@@ -22,6 +22,10 @@
                             <h3 class="card-label">List
                             <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                         </div>
+                        <div class="card-toolbar">
+                            <a href="home-borrow-requests" class="btn btn-primary mr-2 mt-1">Borrow</a>
+                            <a href="home-return-requests" class="btn btn-warning mr-2 mt-1">Return</a>
+                        </div>
                     </div>
 
                     <div class="card-body">

@@ -21,13 +21,15 @@
                                
                                 <small>Employee Acceptance</small>
                             </div>
-                            <div class="card-toolbar">
-                                <div v-if="currentUser.user.user_role.role == 'Administrator' || currentUser.user.user_role.role == 'IT Support'">
-                                    <button v-if="borrow_request.acceptance == '' || borrow_request.acceptance == null" class="btn btn-md btn-warning mr-2 mt-1" title="Notify User" @click="notifyUserForAcceptance" :disabled="notifDisable"><i class="fa flaticon2-telegram-logo"></i> {{ borrow_request.notify == '1' ? 'Sent' : '' }}</button>
+                            <div class="card-toolbar" v-if="currentUser.user">
+                                <div v-if="currentUser.user.user_role">
+                                    <div v-if="currentUser.user.user_role.role == 'Administrator' || currentUser.user.user_role.role == 'IT Support'">
+                                        <button v-if="borrow_request.acceptance == '' || borrow_request.acceptance == null" class="btn btn-md btn-warning mr-2 mt-1" title="Notify User" @click="notifyUserForAcceptance" :disabled="notifDisable"><i class="fa flaticon2-telegram-logo"></i> {{ borrow_request.notify == '1' ? 'Sent' : '' }}</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" v-if="borrow_request">
                             <center>
                                 <h4>L E T T E R&nbsp;&nbsp;&nbsp;O F&nbsp;&nbsp;&nbsp;U N D E R T A K I N G</h4>
                                 
@@ -79,14 +81,14 @@
                        
 
                         </div>
-                        <div class="card-footer text-center">
+                        <div class="card-footer text-center" v-if="borrow_request">
                             <div v-if="currentUser.user_id == borrow_request.user_id">
                                 <button v-if="borrow_request.acceptance == '1'" class="btn btn-md btn-primary" disabled>Accepted</button>
                                 <button v-else class="btn btn-md btn-primary" @click="acceptBorrowRequest" :disabled="acceptDisable">Accept</button>
                             </div>
                             <div v-else>
-                                 <button v-if="borrow_request.acceptance == '1'" class="btn btn-md btn-primary" disabled>Accepted</button>
-                                 <button v-if="borrow_request.acceptance == '1'" class="btn btn-md btn-warning" disabled>For Acceptance</button>
+                                <button v-if="borrow_request.acceptance == '1'" class="btn btn-md btn-primary" disabled>Accepted</button>
+                                <button v-else class="btn btn-md btn-warning" disabled>For Acceptance</button>
                             </div>
                         </div>
                     </div>

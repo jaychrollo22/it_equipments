@@ -60,7 +60,7 @@
                                                     <td align="left"><small><strong>Details</strong> </small></td>
                                                     <td align="left"><small>{{item.details}} </small></td>
                                                     <td align="left"><small><strong>Status</strong> </small></td>
-                                                    <td align="left"><small>{{item.status}}</small></td>
+                                                    <td align="left"><label :class="getColorStatus(item.status)">{{item.status}}</label></td>
                                                 </tr>
 
                                             </td>
@@ -170,6 +170,15 @@
             this.getReturnRequestsData();
         },
         methods: {
+            getColorStatus(item){
+                if(item == 'For Checking'){
+                    return 'label label-warning label-pill label-inline mr-2';
+                }else if(item == 'Checked'){
+                    return 'label label-success label-pill label-inline mr-2';
+                }else{
+                    return 'label label-default label-pill label-inline mr-2';
+                }
+            },
             acceptCheck(){
                let v = this;
                v.acceptDisable = true;

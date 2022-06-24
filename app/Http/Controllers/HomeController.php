@@ -43,10 +43,10 @@ class HomeController extends Controller
                 ]);
                 return view('pages.dashboard');    
             }else{
-                return view('pages.page_not_found');  
+                return redirect('/home-user');
             }
         }else{
-            return view('pages.page_not_found');  
+            return redirect('/home-user');
         }
        
     }

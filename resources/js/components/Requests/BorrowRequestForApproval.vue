@@ -126,8 +126,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary mr-3" @click="approveRequest">Approve</button>
-                        <button class="btn btn-danger" @click="disapproveRequest">Disapprove</button>
+                        <button class="btn btn-primary mr-3" @click="approveRequest" :disabled="disableButton">Approve</button>
+                        <button class="btn btn-danger" @click="disapproveRequest" :disabled="disableButton">Disapprove</button>
                     </div>
                 </div>
             </div>
@@ -145,7 +145,8 @@
                 errors : [],
                 approval_form : {
                     'approved_by_it_head_remarks' : ''
-                }
+                },
+                disableButton : false,
             }
         },
         created () {
@@ -155,6 +156,7 @@
         methods: {
             approveRequest(){
                 let v = this;
+                v.disableButton = true;
                 Swal.fire({
                 title: 'Are you sure you want to approve?',
                 icon: 'question',
@@ -175,21 +177,27 @@
                                         if (okay) {
                                             $('#for-approval-modal').modal('hide');
                                             this.getBorrowRequestForApproval();
+                                            v.disableButton = false;
                                         }
                                     });
                             }else{
                                 Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
+                                v.disableButton = false;
                             }
                         })
                         .catch(error => {
                             v.errors = error.response.data.errors;
+                            v.disableButton = false;
                         })
 
+                    }else{
+                        v.disableButton = false;
                     }
                 })
             },
             disapproveRequest(){
                 let v = this;
+                v.disableButton = true;
                 Swal.fire({
                 title: 'Are you sure you want to disapprove?',
                 icon: 'question',
@@ -209,16 +217,21 @@
                                         if (okay) {
                                             $('#for-approval-modal').modal('hide');
                                             this.getBorrowRequestForApproval();  
+                                            v.disableButton = false;
                                         }
                                     });
                             }else{
-                                Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
+                                Swal.fire('Error: Cannot saved. Please try again.', '', 'error');  
+                                v.disableButton = false; 
                             }
                         })
                         .catch(error => {
                             v.errors = error.response.data.errors;
+                            v.disableButton = false;
                         })
 
+                    }else{
+                        v.disableButton = false;
                     }
                 })
             },

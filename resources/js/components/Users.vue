@@ -279,6 +279,26 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.requests_borrow" id="items"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Borrow Requests
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.requests_return" id="items"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Return Requests
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -359,6 +379,8 @@
                         formData.append('activity_logs', v.user.activity_logs ? v.user.activity_logs : "");
                         formData.append('items', v.user.items ? v.user.items : "");
                         formData.append('settings', v.user.settings ? v.user.settings : "");
+                        formData.append('requests_borrow', v.user.requests_borrow ? v.user.requests_borrow : "");
+                        formData.append('requests_return', v.user.requests_return ? v.user.requests_return : "");
 
                         axios.post(`/save-change-user-role`, formData)
                         .then(response =>{
@@ -397,6 +419,8 @@
                 v.user.activity_logs = user.user_role ? user.user_role.activity_logs : ""; 
                 v.user.items = user.user_role ? user.user_role.items : ""; 
                 v.user.settings = user.user_role ? user.user_role.settings : ""; 
+                v.user.requests_borrow = user.user_role ? user.user_role.requests_borrow : ""; 
+                v.user.requests_return = user.user_role ? user.user_role.requests_return : ""; 
                 $('#change-user-role-modal').modal('show');
             },
             getUsers() {
