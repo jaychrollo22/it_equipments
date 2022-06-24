@@ -54,16 +54,16 @@ class InventoryController extends Controller
         if($data['type'] || $data['location'] || $data['category'] || $data['status']){
             return Inventory::with('is_borrowed.employee_info','is_borrowed.letter_of_undertaking','is_transfer')
                                 ->when(!empty($data['type']),function($q) use($data){
-                                    $q->where('type','LIKE','%'.$data['type'].'%');
+                                    $q->where('type', '=', $data['type']);
                                 })
                                 ->when(!empty($data['location']),function($q) use($data){
-                                    $q->where('location','LIKE','%'.$data['location'].'%');
+                                    $q->where('location', '=', $data['location']);
                                 })
                                 ->when(!empty($data['category']),function($q) use($data){
-                                    $q->where('category','LIKE','%'.$data['category'].'%');
+                                    $q->where('category','=',$data['category']);
                                 })
                                 ->when(!empty($data['status']) && $data['status'] != 'No Status',function($q) use($data){
-                                    $q->where('status','LIKE','%'.$data['status'].'%');
+                                    $q->where('status','=',$data['status']);
                                 })
                                 ->when($data['status'] == 'No Status',function($q) use($data){
                                     $q->whereNull('status');
