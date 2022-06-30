@@ -67,7 +67,7 @@ class ReportsController extends Controller
         return UserInventory::with('employee_info','inventory_info')
                             ->where('status','Borrowed')
                             ->whereNull('return_date')
-                            ->orderBy('employee_id','DESC')
+                            // // ->orderBy('employee_id','DESC')
                             ->orderBy('created_at','DESC')
                             ->get();
     }

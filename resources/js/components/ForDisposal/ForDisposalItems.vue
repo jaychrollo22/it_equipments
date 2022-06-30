@@ -75,11 +75,7 @@
                                 </tr>
                             </table>
                           
-                            <!-- <div class="form-group">
-                                <label>Search</label>
-                                <input type="text" class="form-control" placeholder="Input here..." v-model="keywords">
-                            </div>
-                               -->
+                         
                             <h5>Items Lists</h5>
                             <table class="table table-bordered" id="kt_datatable">
                                 <thead>
@@ -134,14 +130,6 @@
                                     <td v-else>
                                         <small>{{for_disposal.approved_by_it_head_info.name}}</small>
                                     </td>
-                                    <!-- <td align="center" v-if="for_disposal.approved_by_it_head_status">
-                                        <span v-if="for_disposal.approved_by_it_head_status =='Pending' && isCurrentUserRequestorVisible" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" @click="showApproval('IT')"> {{for_disposal.approved_by_it_head_status}} </span>
-                                        <span v-else class="label label-default label-pill label-inline mr-2"> {{for_disposal.approved_by_it_head_status}} </span>
-                                        <br>
-                                        <small v-if="for_disposal.approved_by_it_head_remarks">
-                                             Remarks: {{for_disposal.approved_by_it_head_remarks}}
-                                        </small>
-                                    </td> -->
                                 </tr>
                                 <tr>
                                     <td><small>Finance Head Approver</small> </td>
@@ -155,14 +143,6 @@
                                     <td v-else>
                                         <small>{{for_disposal.approved_by_finance_info.name}}</small>
                                     </td>
-                                    <!-- <td align="center" v-if="for_disposal.approved_by_finance_status">
-                                        <span v-if="for_disposal.approved_by_finance_status =='Pending' && isCurrentUserRequestorVisible" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" @click="showApproval('Finance')"> {{for_disposal.approved_by_finance_status}} </span>
-                                        <span v-else class="label label-default label-pill label-inline mr-2"> {{for_disposal.approved_by_finance_status}} </span>
-                                        <br>
-                                        <small v-if="for_disposal.approved_by_finance_remarks">
-                                            Remarks: {{for_disposal.approved_by_finance_remarks}}
-                                        </small>
-                                    </td> -->
                                 </tr>
                             </table>
                            

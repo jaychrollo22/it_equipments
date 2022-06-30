@@ -78,6 +78,7 @@
                         </div>
                         <div class="float-right" v-if="check_selected_items.length > 0">
                             <a href="#" class="btn btn-sm btn-light-warning font-weight-bolder py-2 px-5 mt-2" @click="forDisposal">For Disposal ({{check_selected_items.length}})</a>
+                            <a href="#" class="btn btn-sm btn-light-danger font-weight-bolder py-2 px-5 mt-2" @click="forMaintenance(check_selected_items)">For Maintenance ({{check_selected_items.length}})</a>
                             <a href="#" class="btn btn-sm btn-light-success font-weight-bolder py-2 px-5 mt-2" @click="clearSelection">Clear Selection ({{check_selected_items.length}})</a>
                         </div>
                         <div class="table-responsive">
@@ -99,7 +100,7 @@
                                 <tbody>
                                     <tr v-for="(item, i) in filteredInventoryQueues" :key="i" >
                                         <td>
-                                            <label class="container" v-if="item.status == 'For Disposal' || item.status == 'Disposed'">
+                                            <label class="container" v-if="item.status == 'For Disposal' || item.status == 'Disposed' || item.status=='For Maintenance'">
                                                 <input type="checkbox" disabled>
                                                 <span class="checkmark"></span>
                                             </label>
@@ -380,6 +381,7 @@
                                     <option value="Defective">Defective</option>
                                     <option value="Disposed">Disposed</option>
                                     <option value="For Disposal">For Disposal</option>
+                                    <option value="For Maintenance">For Maintenance</option>
                                     <option value="Owned">Owned</option>
                                     <option value="Replacement">Replacement</option>
                                     <option value="Spare">Spare</option>
@@ -547,6 +549,7 @@
                                     <option value="Defective">Defective</option>
                                     <option value="Disposed">Disposed</option>
                                     <option value="For Disposal">For Disposal</option>
+                                    <option value="For Maintenance">For Maintenance</option>
                                     <option value="Owned">Owned</option>
                                     <option value="Replacement">Replacement</option>
                                     <option value="Spare">Spare</option>
@@ -603,6 +606,51 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary btn-md" @click="saveForDisposalItems" :disabled="forDisposalDisable">Request For Disposal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- For Maintenance -->
+    <div class="modal fade" id="for-maintenance-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div>
+                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> 
+                <div class="modal-header">
+                    <h2 class="col-12 modal-title text-center">For Maintenance</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-checkable" id="kt_datatable">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">TYPE</th>
+                                    <th class="text-center">SERIAL NUMBER</th>
+                                    <th class="text-center">MODEL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, i) in for_maintenance_items" :key="i" >
+                                    <td align="center">
+                                        {{getType(item)}}
+                                    </td>
+                                    <td align="center">
+                                        {{getSerialNumber(item)}}
+                                    </td>
+                                    <td align="center">
+                                        {{getModel(item)}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-md" @click="saveForMaintenance" :disabled="forMaintenanceDisable">For Maintenance</button>
                 </div>
             </div>
         </div>
@@ -798,7 +846,10 @@ export default {
                 inventory_id : '',
                 employee_id : '',
                 borrow_date : '',
-            }
+            },
+
+            for_maintenance_items : [],
+            forMaintenanceDisable : false,
         }
     },
     created () {
@@ -969,6 +1020,50 @@ export default {
         },
         forDisposal(){
             $('#for-disposal-modal').modal('show');
+        },
+        saveForMaintenance(){
+            let v = this;
+            v.forMaintenanceDisable = true;
+            Swal.fire({
+            title: 'Are you sure you want to save this for maintenance?',
+            icon: 'question',
+            showDenyButton: true,
+            confirmButtonText: `Yes`,
+            denyButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let formData = new FormData();
+                    formData.append('items', JSON.stringify(v.for_maintenance_items));
+                    axios.post(`/for-maintenance-store`, formData)
+                    .then(response =>{
+                        if(response.data.status=='saved'){
+                            v.forMaintenanceDisable = false;
+                            Swal.fire(response.data.success + ' Items for maintenance has been saved!', '', 'success')
+                                .then(okay => {
+                                    if (okay) {
+                                        window.location.href = "/for-maintenance?id=" + response.data.for_disposal_id;
+                                    }
+                                    });
+                        }else{
+                            Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
+                            v.forMaintenanceDisable = false;
+                        }
+                    })
+                    .catch(error => {
+                        v.forMaintenanceDisable = false;
+                        v.errors = error.response.data.errors;
+                    })
+                }else if (result.isDenied) {
+                    // Swal.fire('Changes are not saved', '', 'info');
+                    v.forMaintenanceDisable = false;
+                }
+            })  
+
+
+        },
+        forMaintenance(items){
+            this.for_maintenance_items = items;
+            $('#for-maintenance-modal').modal('show');
         },
         clearRFID(){
             let v = this;

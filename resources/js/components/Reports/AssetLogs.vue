@@ -76,7 +76,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, i) in filteredAssetLogs" :key="i" >
+                                    <tr v-for="(item, i) in filteredQueues" :key="i" >
                                         <td align="left"><small>{{item.employee_info.first_name + ' ' + item.employee_info.last_name}}</small></td>
                                         <td align="left"><small>{{item.ticket_number}}</small></td>
                                         <td align="left"><small>{{item.inventory_info.serial_number}}</small></td>

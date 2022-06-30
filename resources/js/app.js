@@ -56,6 +56,9 @@ Vue.component('for-disposal', require('./components/ForDisposal/ForDisposal.vue'
 Vue.component('for-disposal-items', require('./components/ForDisposal/ForDisposalItems.vue').default);
 Vue.component('for-disposal-approval', require('./components/ForDisposal/ForDisposalApproval.vue').default);
 
+//For Maintenance
+Vue.component('for-maintenance', require('./components/ForMaintenance/ForMaintenance.vue').default);
+
 //Generate LOU
 Vue.component('generate-lou', require('./components/LetterOfUndertaking/GenerateLou.vue').default);
 

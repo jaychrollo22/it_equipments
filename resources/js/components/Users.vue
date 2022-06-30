@@ -177,6 +177,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" v-model="user.inventory_for_maintenance" id="inventory_for_maintenance"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        For Maintenance
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <strong>Reports</strong><br>
                         <div class="col-md-12">
                             <div class="form-group">
@@ -369,6 +379,7 @@
                         formData.append('inventory_transfer_location', v.user.inventory_transfer_location ? v.user.inventory_transfer_location : "");
                         formData.append('inventory_receive_transfer', v.user.inventory_receive_transfer ? v.user.inventory_receive_transfer : "");
                         formData.append('report_for_disposal', v.user.report_for_disposal ? v.user.report_for_disposal : "");
+                        formData.append('inventory_for_maintenance', v.user.inventory_for_maintenance ? v.user.inventory_for_maintenance : "");
                         formData.append('report_asset_handover_form', v.user.report_asset_handover_form ? v.user.report_asset_handover_form : "");
                         formData.append('report_employee_asset', v.user.report_employee_asset ? v.user.report_employee_asset : "");
                         formData.append('report_borrowed_inventories', v.user.report_borrowed_inventories ? v.user.report_borrowed_inventories : "");

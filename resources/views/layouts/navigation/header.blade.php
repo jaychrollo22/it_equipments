@@ -65,6 +65,14 @@
                                                     </a>
                                                 </li>
                                             @endif
+                                            @if(session('user_permissions.inventory_for_maintenance') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('for-maintenance') }}" class="menu-link" disabled>
+                                                        <span class="menu-text">For Maintenance</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
                                         </ul>
                                     </div>
                                 </li>

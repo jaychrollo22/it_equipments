@@ -79,6 +79,13 @@ Route::get('/', function () {
 
     Route::get('/for-disposal-approval','InventoriesForDisposalController@forDisposalApproval');
 
+    //For Maintenance Inventories
+    Route::get('/for-maintenance','InventoriesForMaintenanceController@index')->name('for-maintenance');
+    Route::get('/for-maintenance-data','InventoriesForMaintenanceController@indexData');
+    Route::post('/for-maintenance-store','InventoriesForMaintenanceController@store');
+    Route::post('/for-maintenance-set-schedule','InventoriesForMaintenanceController@setSchedule');
+    Route::post('/for-maintenance-change-status','InventoriesForMaintenanceController@changeStatus');
+
     //Transfer Inventories
     Route::get('/inventory-transfer', 'InventoryController@transfer')->name('transfer');
     Route::get('/inventory-transfer-data', 'InventoryController@transferData');
