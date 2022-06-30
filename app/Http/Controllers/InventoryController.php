@@ -180,7 +180,7 @@ class InventoryController extends Controller
             foreach($upload_inventory_file[0] as $k => $item){
                 if($item['serial_number']){
                     $check_inventory_file = Inventory::where('serial_number',$item['serial_number'])
-                                                        ->where('old_inventory_number',$item['old_inventory_number'])
+                                                        // ->where('old_inventory_number',$item['old_inventory_number'])
                                                         ->where('type',$item['type'])
                                                         ->first();
                     $save_item = [
