@@ -775,6 +775,7 @@
 </template>
 
 <script>
+// import VuePdfEmbed from 'vue-pdf-embed'
 import VuePdfEmbed from 'vue-pdf-embed/dist/vue2-pdf-embed'
 import print from 'print-js'
 import JsonExcel from 'vue-json-excel'
@@ -942,8 +943,8 @@ export default {
             printJS({printable: this.qr_link , type:'pdf', showModal:true});
         },
         showQR(link){
+            this.qr_link = link;
             $('#view-qr-modal').modal('show');
-            this.qr_link = link + '#toolbar=1&navpanes=0&scrollbar=1';
         },
         showPage(){
             this.currentPage = 0;
