@@ -759,7 +759,7 @@
                 <div class="modal-header">
                     <h2 class="col-12 modal-title text-center">QR Code</h2>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" v-if="qr_link">
                      <vue-pdf-embed :source="qr_link" />
                    <!-- <iframe id="id-frame" :src="qr_link" frameborder="0" height="200px" width="100%"></iframe> -->
                 </div>
