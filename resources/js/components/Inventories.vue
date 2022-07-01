@@ -94,6 +94,7 @@
                                         <th>MODEL</th>
                                         <th>STATUS</th>
                                         <th class="text-center">AVAILABILITY</th>
+                                        <th class="text-center">COMPANY</th>
                                         <th class="text-center">LOCATION</th>
                                         <th class="text-center">ACTION</th>
                                     </tr>
@@ -123,6 +124,7 @@
                                             <span v-else-if="item.is_transfer" class="label label-primary label-pill label-inline mr-2" style="cursor:pointer">For Transfer</span>
                                             <span v-else class="label label-success label-pill label-inline mr-2" title="Available to Borrow" style="cursor:pointer" @click="assignItem(item)">Available</span>
                                         </td>
+                                        <td align="center"><small>{{item.company}}</small></td>
                                         <td align="center"><small>{{item.location}}</small></td>
                                         <td align="center">
                                             <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editInventory(item)" title="Edit">
@@ -346,6 +348,16 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
+                                <label for="role">Company</label> 
+                                <select class="form-control" v-model="inventory.company">
+                                    <option value="N/A">N/A</option>
+                                    <option v-for="(company,b) in companies" v-bind:key="b" :value="company.company"> {{ company.company }}</option>
+                                </select>
+                                <span class="text-danger" v-if="errors.company">{{ errors.company[0] }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
                                 <label for="role">Location</label> 
                                 <select class="form-control" v-model="inventory.location">
                                     <option value="N/A">N/A</option>
@@ -514,7 +526,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="role">Upload Template (Excel File)*</label> 
-                                <input type="file" id="upload_company_inventory_file" class="form-control" ref="file" accept=".xlsx" v-on:change="inventoryFileUpload()"/>
+                                <input type="file" id="upload_company_inventory_file" class="form-control" ref="file" accept=".xlsx" v-on:change="inventoryCompanyFileUpload()"/>
                                 <span class="text-danger" v-if="errors.upload_inventory_file">{{ errors.upload_inventory_file[0] }}</span>
                             </div>
                         </div>
@@ -788,6 +800,7 @@ export default {
             
             //Settings Options
             types: [],
+            companies: [],
             locations: [],
             buildings: [],
             categories: [],
@@ -890,6 +903,7 @@ export default {
         this.getCurrentUser();
         this.getInventories();
         this.getTypes();
+        this.getCompanies();
         this.getLocations();
         this.getBuildings();
         this.getCategories();
@@ -1252,6 +1266,10 @@ export default {
 
         },
         inventoryFileUpload(){
+            var file = document.getElementById("upload_inventory_file");
+            this.upload_inventory_file = file.files[0];
+        },
+        inventoryCompanyFileUpload(){
             var file = document.getElementById("upload_company_inventory_file");
             this.upload_inventory_file = file.files[0];
         },
@@ -1299,6 +1317,7 @@ export default {
             v.inventory.os_name_and_version = 'N/A';
             v.inventory.tab_name = 'N/A';
             v.inventory.area = 'N/A';
+            v.inventory.company = 'N/A';
             v.inventory.location = 'N/A';
             v.inventory.building = 'N/A';
             v.inventory.category = 'N/A';
@@ -1307,6 +1326,7 @@ export default {
             v.inventory.disposal_date = '';
             v.action = 'New';
             this.getTypes();
+            this.getCompanies();
             this.getLocations();
             this.getBuildings();
             this.getCategories();
@@ -1341,6 +1361,7 @@ export default {
             v.inventory.os_name_and_version = inventory.os_name_and_version;
             v.inventory.tab_name = inventory.tab_name;
             v.inventory.area = inventory.area;
+            v.inventory.company = inventory.company;
             v.inventory.location = inventory.location;
             v.inventory.building = inventory.building;
             v.inventory.category = inventory.category;
@@ -1349,6 +1370,7 @@ export default {
             v.inventory.disposal_date = inventory.disposal_date;
             v.action = 'Update';
             this.getTypes();
+            this.getCompanies();
             this.getLocations();
             this.getBuildings();
             this.getCategories();
@@ -1394,6 +1416,7 @@ export default {
                     formData.append('os_name_and_version', v.inventory.os_name_and_version ? v.inventory.os_name_and_version : "");
                     // formData.append('tab_name', v.inventory.tab_name ? v.inventory.tab_name : "");
                     formData.append('area', v.inventory.area ? v.inventory.area : "");
+                    formData.append('company', v.inventory.company ? v.inventory.company : "");
                     formData.append('location', v.inventory.location ? v.inventory.location : "");
                     formData.append('building', v.inventory.building ? v.inventory.building : "");
                     formData.append('category', v.inventory.category ? v.inventory.category : "");
@@ -1474,6 +1497,17 @@ export default {
             axios.get('/setting-locations-data-options')
             .then(response => { 
                 v.locations = response.data;
+            })
+            .catch(error => { 
+                v.errors = error.response.data.error;
+            })
+        },
+        getCompanies() {
+            let v = this;
+            v.companies = [];
+            axios.get('/setting-companies-data-options')
+            .then(response => { 
+                v.companies = response.data;
             })
             .catch(error => { 
                 v.errors = error.response.data.error;

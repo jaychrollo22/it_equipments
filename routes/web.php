@@ -123,6 +123,7 @@ Route::get('/', function () {
     //Settings - Company
     Route::get('/setting-companies', 'SettingsCompanyController@index')->name('settings-companies');
     Route::get('/setting-companies-data', 'SettingsCompanyController@indexData');
+    Route::get('/setting-companies-data-options', 'SettingsCompanyController@companyOptions');
     Route::post('/setting-companies-store', 'SettingsCompanyController@store');
     Route::post('/setting-companies-update', 'SettingsCompanyController@update');
 

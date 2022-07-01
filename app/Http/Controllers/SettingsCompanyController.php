@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Inventory;
 use App\SettingCompany;
 use App\Company;
 use DB;
@@ -27,6 +28,15 @@ class SettingsCompanyController extends Controller
     public function indexData()
     {
         return Company::orderBy('name','ASC')->get();
+    }
+
+    public function companyOptions(){
+        return $companies = Inventory::select('company')
+                                        ->whereNotNull('company')
+                                        ->orWhere('company','!=','')
+                                        ->groupBy('company')
+                                        ->orderBy('company','ASC')
+                                        ->get();
     }
 
     public function store(Request $request)
