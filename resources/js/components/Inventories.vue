@@ -749,7 +749,7 @@
     </div>
 
     <div class="modal fade" id="view-qr-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
             <div class="modal-content">
                 <div>
                     <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
@@ -761,7 +761,7 @@
                 </div>
                 <div class="modal-body" v-if="qr_link">
                     <pdf :src="qr_link"></pdf>
-                   <iframe id="id-frame" :src="qr_link" frameborder="0" height="200px" width="100%"></iframe>
+                   <iframe id="id-frame" :src="qr_link + '#page=1&zoom=300&scrollbar=1&toolbar=1&navpanes=1'" frameborder="0" width="100%" height="300px"></iframe>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-sm btn-primary" @click="printQR">Print</button>
