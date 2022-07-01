@@ -760,7 +760,8 @@
                     <h2 class="col-12 modal-title text-center">QR Code</h2>
                 </div>
                 <div class="modal-body" v-if="qr_link">
-                     <vue-pdf-embed :source="qr_link" />
+                     <pdf :src="qr_link"></pdf>
+                     <!-- <vue-pdf-embed :source="qr_link" /> -->
                    <!-- <iframe id="id-frame" :src="qr_link" frameborder="0" height="200px" width="100%"></iframe> -->
                 </div>
                 <div class="modal-footer">
@@ -776,13 +777,15 @@
 
 <script>
 // import VuePdfEmbed from 'vue-pdf-embed'
-import VuePdfEmbed from 'vue-pdf-embed/dist/vue2-pdf-embed'
+// import VuePdfEmbed from 'vue-pdf-embed/dist/vue2-pdf-embed'
+import pdf from 'vue-pdf'
+
 import print from 'print-js'
 import JsonExcel from 'vue-json-excel'
 export default {
     components: {
         'downloadExcel': JsonExcel,
-        VuePdfEmbed
+        pdf
     },
     data() {
         return {
