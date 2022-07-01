@@ -36,4 +36,8 @@ class Inventory extends Model implements AuditableContract
     public function disposed_by_info(){
         return $this->belongsTo('App\User','disposed_by','id')->select('id','name');
     }
+
+    public function for_maintenance_logs(){
+        return $this->hasMany('App\InventoriesForMaintenance');
+    }
 }

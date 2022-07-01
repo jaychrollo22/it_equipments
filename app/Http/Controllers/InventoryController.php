@@ -54,7 +54,7 @@ class InventoryController extends Controller
     public function indexData(Request $request){
         $data = $request->all();
         if($data['type'] || $data['location'] || $data['category'] || $data['status']){
-            return Inventory::with('is_borrowed.employee_info','is_borrowed.letter_of_undertaking','is_transfer')
+            return Inventory::with('is_borrowed.employee_info','is_borrowed.letter_of_undertaking','is_transfer','for_maintenance_logs.prepared_by_info')
                                 ->when(!empty($data['type']),function($q) use($data){
                                     $q->where('type', '=', $data['type']);
                                 })
@@ -74,7 +74,7 @@ class InventoryController extends Controller
                                 ->orderBy('type','ASC')
                                 ->get();
         }else{
-            return Inventory::with('is_borrowed.employee_info','is_borrowed.letter_of_undertaking','is_transfer')
+            return Inventory::with('is_borrowed.employee_info','is_borrowed.letter_of_undertaking','is_transfer','for_maintenance_logs.prepared_by_info')
                                 // ->where('status','!=','Disposed')
                                 ->orderBy('type','ASC')
                                 ->get();
@@ -106,6 +106,7 @@ class InventoryController extends Controller
             }
             if($inventory = Inventory::create($data)){
                 DB::commit();
+                $inventory = Inventory::with('is_borrowed.employee_info','is_borrowed.letter_of_undertaking','is_transfer','for_maintenance_logs.prepared_by_info')->where('id',$inventory->id)->first();
                 return $status_data = [
                     'status'=>'success',
                     'inventory'=>$inventory,
@@ -143,16 +144,9 @@ class InventoryController extends Controller
             $data = $request->all();
             $inventory = Inventory::where('id',$data['id'])->first();
             if($inventory){
-                // unset($data['id']);
-                // if($data['status'] == 'Disposed'){
-                //     $data['disposed_by'] = Auth::user()->id;
-                // }else{
-                //     $data['disposal_date'] = null;
-                // }
                 $inventory->update($data);
                 DB::commit();
-
-                $inventory = Inventory::with('is_borrowed.employee_info','is_borrowed.letter_of_undertaking','is_transfer')->where('id',$request->id)->first();
+                $inventory = Inventory::with('is_borrowed.employee_info','is_borrowed.letter_of_undertaking','is_transfer','for_maintenance_logs.prepared_by_info')->where('id',$request->id)->first();
                 return $status_data = [
                     'status'=>'success',
                     'inventory'=>$inventory,

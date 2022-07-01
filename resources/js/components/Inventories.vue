@@ -165,7 +165,7 @@
                     <h2 class="col-12 modal-title text-center">{{ action }}</h2>
                 </div>
                 <div class="modal-body">
-                    <h5 class="mt-5 mb-3">RFID Registration 
+                    <h5 class="mt-5 mb-3 text-warning">RFID Registration 
                         <span v-if="activateImpinjDevice" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" title="Clear RFID" @click="clearRFID">Clear</span>
                     </h5>
                     <div class="row">
@@ -204,7 +204,7 @@
 
                         </div>
                     </div>
-                    <h5 class="mt-5">Inventory Information</h5>
+                    <h5 class="mt-5 text-success">Inventory Information</h5>
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
@@ -336,7 +336,7 @@
                             </div>
                         </div>
                     </div>
-                    <h5>Others</h5>
+                    <h5 class="text-info">Others</h5>
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
@@ -420,6 +420,39 @@
                             </div>
                         </div>
                     </div>
+                    <h5 class="text-primary">Assignee & PMS</h5>
+                    <hr>
+                    <div class="timeline timeline-5">
+                        <div class="timeline-items">
+                          
+                            <div class="timeline-item" v-if="inventory.is_borrowed">
+                                <div class="timeline-media bg-light-primary">
+                                    <span class="svg-icon svg-icon-primary svg-icon-md">
+                                        <i class="fa fa-user text-primary"></i>
+                                    </span>
+                                </div>
+                                <div class="timeline-desc timeline-desc-light-primary">
+                                    <span class="font-weight-bolder text-primary">{{inventory.is_borrowed.borrow_date}}</span>
+                                    <p class="font-weight-normal text-dark-50 pb-2">Assigned/Borrowed By: {{inventory.is_borrowed.employee_info.first_name + ' ' + inventory.is_borrowed.employee_info.last_name}}</p>
+                                </div>
+                            </div>
+                           
+                            
+                            <div class="timeline-item" v-for="(item, i) in inventory.for_maintenance_logs" :key="i" >
+                                <div class="timeline-media bg-light-success">
+                                    <span class="svg-icon svg-icon-success svg-icon-md">
+                                        <i class="fa fa-cog text-success"></i>
+                                    </span>
+                                </div>
+                                <div class="timeline-desc timeline-desc-light-success">
+                                    <span class="font-weight-bolder text-success">{{item.maintenance_date}}</span>
+                                    <p class="font-weight-normal text-dark-50 pt-1">PMS (Remarks : {{item.remarks}} | Status : {{item.status}} | Prepared By : {{item.prepared_by_info.name}})</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary btn-md" :disabled="savingDisable" @click="saveInventory">Save</button>
@@ -1369,37 +1402,37 @@ export default {
             let v = this;
             v.rfidImpinjDetails = '';
             v.errors = [];
-            v.inventory.id = inventory.id;
-            v.inventory.epc = inventory.epc;
-            v.inventory.tid = inventory.tid;
-            v.inventory.rfid_64 = inventory.rfid_64;
-            v.inventory.type = inventory.type;
-            v.inventory.old_inventory_number = inventory.old_inventory_number;
-            v.inventory.new_it_tag_qr_code_bar_code = inventory.new_it_tag_qr_code_bar_code;
-            v.inventory.serial_number = inventory.serial_number;
-            v.inventory.model = inventory.model;
-            v.inventory.processor = inventory.processor;
-            v.inventory.manufacturer = inventory.manufacturer;
-            v.inventory.supplier = inventory.supplier;
-            v.inventory.purchase_company = inventory.purchase_company;
-            v.inventory.delivery_date = inventory.delivery_date;
-            v.inventory.order_number = inventory.order_number;
-            v.inventory.retired_date = inventory.retired_date;
-            v.inventory.estimated_retirement_date = inventory.estimated_retirement_date;
-            v.inventory.warranty_period = inventory.warranty_period;
-            v.inventory.asset_code = inventory.asset_code;
-            v.inventory.purchase_cost = inventory.purchase_cost;
-            v.inventory.insurance_date = inventory.insurance_date;
-            v.inventory.os_name_and_version = inventory.os_name_and_version;
-            v.inventory.tab_name = inventory.tab_name;
-            v.inventory.area = inventory.area;
-            v.inventory.company = inventory.company;
-            v.inventory.location = inventory.location;
-            v.inventory.building = inventory.building;
-            v.inventory.category = inventory.category;
-            v.inventory.status = inventory.status;
-            v.inventory.remarks = inventory.remarks;
-            v.inventory.disposal_date = inventory.disposal_date;
+            v.inventory = inventory;
+            // v.inventory.epc = inventory.epc;
+            // v.inventory.tid = inventory.tid;
+            // v.inventory.rfid_64 = inventory.rfid_64;
+            // v.inventory.type = inventory.type;
+            // v.inventory.old_inventory_number = inventory.old_inventory_number;
+            // v.inventory.new_it_tag_qr_code_bar_code = inventory.new_it_tag_qr_code_bar_code;
+            // v.inventory.serial_number = inventory.serial_number;
+            // v.inventory.model = inventory.model;
+            // v.inventory.processor = inventory.processor;
+            // v.inventory.manufacturer = inventory.manufacturer;
+            // v.inventory.supplier = inventory.supplier;
+            // v.inventory.purchase_company = inventory.purchase_company;
+            // v.inventory.delivery_date = inventory.delivery_date;
+            // v.inventory.order_number = inventory.order_number;
+            // v.inventory.retired_date = inventory.retired_date;
+            // v.inventory.estimated_retirement_date = inventory.estimated_retirement_date;
+            // v.inventory.warranty_period = inventory.warranty_period;
+            // v.inventory.asset_code = inventory.asset_code;
+            // v.inventory.purchase_cost = inventory.purchase_cost;
+            // v.inventory.insurance_date = inventory.insurance_date;
+            // v.inventory.os_name_and_version = inventory.os_name_and_version;
+            // v.inventory.tab_name = inventory.tab_name;
+            // v.inventory.area = inventory.area;
+            // v.inventory.company = inventory.company;
+            // v.inventory.location = inventory.location;
+            // v.inventory.building = inventory.building;
+            // v.inventory.category = inventory.category;
+            // v.inventory.status = inventory.status;
+            // v.inventory.remarks = inventory.remarks;
+            // v.inventory.disposal_date = inventory.disposal_date;
             v.action = 'Update';
             this.getTypes();
             this.getCompanies();
