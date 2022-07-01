@@ -22,6 +22,8 @@ use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ClientException;
 
+
+use App\Helpers\RotateTextHelper;
 use setasign\Fpdi\Fpdi;
 
 class InventoryController extends Controller
@@ -704,8 +706,7 @@ class InventoryController extends Controller
         if($inventory->id){
             QRCode::text($request->id)->setSize(25)->setMargin(2)->setOutfile(base_path().'/public/inventory_qr/'. $request->id.'.png')->png();
 
-
-            $pdf = new Fpdi();
+            $pdf = new RotateTextHelper();
             $pdf->AddPage('L',[30,20]);
 
             $pdf->SetFont('Arial','B','5');
@@ -714,7 +715,6 @@ class InventoryController extends Controller
                 $pdf->TextWithDirection(6.5,17.5,$inventory->company . ' PROPERTY' ,'U');
             }
            
-
             $pdf->SetMargins(0, 0, 0, 0);
             $pdf->SetAutoPageBreak(0, 0);
             $pdf->Image(base_path().'/public/inventory_qr/'. $request->id.'.png', 7, 1.5, 17, 17,'PNG');
@@ -724,13 +724,11 @@ class InventoryController extends Controller
             $pdf->SetXY(0, 16);
 
             $pdf->TextWithDirection(26,13,$request->id,'U');
-            // $pdf->Cell(30,4,$request->id,0,1,'C');
-
+         
 
             $pdf->Output('I', $request->id . '.pdf');
             exit();
 
-            // return redirect('inventory_qr/'. $request->id.'.png');
         }
     }
 
