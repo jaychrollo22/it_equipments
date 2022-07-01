@@ -130,9 +130,9 @@
                                             <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editInventory(item)" title="Edit">
                                                 <i class="flaticon-edit"></i>
                                             </button>
-                                            <a :href="'generate-qr-code?id='+item.id" target="_blank" type="button" class="btn btn-light-primary btn-icon btn-sm" title="Print QR">
+                                            <button @click="showQR('generate-qr-code?id='+item.id)" type="button" class="btn btn-light-primary btn-icon btn-sm" title="Print QR">
                                                 <i class="flaticon-squares-4"></i>
-                                            </a>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -748,15 +748,40 @@
         </div>
     </div>
 
+    <div class="modal fade" id="view-qr-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div>
+                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> 
+                <div class="modal-header">
+                    <h2 class="col-12 modal-title text-center">QR Code</h2>
+                </div>
+                <div class="modal-body">
+                     <vue-pdf-embed :source="qr_link" />
+                   <!-- <iframe id="id-frame" :src="qr_link" frameborder="0" height="200px" width="100%"></iframe> -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary" @click="printQR">Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </div>
 </template>
 
 <script>
+import VuePdfEmbed from 'vue-pdf-embed/dist/vue2-pdf-embed'
+import print from 'print-js'
 import JsonExcel from 'vue-json-excel'
 export default {
     components: {
-        'downloadExcel': JsonExcel
+        'downloadExcel': JsonExcel,
+        VuePdfEmbed
     },
     data() {
         return {
@@ -897,6 +922,8 @@ export default {
             forMaintenanceDisable : false,
 
             currentUser : '',
+
+            qr_link : '',
         }
     },
     created () {
@@ -911,6 +938,13 @@ export default {
         this.getEmployees();
     },
     methods : {
+        printQR(){
+            printJS({printable: this.qr_link , type:'pdf', showModal:true});
+        },
+        showQR(link){
+            $('#view-qr-modal').modal('show');
+            this.qr_link = link + '#toolbar=1&navpanes=0&scrollbar=1';
+        },
         showPage(){
             this.currentPage = 0;
         },
