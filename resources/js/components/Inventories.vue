@@ -31,6 +31,7 @@
                         <div class="card-toolbar">
                             <button class="btn btn-primary mr-2 mt-1" @click="addInventory">New</button>
                             <button class="btn btn-info mr-2 mt-1" @click="uploadInventory">Upload Excel</button>
+                            <button v-if="currentUser.user_id=='2693'" class="btn btn-warning mr-2 mt-1" @click="uploadCompanyInventory">Upload Company</button>
                              <download-excel
                                 :data   = "filteredInventories"
                                 :fields = "exportInventories"
@@ -496,6 +497,36 @@
         </div>
     </div>
 
+    <!-- Upload Company Inventories -->
+    <div class="modal fade" id="upload-company-inventories-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
+            <div class="modal-content">
+                <div>
+                    <button type="button" class="close mt-2 mr-2" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> 
+                <div class="modal-header">
+                    <h2 class="col-12 modal-title text-center">Upload Company Inventories</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role">Upload Template (Excel File)*</label> 
+                                <input type="file" id="upload_company_inventory_file" class="form-control" ref="file" accept=".xlsx" v-on:change="inventoryFileUpload()"/>
+                                <span class="text-danger" v-if="errors.upload_inventory_file">{{ errors.upload_inventory_file[0] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-md" :disabled="uploadDisable" @click="saveUploadCompanyInventory">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Filter -->
     <div class="modal fade" id="apply-filter-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
@@ -807,6 +838,7 @@ export default {
                 'OS NAME AND VERSION' : 'os_name_and_version',
                 // 'TAB NAME' : 'tab_name',
                 'AREA' : 'area',
+                'COMPANY' : 'company',
                 'LOCATION' : 'location',
                 'BUILDING' : 'building',
                 'CATEGORY' : 'category',
@@ -850,9 +882,12 @@ export default {
 
             for_maintenance_items : [],
             forMaintenanceDisable : false,
+
+            currentUser : '',
         }
     },
     created () {
+        this.getCurrentUser();
         this.getInventories();
         this.getTypes();
         this.getLocations();
@@ -1156,7 +1191,6 @@ export default {
                             if(response.data > 0){
                                 $('#upload-inventories-modal').modal('hide');
                                 v.getInventories();
-                                v.performance_eval_file = '';
                                 document.getElementById("upload_inventory_file").value = '';
                                 v.uploadDisable = false;
                                 Swal.fire(response.data + ' inventories has been saved!', '', 'success');             
@@ -1177,16 +1211,61 @@ export default {
             })    
 
         },
+        saveUploadCompanyInventory(){
+            let v = this;
+            v.uploadDisable = true;
+            Swal.fire({
+            title: 'Are you sure you want to upload this Inventory?',
+            icon: 'question',
+            showDenyButton: true,
+            confirmButtonText: `Yes`,
+            denyButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                        let formData = new FormData();
+                        if(v.upload_inventory_file){
+                            formData.append('upload_inventory_file', v.upload_inventory_file);
+                        }
+                        axios.post(`/save-upload-company-inventories`, formData)
+                        .then(response =>{
+                            if(response.data > 0){
+                                $('#upload-company-inventories-modal').modal('hide');
+                                v.getInventories();
+                                document.getElementById("upload_company_inventory_file").value = '';
+                                v.uploadDisable = false;
+                                Swal.fire(response.data + ' inventories has been saved!', '', 'success');             
+                                
+                            }else{
+                                Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
+                                v.uploadDisable = false;
+                            }
+                        })
+                        .catch(error => {
+                            v.uploadDisable = false;
+                            this.errors = error.response.data.errors;
+                        })
+                }else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info');
+                    v.uploadDisable = false;
+                }
+            })    
+
+        },
         inventoryFileUpload(){
-            var file = document.getElementById("upload_inventory_file");
+            var file = document.getElementById("upload_company_inventory_file");
             this.upload_inventory_file = file.files[0];
         },
         uploadInventory(){
             let v = this;
             v.uploadDisable = false;
-            v.performance_eval_file = '';
             document.getElementById("upload_inventory_file").value = '';
             $('#upload-inventories-modal').modal('show');
+        },
+        uploadCompanyInventory(){
+            let v = this;
+            v.uploadDisable = false;
+            document.getElementById("upload_inventory_file").value = '';
+            $('#upload-company-inventories-modal').modal('show');
         },
         viewBorrowItem(item){
             this.selectedItem = item;
@@ -1420,6 +1499,18 @@ export default {
             })
             .catch(error => { 
                 v.errors = error.response.data.error;
+            })
+        },
+        getCurrentUser(){
+            this.currentUser = '';
+            axios.get('/current-user')
+            .then(response => { 
+                if(response.data){
+                    this.currentUser = response.data;
+                }
+            })
+            .catch(error => { 
+                this.errors = error.response.data.error;
             })
         },
         setPage(pageNumber) {

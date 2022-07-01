@@ -55,6 +55,7 @@ Route::get('/', function () {
     Route::post('/inventories-update', 'InventoryController@update');
 
     Route::post('/save-upload-inventories', 'InventoryController@uploadInventories');
+    Route::post('/save-upload-company-inventories', 'InventoryController@uploadCompanyInventories');
 
     //For Disposal Inventories
     Route::get('/for-disposal', 'InventoriesForDisposalController@index')->name('for-disposal');

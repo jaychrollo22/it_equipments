@@ -229,6 +229,40 @@ class InventoryController extends Controller
 
     }
 
+    public function uploadCompanyInventories(Request $request){
+
+        $this->validate($request, [
+            'upload_inventory_file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        $data = $request->all();
+        $upload_inventory_file = Excel::toArray(new InventoriesImport, $request->file('upload_inventory_file'));
+        $save_count = 0;
+        if($upload_inventory_file){
+            foreach($upload_inventory_file[0] as $k => $item){
+                if($item['serial_number']){
+                    if($item['serial_number'] != 'N/R' || $item['serial_number'] != 'N/A'){
+
+                        $check_inventory_file = Inventory::where('serial_number',$item['serial_number'])->first();
+
+                        $save_item = [
+                            'company'=> isset($item['company']) ? strtoupper($item['company']) : "",
+                        ];
+
+                        if($check_inventory_file){
+                            //Update
+                            $check_inventory_file->update($save_item);
+                            $save_count++;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $save_count;
+
+    }
+
     public function transfer(){
         session([
             'title' => 'Transfer'
