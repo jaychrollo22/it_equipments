@@ -699,21 +699,32 @@ class InventoryController extends Controller
     }
 
     public function generateQrCode(Request $request){
-        if($request->id){
+
+        $inventory = Inventory::select('id','company')->where('id',$request->id)->first();
+        if($inventory->id){
             QRCode::text($request->id)->setSize(25)->setMargin(2)->setOutfile(base_path().'/public/inventory_qr/'. $request->id.'.png')->png();
 
 
             $pdf = new Fpdi();
             $pdf->AddPage('L',[30,20]);
 
+            $pdf->SetFont('Arial','B','5');
+            
+            if($inventory->company){
+                $pdf->TextWithDirection(6.5,17.5,$inventory->company . ' PROPERTY' ,'U');
+            }
+           
+
             $pdf->SetMargins(0, 0, 0, 0);
             $pdf->SetAutoPageBreak(0, 0);
-            $pdf->Image(base_path().'/public/inventory_qr/'. $request->id.'.png', 7, 0, 17, 17,'PNG');
+            $pdf->Image(base_path().'/public/inventory_qr/'. $request->id.'.png', 7, 1.5, 17, 17,'PNG');
 
             $pdf->SetFont('Arial','B','8');
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetXY(0, 16);
-            $pdf->Cell(30,4,$request->id,0,1,'C');
+
+            $pdf->TextWithDirection(26,13,$request->id,'U');
+            // $pdf->Cell(30,4,$request->id,0,1,'C');
 
 
             $pdf->Output('I', $request->id . '.pdf');
