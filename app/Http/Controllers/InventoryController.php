@@ -703,7 +703,7 @@ class InventoryController extends Controller
             $pdf = new RotateTextHelper();
             $pdf->AddPage('L',[30,20]);
 
-            $pdf->SetFont('Arial','B','5');
+            $pdf->SetFont('Arial','B','4');
             
             if($inventory->company){
                 $pdf->TextWithDirection(6.5,17.5,$inventory->company . ' PROPERTY' ,'U');
