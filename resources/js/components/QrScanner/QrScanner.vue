@@ -59,7 +59,7 @@
                                                 <strong class="text-success">{{inventory.is_borrowed.employee_info.first_name + ' ' + inventory.is_borrowed.employee_info.last_name}}</strong>
                                             </td>
                                             <td v-else>
-                                                <strong class="text-danger">Unaassigned</strong>
+                                                <strong class="text-danger">Unassigned</strong>
                                             </td>
                                         </tr>
                                         <tr v-if="inventory.is_borrowed">
@@ -112,7 +112,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success btn-round btn-fill btn-lg mt-4" @click="switchCamera"> SWITCH CAMERA ({{camera}})</button>
-                        <button class="btn btn-danger btn-round btn-fill btn-lg mt-4" @click="closeScan">Close</button>
+                        <button type="button" class="btn btn-danger btn-round btn-fill btn-lg mt-4" @click="closeScan">Close</button>
                     </div>
                 </div>
             </div>
