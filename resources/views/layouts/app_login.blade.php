@@ -3,7 +3,7 @@
 	<!--begin::Head-->
 	<head><base href="">
 		<meta charset="utf-8" />
-		<title>Sign In | IT Equipments</title>
+		<title>Sign In | IT ASSET & INVENTORY</title>
 		<meta name="description" content="Performance Appraisal" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 

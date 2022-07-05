@@ -2,8 +2,8 @@
 	<!--begin::Head-->
 	<head><base href="">
 		<meta charset="utf-8" />
-		<title>{{ session('title') }} | IT Equipments</title>
-		<meta name="description" content="IT Equipments" />
+		<title>{{ session('title') }} | IT ASSET & INVENTORY</title>
+		<meta name="description" content="IT ASSET & INVENTORY" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<!--begin::Fonts-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />

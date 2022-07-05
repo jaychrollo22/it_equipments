@@ -60,7 +60,7 @@
                     <!--end::Aside body-->
                     <!--begin: Aside footer for desktop-->
                     <div class="d-flex flex-column-auto justify-content-between mt-15">
-                        <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© 2021 IT Equipments Portal</div>
+                        <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© 2021 IT ASSET & INVENTORY</div>
                         <div class="d-flex order-1 order-sm-2 my-2">
                             {{-- <a href="#" class="text-muted text-hover-primary">Privacy</a>
                             <a href="#" class="text-muted text-hover-primary ml-4">Legal</a>
@@ -77,7 +77,7 @@
                 <!--begin::Content body-->
                 <div class="d-flex flex-column-fluid flex-lg-center">
                     <div class="d-flex flex-column justify-content-center">
-                        <h3 class="display-3 font-weight-bold my-7 text-white">Welcome to IT Equipments Portal</h3>
+                        <h3 class="display-3 font-weight-bold my-7 text-white">WELCOME TO IT ASSET & INVENTORY</h3>
                         {{-- <p class="font-weight-bold font-size-lg text-white opacity-80">“The greatest leader is not necessarily the one who does the greatest things.
                         He is the one that gets the <br /> people to do the greatest things.” - Ronald Reagan</p> --}}
                     </div>

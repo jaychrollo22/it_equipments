@@ -1,5 +1,5 @@
 <head>
-    <title> {{ $transfer_data ? $transfer_data->transfer_code : "Print Transfer" }} | IT Equipments </title>
+    <title> {{ $transfer_data ? $transfer_data->transfer_code : "Print Transfer" }} | IT ASSET & INVENTORY </title>
     <style>
         @page { 
             margin: 110px 40px;
