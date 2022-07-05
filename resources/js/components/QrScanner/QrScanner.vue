@@ -29,12 +29,16 @@
 
                         <div class="card-body">
                             <div class="row" v-if="inventory">
-                                <h4>Scanned Results</h4>
+                                <h4>Results</h4>
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <tr>
                                             <td align="right"><strong>ID</strong></td>
                                             <td><strong>{{inventory.id}}</strong> </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><strong>SERIAL NO.</strong></td>
+                                            <td>{{inventory.serial_number}}</td>
                                         </tr>
                                         <tr>
                                             <td align="right"><strong>MODEL</strong></td>
@@ -82,23 +86,7 @@
             </div>
         </div>
 
-        <!-- <div id="scan-qr" class="scan-modal">
-            <div class="scan-content">
-                <h2 class="col-12 modal-title text-center mt-4" id="addCompanyLabel"><i class="fas fa-qrcode" ></i> QR CODE</h2>
-                <div class="row justify-content-center mt-4 mb-4">
-                    <div style="border:5px solid red;padding:5px 5px 5px;width:100%">
-                        <qrcode-stream v-if="scanStatusQr" :camera="camera" @decode="onDecodeQR" @init="logErrors" />
-                    </div>
-                </div>
-                <h4 class="text-center">Align the QR Code within the camera to scan</h4>
-                <div class="row justify-content-center mt-4 mb-2">
-                    <button id="close-btn" type="button" class="btn btn-success btn-round btn-fill btn-lg mt-4 ml-2" @click="switchCamera"> SWITCH CAMERA ({{camera}})</button>
-                    <button id="close-btn" type="button" class="btn btn-danger btn-round btn-fill btn-lg mt-4" @click="closeScan"> CLOSE</button>
-                </div>
-            </div>
-        </div> -->
-
-        <!-- Filter -->
+        <!-- Scanner/Camera Modal -->
         <div class="modal fade" id="qr-scanner-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
                 <div class="modal-content">
@@ -220,33 +208,8 @@
 </script>
 
 <style lang="scss" scoped>
-    .scan-modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    }
-
-    /* Modal Content/Box */
-    .scan-content {
-        background-color: #fefefe;
-        margin: 5% auto; /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 30%; /* Could be more or less, depending on screen size */
-        border: 0 solid rgba(0,0,0,.2);
-        border-radius: .4375rem;
-    }
-
     .error {
         font-weight: bold;
         color: red;
     }
-
 </style>
