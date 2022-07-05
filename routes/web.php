@@ -23,6 +23,10 @@ Route::post('/save-borrow-item', 'ItemsController@saveBorrowItem');
 Route::post('/save-return-item', 'ItemsController@saveReturnItem');
 Route::post('/save-upload-user-inventories', 'ReportsController@uploadUserInventories');
 
+
+Route::get('/qr-scanner', 'QrScannerController@qrScanner');
+Route::get('/qr-scanner-data', 'QrScannerController@qrScannerData');
+
 Route::get('/', function () {
     return redirect('/login');
 });

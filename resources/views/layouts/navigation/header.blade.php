@@ -271,6 +271,13 @@
                                 </li>
                             @endif
                         @endif
+                        <li class="menu-item menu-item-submenu menu-item-rel">
+                            <a href="{{ url('qr-scanner') }}" target="_blank" class="menu-link">
+                                <span class="menu-text">QR SCANNER</span>
+                                <span class="menu-desc"></span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -73,6 +73,10 @@ Vue.component('home-user', require('./components/HomeUser/HomeUser.vue').default
 Vue.component('home-user-borrowed-requests', require('./components/HomeUser/BorrowedRequests.vue').default);
 Vue.component('home-user-returned-requests', require('./components/HomeUser/ReturnedRequests.vue').default);
 
+
+//QR Scanner
+Vue.component('qr-scanner', require('./components/QrScanner/QrScanner.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
