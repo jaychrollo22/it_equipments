@@ -111,6 +111,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button id="close-btn" type="button" class="btn btn-success btn-round btn-fill btn-lg mt-4" @click="switchCamera"> SWITCH CAMERA ({{camera}})</button>
                         <button class="btn btn-danger btn-md" @click="closeScan">Close</button>
                     </div>
                 </div>
