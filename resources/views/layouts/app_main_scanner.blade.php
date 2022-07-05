@@ -1,7 +1,7 @@
 <html lang="en">
 	<head><base href="">
 		<meta charset="utf-8" />
-		<title>{{ session('title') }} | IT ASSET & INVENTORY</title>
+		<title>QR SCANNER | IT ASSET & INVENTORY</title>
 		<meta name="description" content="IT ASSET & INVENTORY" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
