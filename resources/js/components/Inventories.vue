@@ -1635,7 +1635,7 @@ export default {
                     if(self.filter_status == 'Available'){
                         if(item.is_borrowed == null && item.status == 'Active'){
                             return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
-                            || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.old_inventory_number == this.keywords 
                             || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
                             || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
                             || item.id == this.keywords || item.epc == this.keywords
@@ -1644,7 +1644,7 @@ export default {
                         if(item.is_borrowed){
                             if(item.is_borrowed.is_assigned == 'true'){
                                 return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
-                                || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.old_inventory_number == this.keywords  
                                 || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
                                 || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
                                 || item.id == this.keywords 
@@ -1655,7 +1655,7 @@ export default {
                         if(item.is_borrowed){
                             if(item.is_borrowed.status == 'Borrowed' && !item.is_borrowed.is_assigned){
                                 return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
-                                || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.old_inventory_number == this.keywords 
                                 || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
                                 || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
                                 || item.id == this.keywords 
@@ -1665,7 +1665,7 @@ export default {
                     }else if(self.filter_status == 'For Transfer'){
                         if(item.is_transfer){
                             return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
-                            || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.old_inventory_number == this.keywords 
                             || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
                             || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
                             || item.id == this.keywords 
@@ -1674,7 +1674,7 @@ export default {
                     }else if(self.filter_status == 'With RFID'){
                         if(item.epc){
                             return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
-                            || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.old_inventory_number == this.keywords 
                             || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
                             || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
                             || item.id == this.keywords 
@@ -1682,7 +1682,7 @@ export default {
                         }
                     }else{
                         return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
-                        || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                        || item.old_inventory_number == this.keywords 
                         || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
                         || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
                         || item.id == this.keywords 
