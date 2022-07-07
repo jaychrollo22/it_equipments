@@ -13,10 +13,10 @@
     <div class="offcanvas-content pr-5 mr-n5">
         <!--begin::Header-->
         <div class="d-flex align-items-center mt-5">
-            <div class="symbol symbol-100 mr-5">
+            {{-- <div class="symbol symbol-100 mr-5">
                 <div class="symbol-label" style="background-image:url('http://10.96.4.126:8668/storage/id_image/employee_image/{{ session('user.id') }}.png')"></div>
                 <i class="symbol-badge bg-success"></i>
-            </div>
+            </div> --}}
             <div class="d-flex flex-column">
                 <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ Auth::user()->name }}</a>
                 <div class="text-muted mt-1">{{ session('user.position') }}</div>
