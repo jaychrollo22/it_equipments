@@ -50,7 +50,7 @@
                                             <i class="fas fa-filter text-dark-50"></i>&nbsp;Advance Filter
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Search ID | Serial Number | Model | Type | RFID"  v-model="keywords">
+                                    <input type="text" class="form-control" placeholder="Search ID | Serial Number | Model | Type | RFID | OLD INVENTORY NUMBER"  v-model="keywords">
                                 </div>
                             </div>
                             <div class="col-md-3 mt-2">
@@ -1634,30 +1634,59 @@ export default {
                 return Object.values(self.inventories).filter(item => {
                     if(self.filter_status == 'Available'){
                         if(item.is_borrowed == null && item.status == 'Active'){
-                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
+                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.id == this.keywords || item.epc == this.keywords
                         }
                     }else if(self.filter_status == 'Assigned'){
                         if(item.is_borrowed){
                             if(item.is_borrowed.is_assigned == 'true'){
-                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
+                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.id == this.keywords 
+                                || item.epc == this.keywords
                             }
                         }
                     }else if(self.filter_status == 'Borrowed'){
                         if(item.is_borrowed){
                             if(item.is_borrowed.status == 'Borrowed' && !item.is_borrowed.is_assigned){
-                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
+                                return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
+                                || item.id == this.keywords 
+                                || item.epc == this.keywords
                             }
                         }
                     }else if(self.filter_status == 'For Transfer'){
                         if(item.is_transfer){
-                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
+                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.id == this.keywords 
+                            || item.epc == this.keywords
                         }
                     }else if(self.filter_status == 'With RFID'){
                         if(item.epc){
-                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
+                            return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
+                            || item.id == this.keywords 
+                            || item.epc == this.keywords
                         }
                     }else{
-                         return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) || item.model.toLowerCase().includes(this.keywords.toLowerCase()) || item.type.toLowerCase().includes(this.keywords.toLowerCase()) || item.id == this.keywords || item.epc == this.keywords
+                        return item.serial_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                        || item.old_inventory_number.toLowerCase().includes(this.keywords.toLowerCase()) 
+                        || item.model.toLowerCase().includes(this.keywords.toLowerCase()) 
+                        || item.type.toLowerCase().includes(this.keywords.toLowerCase()) 
+                        || item.id == this.keywords 
+                        || item.epc == this.keywords
                     }
                 });
             }else{
