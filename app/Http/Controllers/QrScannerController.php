@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Inventory;
 
+use QRCode;
+
 class QrScannerController extends Controller
 {
 
@@ -25,5 +27,11 @@ class QrScannerController extends Controller
             ];
             return $response;
         }
+    }
+
+    public function qrGenerator(Request $request){
+        $qr_name = date('YmdHis');
+        QRCode::text($request->qr)->setSize(25)->setMargin(2)->setOutfile(base_path().'/public/qr_generator/'. $qr_name.'.png')->png();
+        return redirect('/qr_generator/'. $qr_name.'.png');
     }
 }

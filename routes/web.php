@@ -27,6 +27,8 @@ Route::post('/save-upload-user-inventories', 'ReportsController@uploadUserInvent
 Route::get('/qr-scanner', 'QrScannerController@qrScanner');
 Route::get('/qr-scanner-data', 'QrScannerController@qrScannerData');
 
+Route::get('/qr-generator', 'QrScannerController@qrGenerator');
+
 Route::get('/', function () {
     return redirect('/login');
 });

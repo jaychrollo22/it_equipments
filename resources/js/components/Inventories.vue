@@ -168,6 +168,7 @@
                 <div class="modal-body">
                     <h5 class="mt-5 mb-3 text-warning">RFID Registration 
                         <span v-if="activateImpinjDevice" class="label label-warning label-pill label-inline mr-2" style="cursor:pointer" title="Clear RFID" @click="clearRFID">Clear</span>
+                        <span v-if="inventory.epc || inventory.tid || inventory.rfid_64" class="label label-danger label-pill label-inline mr-2" style="cursor:pointer" title="Clear RFID" @click="resetRFID">Reset</span>
                     </h5>
                     <div class="row">
                         <div class="col-md-6">
@@ -1179,6 +1180,12 @@ export default {
         forMaintenance(items){
             this.for_maintenance_items = items;
             $('#for-maintenance-modal').modal('show');
+        },
+        resetRFID(){
+            let v = this;
+             v.inventory.epc = '';
+            v.inventory.tid = '';
+            v.inventory.rfid_64 = '';
         },
         clearRFID(){
             let v = this;
