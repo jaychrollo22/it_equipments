@@ -20,7 +20,7 @@
                             </li>
                         @endif
                         {{-- Inventories --}}
-                        @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
+                        @if(session('user_role') == "Administrator" || session('user_role') == "IT Support" || session('user_role') == "Finance")
                             @if(session('user_permissions.inventory_masterlist') == 'true' 
                                 || session('user_permissions.inventory_transfer_location') == 'true'
                                 || session('user_permissions.inventory_receive_transfer') == 'true'
@@ -271,13 +271,15 @@
                                 </li>
                             @endif
                         @endif
-                        <li class="menu-item menu-item-submenu menu-item-rel">
-                            <a href="{{ url('qr-scanner') }}" target="_blank" class="menu-link">
-                                <span class="menu-text">QR SCANNER</span>
-                                <span class="menu-desc"></span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                        </li>
+                        @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
+                            <li class="menu-item menu-item-submenu menu-item-rel">
+                                <a href="{{ url('qr-scanner') }}" target="_blank" class="menu-link">
+                                    <span class="menu-text">QR SCANNER</span>
+                                    <span class="menu-desc"></span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>

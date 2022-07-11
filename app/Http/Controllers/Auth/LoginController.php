@@ -58,7 +58,7 @@ class LoginController extends Controller
                             ->first();
 
         if($employee->user->user_role){
-            if($employee->user->user_role->role == 'Administrator' || $employee->user->user_role->role == 'IT Support'){
+            if($employee->user->user_role->role == 'Administrator' || $employee->user->user_role->role == 'IT Support' || $employee->user->user_role->role == 'Finance'){
                 session([
                     'user' => $employee,
                     'user_role' => $employee->user->user_role->role,

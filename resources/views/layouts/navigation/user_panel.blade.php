@@ -40,7 +40,7 @@
                             <small>{{ Auth::user()->email }}</small>
                         </span>
                     </a>
-                    @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
+                    @if(session('user_role') == "Administrator" || session('user_role') == "IT Support" || session('user_role') == "Finance")
                         <a href="/home" class="btn btn-sm btn-light-success font-weight-bolder py-2 px-5 mt-2">Dashboard</a>
                         <a href="/home-user" class="btn btn-sm btn-light-info font-weight-bolder py-2 px-5 mt-2">My Account</a>
                     @endif

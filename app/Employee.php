@@ -10,7 +10,7 @@ class Employee extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User')->select('id','name','email');
+        return $this->belongsTo('App\User');
     }
 
     public function borrowed_items(){

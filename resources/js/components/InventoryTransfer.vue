@@ -30,8 +30,8 @@
                             <h3 class="card-label">List
                             <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                         </div>
-                        <div class="card-toolbar">
-                            <button class="btn btn-primary mr-2" @click="newTransfer">New</button>
+                        <div class="card-toolbar" v-if="currentUser">
+                            <button v-if="currentUser.user.user_role.role == 'Administrator' || currentUser.user.user_role.role == 'IT Support'" class="btn btn-primary mr-2" @click="newTransfer">New</button>
                         </div>
                     </div>
 
@@ -66,7 +66,7 @@
                                         <th class="text-center">Location</th>
                                         <th class="text-center">Items</th>
                                         <th class="text-center">Status</th>
-                                        <th class="text-center">Action</th>
+                                        <th class="text-center" v-if="currentUser.user.user_role.role == 'Administrator' || currentUser.user.user_role.role == 'IT Support'">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -78,7 +78,7 @@
                                        <td class="text-center"><small>{{transfer.transfer_location}}</small></td>
                                        <td class="text-center"><small>{{transfer.inventory_transfer_items.length}}</small></td>
                                        <td class="text-center"><a :href="'/transfer-approval?transfer_code='+transfer.transfer_code" target="_blank" :class="getColorStatus(transfer.status)">{{transfer.status}}</a></td>
-                                       <td class="text-center">
+                                       <td class="text-center" v-if="currentUser.user.user_role.role == 'Administrator' || currentUser.user.user_role.role == 'IT Support'">
                                             <button v-if="transfer.status == 'Approved' || transfer.status == 'Pre-approved'" type="button" class="btn btn-light-primary btn-icon btn-sm" disabled title="Not Available">
                                                 <i class="flaticon-edit"></i>
                                             </button>
@@ -580,7 +580,7 @@
             this.getCurrentUser();
         },
         methods: {
-             getCurrentUser(){
+            getCurrentUser(){
                 this.currentUser = '';
                 axios.get('/current-user')
                 .then(response => { 

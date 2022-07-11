@@ -42,6 +42,18 @@ class HomeController extends Controller
                     'user_role' => $employee->user->user_role->role,
                 ]);
                 return view('pages.dashboard');    
+            }else if($employee->user->user_role->role == 'Finance'){
+                if($employee->user->inventory_transfer_location == 'true'){
+                    return redirect('/inventory-transfer');
+                }
+                else if($employee->user->user_role->inventory_receive_transfer == 'true'){
+                    return redirect('/inventory-receive');
+                }
+                else if($employee->user->user_role->report_for_disposal == 'true'){
+                    return redirect('/for-disposal');
+                }else{
+                    return redirect('/home-user');
+                }
             }else{
                 return redirect('/home-user');
             }
