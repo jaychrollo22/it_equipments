@@ -338,7 +338,7 @@ class InventoryController extends Controller
 
                         //Send Notification
                         $message = "Hi ".$inventory_transfer->approved_by_it_head_info->name.", sending this request for approval. Thank you.";
-                        $link = "http://10.96.4.168:8676/transfer-approval?transfer_code=".$inventory_transfer->transfer_code;        
+                        $link = "https://10.96.4.168:8676/transfer-approval?transfer_code=".$inventory_transfer->transfer_code;        
                         $send = $this->sendWebexMessageTransfer($inventory_transfer->approved_by_it_head_info->email,'For Transfer',$message,$inventory_transfer,$link);     
 
                         return $data = [
@@ -519,7 +519,7 @@ class InventoryController extends Controller
                     //Send Notification
                     if($request->approval_type == 'IT'){
                         $message = "Hi ".$inventory_transfer->approved_by_finance_info->name.", sending this request for approval. Thank you.";
-                        $link = "http://10.96.4.168:8676/transfer-approval?transfer_code=".$inventory_transfer->transfer_code;        
+                        $link = "https://10.96.4.168:8676/transfer-approval?transfer_code=".$inventory_transfer->transfer_code;        
                         $send = $this->sendWebexMessageTransfer($inventory_transfer->approved_by_finance_info->email,'For Transfer',$message,$inventory_transfer,$link);     
                     }
 

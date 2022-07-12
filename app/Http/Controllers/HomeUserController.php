@@ -86,12 +86,12 @@ class HomeUserController extends Controller
                 $borrow_request = UserBorrowRequest::where('id',$borrow_request->id)->first();
                 $message = 'New borrow request has been received. Please check details below. Thank you.';
                 $name = $user->employee->first_name . ' ' . $user->employee->last_name;
-                $link = 'http://10.96.4.168:8676/borrow-requests?request_number='. $borrow_request->request_number;
+                $link = 'https://10.96.4.168:8676/borrow-requests?request_number='. $borrow_request->request_number;
                 $send_webex = $this->sendGroupWebexMessageBorrow('Borrow Request',$message,$borrow_request,$name,$link);
 
                 //Send Notification to User
                 $message_to_user = 'Hi! '.$user->employee->first_name. ' your IT asset request has been received. We will check and validate this request. Thank you' ;
-                $link_user = 'http://10.96.4.168:8676/home-borrow-requests?request_number=' . $borrow_request->request_number;
+                $link_user = 'https://10.96.4.168:8676/home-borrow-requests?request_number=' . $borrow_request->request_number;
                 $send_webex_to_user = $this->sendWebexMessage($user->email,'Borrow Request',$message_to_user,$borrow_request,$link_user);
                 return $status_data = [
                     'status'=>'success',
@@ -243,7 +243,7 @@ class HomeUserController extends Controller
                 $return_request = UserReturnRequest::with('return_request_items')->where('id',$return_request->id)->first();
                 $message = 'New return request has been received. Please check details below. Thank you.';
                 $name = $user->employee->first_name . ' ' . $user->employee->last_name;
-                $link = 'http://10.96.4.168:8676/return-requests?request_number='. $return_request->request_number;
+                $link = 'https://10.96.4.168:8676/return-requests?request_number='. $return_request->request_number;
                 $send_webex = $this->sendGroupWebexMessageReturn('Return Request',$message,$return_request,$name,$link);
 
                 return $response = [

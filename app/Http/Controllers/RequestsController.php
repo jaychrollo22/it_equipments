@@ -95,7 +95,7 @@ class RequestsController extends Controller
                 if($request->notify_approver == 'true'){
                     //Send Webex Notification
                     $message = "Hi ".$borrow_request->approved_by_it_head_info->name.", sending this request for your approval. Please check details below. Thank you.";
-                    $link = "http://10.96.4.168:8676/borrow-request-for-approval?id=".$borrow_request->id;              
+                    $link = "https://10.96.4.168:8676/borrow-request-for-approval?id=".$borrow_request->id;              
                     $send = $this->sendWebexMessageApprover($borrow_request->approved_by_it_head_info->email,'For Approval',$message,$borrow_request,$link);              
                 }
 
@@ -139,10 +139,10 @@ class RequestsController extends Controller
                 
                 //Notify User
                 // $message = "<p>Hi ".$borrow_request->employee->first_name.", this is to inform you that your IT asset request (<b>".$borrow_request->request_number."</b>) has been disapproved due to; Remarks : ".$borrow_request->acknowledge_by_it_support_remarks.". Thank you. </p>
-                //             <p>Link : http://10.96.4.168:8676/home-borrow-requests</p>
+                //             <p>Link : https://10.96.4.168:8676/home-borrow-requests</p>
                 //             <small><i>This is an auto generated message. Please do not reply.</i></small>";
                 $message = "Hi ".$borrow_request->employee->first_name.", this is to inform you that your IT asset request has been disapproved due to; Remarks : ".$borrow_request->acknowledge_by_it_support_remarks.". Thank you.";
-                $link = "http://10.96.4.168:8676/home-borrow-requests?request_number=".$borrow_request->request_number;        
+                $link = "https://10.96.4.168:8676/home-borrow-requests?request_number=".$borrow_request->request_number;        
                 $send = $this->sendWebexMessage($borrow_request->user->email,'Disapproved',$message,$borrow_request,$link);        
 
                 return $status_data = [
@@ -211,7 +211,7 @@ class RequestsController extends Controller
                     //Notify Group
                     $message = 'Borrow Request has been Approved. Please check details below. Thank you.';
                     $name = $borrow_request->employee->first_name . ' ' . $borrow_request->employee->last_name;
-                    $link = 'http://10.96.4.168:8676/borrow-requests?request_number='. $borrow_request->request_number;
+                    $link = 'https://10.96.4.168:8676/borrow-requests?request_number='. $borrow_request->request_number;
                     $send_webex = $this->sendGroupWebexMessage('Approved',$message,$borrow_request,$name,$link);
 
                     return $response = [
@@ -254,7 +254,7 @@ class RequestsController extends Controller
                     
                     //Notify User
                     $message = "Hi ".$borrow_request->employee->first_name.", this is to inform you that your IT asset request has been disapproved due to; Remarks : ".$borrow_request->approved_by_it_head_remarks.". Thank you.";
-                    $link = "http://10.96.4.168:8676/home-borrow-requests?request_number=".$borrow_request->request_number;        
+                    $link = "https://10.96.4.168:8676/home-borrow-requests?request_number=".$borrow_request->request_number;        
                     $send = $this->sendWebexMessage($borrow_request->user->email,'Disapproved',$message,$borrow_request,$link);    
                     
                     return $response = [
@@ -286,7 +286,13 @@ class RequestsController extends Controller
     }
 
     public function letterOfUndertakingData(Request $request){
-        return $borrow_requests = UserBorrowRequest::with('employee.companies','employee.locations.address','user','approved_by_it_head_info','acknowledge_by_it_support_info','borrow_request_items.inventory_info.setting_location')
+        return $borrow_requests = UserBorrowRequest::with('employee.companies',
+                                                          'employee.locations.address',
+                                                          'user','approved_by_it_head_info',
+                                                          'acknowledge_by_it_support_info',
+                                                          'borrow_request_items.inventory_info.setting_location',
+                                                          'employee.borrowed_items.inventory_info'
+                                                    )
                                                     ->where('request_number',$request->request_number)
                                                     ->orderBy('created_at','DESC')
                                                     ->first();
@@ -326,7 +332,7 @@ class RequestsController extends Controller
         if($borrow_request){
             //Notify User
             $message = "Hi ".$borrow_request->employee->first_name.", this is to inform you that your IT asset request is ready for pickup. Just accept Letter of Undertaking. Thank you.";
-            $link = "http://10.96.4.168:8676/letter-of-undertaking?request_number=".$borrow_request->request_number;        
+            $link = "https://10.96.4.168:8676/letter-of-undertaking?request_number=".$borrow_request->request_number;        
             $send = $this->sendWebexMessage($borrow_request->user->email,'Approved',$message,$borrow_request,$link); 
             
             if($send == 'sent'){
