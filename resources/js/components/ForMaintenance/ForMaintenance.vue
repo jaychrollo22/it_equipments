@@ -37,10 +37,10 @@
 
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Search</label>
-                                        <input type="text" class="form-control" placeholder="Input here..." v-model="keywords">
+                                        <input type="text" class="form-control" placeholder="Search by ID | Serial No. | Model | Type | Location" v-model="keywords">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
@@ -67,7 +67,6 @@
                                             <th class="text-center">Created At</th>
                                             <th class="text-center">Schedule</th>
                                             <th class="text-center">Status</th>
-                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -327,6 +326,7 @@
                                         || item.inventory.serial_number.toLowerCase().includes(this.keywords.toLowerCase())
                                         || item.inventory.type.toLowerCase().includes(this.keywords.toLowerCase())
                                         || item.inventory.location.toLowerCase().includes(this.keywords.toLowerCase())
+                                        || item.inventory.id == this.keywords
                             }
                         }else{
                             if(item.inventory){
@@ -334,6 +334,7 @@
                                         || item.inventory.serial_number.toLowerCase().includes(this.keywords.toLowerCase())
                                         || item.inventory.type.toLowerCase().includes(this.keywords.toLowerCase())
                                         || item.inventory.location.toLowerCase().includes(this.keywords.toLowerCase())
+                                        || item.inventory.id == this.keywords
                             }
                         }
                         
