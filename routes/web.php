@@ -16,13 +16,6 @@ use App\Http\Middleware\HasRole;
 
 
 
-Route::get('/items', 'ItemsController@index')->name('home');
-Route::get('/item-search-employee', 'ItemsController@itemSearchEmployee');
-Route::get('/item-search', 'ItemsController@itemSearch');
-Route::post('/save-borrow-item', 'ItemsController@saveBorrowItem');
-Route::post('/save-return-item', 'ItemsController@saveReturnItem');
-Route::post('/save-upload-user-inventories', 'ReportsController@uploadUserInventories');
-
 
 Route::get('/qr-scanner', 'QrScannerController@qrScanner');
 Route::get('/qr-scanner-data', 'QrScannerController@qrScannerData');
@@ -53,6 +46,15 @@ Route::get('/', function () {
     Route::get('/inventories-spare-data', 'HomeController@inventoriesSpareData');
     Route::get('/inventories-loan-items-data', 'HomeController@inventoriesLoanItemsData');
     Route::get('/inventories-maintenance-data', 'HomeController@inventoriesMaintenanceData');
+
+    //Items
+    Route::get('/items', 'ItemsController@index')->name('home');
+    Route::get('/item-search-employee', 'ItemsController@itemSearchEmployee');
+    Route::get('/item-search', 'ItemsController@itemSearch');
+    Route::post('/save-borrow-item', 'ItemsController@saveBorrowItem');
+    Route::post('/save-return-item', 'ItemsController@saveReturnItem');
+    Route::post('/save-upload-user-inventories', 'ReportsController@uploadUserInventories');
+
 
     //Inventories
     Route::get('/inventories', 'InventoryController@index')->name('inventories');
