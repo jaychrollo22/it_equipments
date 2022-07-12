@@ -49,7 +49,7 @@
                                         <select class="form-control" v-model="filter_status">
                                             <option value="">All</option>
                                             <option value="For Maintenance">For Maintenance</option>
-                                            <option value="Done">Done</option>
+                                            <option value="Done Maintenance">Done Maintenance</option>
                                         </select>
                                     </div>
                                 </div>
