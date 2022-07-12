@@ -183,6 +183,9 @@ Route::get('/', function () {
 
     Route::get('/print-asset-handover-form', 'ReportsController@printAssetHandoverForm');
 
+    Route::get('reports-asset-user-history','ReportsController@assetUserHistory');
+    Route::get('reports-asset-user-history-data','ReportsController@assetUserHistoryData');
+
     //RFID Registration Device
     Route::get('/rfid-registration-devices', 'RfidRegistrationDeviceController@index')->name('rfid-registration-devices');
     Route::get('/rfid-registration-devices-data', 'RfidRegistrationDeviceController@indexData');

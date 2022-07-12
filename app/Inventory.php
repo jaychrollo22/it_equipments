@@ -40,4 +40,8 @@ class Inventory extends Model implements AuditableContract
     public function for_maintenance_logs(){
         return $this->hasMany('App\InventoriesForMaintenance');
     }
+
+    public function user_inventories(){
+        return $this->hasMany('App\UserInventory','inventory_id','id')->orderBy('borrow_date','DESC');
+    }
 }

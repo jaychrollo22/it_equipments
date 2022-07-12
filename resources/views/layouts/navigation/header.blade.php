@@ -101,6 +101,14 @@
                                                     </a>
                                                 </li>
                                             @endif
+                                            @if(session('user_permissions.report_employee_asset') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('reports-asset-user-history') }}" class="menu-link">
+                                                        <span class="menu-text">Asset History</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
                                             @if(session('user_permissions.report_asset_handover_form') == 'true')
                                                 <li class="menu-item" aria-haspopup="true">
                                                     <a href="{{ url('reports-asset-handover-forms') }}" class="menu-link">

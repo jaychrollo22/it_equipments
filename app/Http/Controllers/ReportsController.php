@@ -179,4 +179,20 @@ class ReportsController extends Controller
         return $save_count;
 
     }
+
+    public function assetUserHistory(){
+        session([
+            'title' => 'Asset History',
+        ]);
+        return view('pages.reports.asset_user_history');
+    }
+
+    public function assetUserHistoryData(Request $request){
+
+        return $inventories = Inventory::select('id','serial_number','model','type','location')
+                                        ->with('user_inventories.employee_info','user_inventories.inventory_info')
+                                        ->whereHas('user_inventories')
+                                        ->get();
+        
+    }
 }
