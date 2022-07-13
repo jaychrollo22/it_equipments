@@ -91,7 +91,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, i) in filteredBorrowLogs" :key="i" >
+                                    <tr v-for="(item, i) in filteredQueues" :key="i" >
                                        <td align="center"><small>{{item.borrow_date}}</small></td>
                                        <td align="center"><small>{{item.employee_info.first_name + ' ' + item.employee_info.last_name}}</small></td>
                                        <td align="center"><small>{{item.ticket_number}}</small></td>

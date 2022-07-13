@@ -32,7 +32,11 @@ class ReportsController extends Controller
                                 ->get();
         } 
         else{
-            return UserInventory::with('employee_info','inventory_info')->whereDate('borrow_date','=',$dateToday)->orderBy('borrow_date','DESC')->take(50)->get();
+            return UserInventory::with('employee_info','inventory_info')
+                                ->where('status','Borrowed')
+                                ->orderBy('borrow_date','DESC')
+                                ->limit(1000)
+                                ->get();
         }
     }
 
@@ -52,7 +56,11 @@ class ReportsController extends Controller
                                 ->orderBy('return_date','DESC')
                                 ->get();
         }else{
-            return UserInventory::with('employee_info','inventory_info')->whereDate('return_date','=',$dateToday)->orderBy('return_date','DESC')->take(50)->get();
+            return UserInventory::with('employee_info','inventory_info')
+                                    ->where('status','Returned')
+                                    ->orderBy('return_date','DESC')
+                                    ->limit(1000)
+                                    ->get();
         }
     }
 
