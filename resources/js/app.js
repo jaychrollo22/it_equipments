@@ -47,6 +47,8 @@ Vue.component('asset-logs', require('./components/Reports/AssetLogs.vue').defaul
 Vue.component('disposed-logs', require('./components/Reports/DisposedLogs.vue').default);
 Vue.component('asset-handover-forms', require('./components/Reports/AssetHandoverForms.vue').default);
 Vue.component('asset-user-history', require('./components/Reports/AssetUserHistory.vue').default);
+Vue.component('reports-letter-of-undertaking', require('./components/Reports/ReportsLetterOfUndertaking.vue').default);
+Vue.component('reports-letter-of-undertaking-print', require('./components/Reports/ReportsLetterOfUndertakingPrint.vue').default);
 
 //RFID Registration Device
 Vue.component('rfid-registration-device', require('./components/Rfid/RfidRegistrationDevice.vue').default);

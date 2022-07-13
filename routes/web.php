@@ -186,6 +186,11 @@ Route::get('/', function () {
     Route::get('reports-asset-user-history','ReportsController@assetUserHistory');
     Route::get('reports-asset-user-history-data','ReportsController@assetUserHistoryData');
 
+    Route::get('reports-letter-of-undertaking','LetterOfUndertakingController@letterOfUndertaking');
+    Route::get('reports-letter-of-undertaking-data','LetterOfUndertakingController@letterOfUndertakingData');
+    Route::get('reports-letter-of-undertaking-print','LetterOfUndertakingController@letterOfUndertakingPrint');
+    Route::get('reports-letter-of-undertaking-print-data','LetterOfUndertakingController@letterOfUndertakingPrintData');
+
     //RFID Registration Device
     Route::get('/rfid-registration-devices', 'RfidRegistrationDeviceController@index')->name('rfid-registration-devices');
     Route::get('/rfid-registration-devices-data', 'RfidRegistrationDeviceController@indexData');

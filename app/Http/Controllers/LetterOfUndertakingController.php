@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\UserInventory;
 use App\LetterOfUndertaking;
+use App\Employee;
 use Auth;
 use DB;
 use Storage;
@@ -450,6 +451,48 @@ class LetterOfUndertakingController extends Controller
 
     }
 
+    public function letterOfUndertaking(){
+        session([
+            'title' => 'Letter of Undertaking'
+        ]);
 
+        return view('pages.reports.letter_of_undertaking');
+    }
 
+    public function letterOfUndertakingData(){
+
+        return $employee = Employee::select('id','id_number','first_name','last_name','cluster','new_cluster')
+                            ->with('borrowed_items.inventory_info')
+                            ->where('status' , 'Active')
+                            ->orderBy('first_name' , 'ASC')
+                            ->get();
+        
+    }
+
+    public function letterOfUndertakingPrint(Request $request){
+
+        $employee = Employee::select('id','id_number','first_name','last_name','cluster','new_cluster')
+                            ->where('id' , $request->id)
+                            ->orderBy('first_name' , 'ASC')
+                            ->first();
+        if($employee){
+            session([
+                'title' => $employee->first_name . ' ' . $employee->last_name . ' | Letter of Undertaking'
+            ]);
+    
+            return view('pages.reports.letter_of_undertaking_print');
+            
+        }else{
+            return redirect('/home');
+        }
+        
+    }
+
+    public function letterOfUndertakingPrintData(Request $request){
+        return $employee = Employee::select('id','id_number','first_name','last_name','cluster','new_cluster')
+                            ->with('companies','locations.address','borrowed_items.inventory_info')
+                            ->where('id' , $request->id)
+                            ->orderBy('first_name' , 'ASC')
+                            ->first();
+    }
 }

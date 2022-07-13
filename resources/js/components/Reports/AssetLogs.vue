@@ -69,10 +69,7 @@
                                         <th class="text-left">Serial No.</th>
                                         <th class="text-left">Model</th>
                                         <th class="text-left">Type</th>
-                                        <th class="text-left">Date</th>
-                                        
-                                        
-                                        
+                                        <th class="text-left">Date</th>    
                                     </tr>
                                 </thead>
                                 <tbody>

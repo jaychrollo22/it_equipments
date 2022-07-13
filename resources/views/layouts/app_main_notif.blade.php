@@ -38,17 +38,17 @@
             <div class="d-flex flex-row flex-column-fluid page">
                 <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
                     @if(session('user_role') == "Administrator" || session('user_role') == "IT Support")
-                        @include('layouts.navigation.header');
+                        @include('layouts.navigation.header')
                     @else   
-                        @include('layouts.navigation.header_user');
+                        @include('layouts.navigation.header_user')
                     @endif
                     <div id="app">
-                        @yield('content');
+                        @yield('content')
                     </div>
                 </div>
             </div>
         </div>
-        @include('layouts.navigation.user_panel');
+        @include('layouts.navigation.user_panel')
         <div id="kt_scrolltop" class="scrolltop">
             <span class="svg-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">

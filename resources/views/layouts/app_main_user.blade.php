@@ -37,14 +37,14 @@
         <div class="d-flex flex-column flex-root">
             <div class="d-flex flex-row flex-column-fluid page">
                 <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-                    @include('layouts.navigation.header_user');
+                    @include('layouts.navigation.header_user')
                     <div id="app">
-                        @yield('content_user');
+                        @yield('content_user')
                     </div>
                 </div>
             </div>
         </div>
-        @include('layouts.navigation.user_panel');
+        @include('layouts.navigation.user_panel')
         <div id="kt_scrolltop" class="scrolltop">
             <span class="svg-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">

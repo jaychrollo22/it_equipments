@@ -22,7 +22,7 @@
             <div class="d-flex flex-row flex-column-fluid page">
                 <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
                     <div id="app">
-                        @yield('content');
+                        @yield('content')
                     </div>
                 </div>
             </div>

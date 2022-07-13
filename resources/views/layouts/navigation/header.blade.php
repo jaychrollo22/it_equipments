@@ -103,6 +103,14 @@
                                             @endif
                                             @if(session('user_permissions.report_employee_asset') == 'true')
                                                 <li class="menu-item" aria-haspopup="true">
+                                                    <a href="{{ url('reports-letter-of-undertaking') }}" class="menu-link">
+                                                        <span class="menu-text">Asset Letter of Undertaking</span>
+                                                        <span class="menu-desc"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if(session('user_permissions.report_employee_asset') == 'true')
+                                                <li class="menu-item" aria-haspopup="true">
                                                     <a href="{{ url('reports-asset-user-history') }}" class="menu-link">
                                                         <span class="menu-text">Asset History</span>
                                                         <span class="menu-desc"></span>
