@@ -242,7 +242,6 @@
     }
     .modal-content-view {
         max-height: 95vh!important;
-        overflow: scroll!important;
     }
 
     .modal-body-view {
