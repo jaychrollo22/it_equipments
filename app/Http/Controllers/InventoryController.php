@@ -279,12 +279,17 @@ class InventoryController extends Controller
             // 'requested_by' => 'required',
             'transfer_department' => 'required',
             'transfer_company' => 'required',
+            'transfer_location' => 'required',
             'local_number' => 'required',
             'date_requested' => 'required',
             'date_of_transfer' => 'required',
             'transfer_inventories' => 'required',
             'approved_by_it_head' => 'required',
             'approved_by_finance' => 'required',
+        ],
+        [
+            'approved_by_it_head.required'=> 'IT Head Approver is Required',
+            'approved_by_finance.required'=> 'Finance Approver is Required',
         ]);
 
         $data = $request->all();
@@ -325,6 +330,8 @@ class InventoryController extends Controller
                             'inventory_id' => $item['id'],
                             'location_from' => $item['location'],
                             'location_to' => $data['transfer_location'],
+                            'company_from' => $item['company'],
+                            'company_to' => $data['transfer_company'],
                             'status' => 'Pending'
                         ];
                         InventoryTransferItem::create($newData);
@@ -370,12 +377,17 @@ class InventoryController extends Controller
             // 'requested_by' => 'required',
             'transfer_department' => 'required',
             'transfer_company' => 'required',
+            'transfer_location' => 'required',
             'local_number' => 'required',
             'date_requested' => 'required',
             'date_of_transfer' => 'required',
             'transfer_inventories' => 'required',
             'approved_by_it_head' => 'required',
             'approved_by_finance' => 'required',
+        ],
+        [
+            'approved_by_it_head.required'=> 'IT Head Approver is Required',
+            'approved_by_finance.required'=> 'Finance Approver is Required',
         ]);
 
         $data = $request->all();

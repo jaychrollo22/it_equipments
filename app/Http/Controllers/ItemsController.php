@@ -39,7 +39,7 @@ class ItemsController extends Controller
     public function itemSearch(Request $request){
         $data = $request->all();
         
-        $item = Inventory::select('id','model','serial_number','type','location')
+        $item = Inventory::select('id','model','serial_number','type','location','company')
                                 ->doesnthave('is_borrowed')
                                 ->doesnthave('is_transfer')
                                 ->doesnthave('is_borrowed_request_for_approval')

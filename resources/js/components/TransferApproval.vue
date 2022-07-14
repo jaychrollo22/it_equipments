@@ -46,10 +46,7 @@
                                         <td><small>Department</small></td>
                                         <td><small>{{inventoryTransfer.transfer_department}}</small></td>
                                     </tr>
-                                    <tr>
-                                        <td><small>Company</small></td>
-                                        <td><small>{{inventoryTransfer.transfer_company}}</small></td>
-                                    </tr>
+                                   
                                     <tr>
                                         <td><small>Date Requested</small></td>
                                         <td><small>{{inventoryTransfer.date_requested}}</small></td>
@@ -61,6 +58,10 @@
                                     <tr>
                                         <td><small>Date of Transfer</small> </td>
                                         <td><small>{{inventoryTransfer.date_of_transfer}}</small></td>
+                                    </tr>
+                                     <tr>
+                                        <td><small>Transfer Company</small></td>
+                                        <td><small>{{inventoryTransfer.transfer_company}}</small></td>
                                     </tr>
                                     <tr>
                                         <td><small>Transfer Location</small> </td>
@@ -79,6 +80,7 @@
                                         <th class="text-center">Type</th>
                                             <th class="text-center">Model</th>
                                             <th class="text-center">Serial No.</th>
+                                            <th class="text-center">Current Company</th>
                                             <th class="text-center">Current Location</th>
                                         </tr>
                                     </thead>
@@ -88,6 +90,7 @@
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.type}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.model}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.serial_number}}</small></td>
+                                            <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.company}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.location}}</small></td>
                                          </tr>
                                     </tbody>

@@ -182,8 +182,10 @@
                                             <th class="text-center">Type</th>
                                             <th class="text-center">Model</th>
                                             <th class="text-center">Serial No.</th>
-                                            <th class="text-center">From</th>
-                                            <th class="text-center">To</th>
+                                            <th class="text-center">Location From</th>
+                                            <th class="text-center">Location To</th>
+                                            <th class="text-center">Company From</th>
+                                            <th class="text-center">Company To</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -195,6 +197,8 @@
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.inventory_info.serial_number}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.location_from}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;"><small>{{item.location_to}}</small></td>
+                                            <td style="text-align: center; vertical-align: middle;"><small>{{item.company_from}}</small></td>
+                                            <td style="text-align: center; vertical-align: middle;"><small>{{item.company_to}}</small></td>
                                             <td style="text-align: center; vertical-align: middle;">
                                                 <button v-if="item.status != 'Received'" class="btn btn-md btn-primary" @click="receiveTransfer(item)">Receive</button>
                                                 <button v-else class="btn btn-md btn-primary" disabled>Received</button>

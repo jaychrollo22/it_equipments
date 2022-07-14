@@ -66,7 +66,7 @@
                                         <th class="text-center">Location</th>
                                         <th class="text-center">Items</th>
                                         <th class="text-center">Status</th>
-                                        <th class="text-center" v-if="currentUser.user.user_role.role == 'Administrator' || currentUser.user.user_role.role == 'IT Support'">Action</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -78,19 +78,21 @@
                                        <td class="text-center"><small>{{transfer.transfer_location}}</small></td>
                                        <td class="text-center"><small>{{transfer.inventory_transfer_items.length}}</small></td>
                                        <td class="text-center"><a :href="'/transfer-approval?transfer_code='+transfer.transfer_code" target="_blank" :class="getColorStatus(transfer.status)">{{transfer.status}}</a></td>
-                                       <td class="text-center" v-if="currentUser.user.user_role.role == 'Administrator' || currentUser.user.user_role.role == 'IT Support'">
-                                            <button v-if="transfer.status == 'Approved' || transfer.status == 'Pre-approved'" type="button" class="btn btn-light-primary btn-icon btn-sm" disabled title="Not Available">
-                                                <i class="flaticon-edit"></i>
-                                            </button>
-                                            <button v-else type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editTransfer(transfer)" title="Update">
-                                                <i class="flaticon-edit"></i>
-                                            </button>
-                                            <a v-if="transfer.status == 'Approved'" :href="'print-inventory-transfer?transfer_code='+transfer.transfer_code" target="_blank" type="button" class="btn btn-light-primary btn-icon btn-sm" title="Print">
-                                                <i class="flaticon2-printer"></i>
-                                            </a>
-                                            <a v-else type="button" class="btn btn-light-default btn-icon btn-sm" title="Not Available" >
-                                                <i class="flaticon2-printer"></i>
-                                            </a>
+                                       <td class="text-center">
+                                            <div v-if="currentUser.user.user_role.role == 'Administrator' || currentUser.user.user_role.role == 'IT Support'">
+                                                <button v-if="transfer.status == 'Approved' || transfer.status == 'Pre-approved'" type="button" class="btn btn-light-primary btn-icon btn-sm" disabled title="Not Available">
+                                                    <i class="flaticon-edit"></i>
+                                                </button>
+                                                <button v-else type="button" class="btn btn-light-primary btn-icon btn-sm" @click="editTransfer(transfer)" title="Update">
+                                                    <i class="flaticon-edit"></i>
+                                                </button>
+                                                <a v-if="transfer.status == 'Approved'" :href="'print-inventory-transfer?transfer_code='+transfer.transfer_code" target="_blank" type="button" class="btn btn-light-primary btn-icon btn-sm" title="Print">
+                                                    <i class="flaticon2-printer"></i>
+                                                </a>
+                                                <a v-else type="button" class="btn btn-light-default btn-icon btn-sm" title="Not Available" >
+                                                    <i class="flaticon2-printer"></i>
+                                                </a>
+                                            </div>
                                        </td>
                                     </tr>
                                 </tbody>
@@ -117,21 +119,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <!-- <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="role">Requested Name</label> 
-                                <multiselect
-                                        v-model="transfer.requested_by"
-                                        :options="userOptions"
-                                        :multiple="false"
-                                        track-by="id"
-                                        :custom-label="customLabelUser"
-                                        placeholder="Select User"
-                                >
-                                </multiselect>
-                                <span class="text-danger" v-if="errors.requested_by">{{ errors.requested_by[0] }}</span>
-                            </div>
-                        </div> -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="role">Department</label> 
@@ -140,16 +127,6 @@
                                     <option v-for="(department,b) in departmentOptions" v-bind:key="b" :value="department.name"> {{ department.name }}</option>
                                 </select>
                                 <span class="text-danger" v-if="errors.transfer_department">{{ errors.transfer_department[0] }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="role">Company</label> 
-                                <select class="form-control" v-model="transfer.transfer_company">
-                                    <option value="N/A">N/A</option>
-                                    <option v-for="(company,b) in companyOptions" v-bind:key="b" :value="company.name"> {{ company.name }}</option>
-                                </select>
-                                <span class="text-danger" v-if="errors.transfer_company">{{ errors.transfer_company[0] }}</span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -173,11 +150,22 @@
                                 <span class="text-danger" v-if="errors.date_of_transfer">{{ errors.date_of_transfer[0] }}</span>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="role">Transfer Company</label> 
+                                <select class="form-control" v-model="transfer.transfer_company">
+                                    <option value="">Choose</option>
+                                    <option v-for="(company,b) in companyOptions" v-bind:key="b" :value="company.company"> {{ company.company }}</option>
+                                </select>
+                                <span class="text-danger" v-if="errors.transfer_company">{{ errors.transfer_company[0] }}</span>
+                            </div>
+                        </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="role">Transfer Location</label> 
                                 <select class="form-control" v-model="transfer.transfer_location">
+                                    <option value="">Choose</option>
                                     <option value="N/A">N/A</option>
                                     <option v-for="(location,b) in locationOptions" v-bind:key="b" :value="location.name"> {{ location.name }}</option>
                                 </select>
@@ -226,6 +214,7 @@
                                    <th class="text-center">Type</th>
                                     <th class="text-center">Model</th>
                                     <th class="text-center">Serial No.</th>
+                                    <th class="text-center">Current Company</th>
                                     <th class="text-center">Current Location</th>
                                     <th class="text-center">Action</th>
                                 </tr>
@@ -236,6 +225,7 @@
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
+                                    <td style="text-align: center; vertical-align: middle;"><small>{{item.company}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.location}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;">
                                         <button v-if="validateTransferItem(item)" class="btn btn-md btn-primary" @click="addTransferItem(item)">Select</button>
@@ -258,6 +248,7 @@
                                         <th class="text-center">Type</th>
                                         <th class="text-center">Model</th>
                                         <th class="text-center">Serial No.</th>
+                                        <th class="text-center">Current Company</th>
                                         <th class="text-center">Current Location</th>
                                         <th class="text-center">Action</th>
                                     </tr>
@@ -268,6 +259,7 @@
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
+                                        <td style="text-align: center; vertical-align: middle;"><small>{{item.company}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.location}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;">
                                             <button class="btn btn-md btn-danger" @click="removeTransferItem(item)">Remove</button>
@@ -288,6 +280,7 @@
                                            <option value="">Choose IT Approver</option>
                                            <option v-for="(item, i) in systemApproversIT" :key="i"  :value="item.user_id" >{{item.user.name}}</option>
                                        </select>
+                                       <span class="text-danger" v-if="errors.approved_by_it_head">{{ errors.approved_by_it_head[0] }}</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -297,6 +290,7 @@
                                            <option value="">Choose Finance Approver</option>
                                            <option v-for="(item, i) in systemApproversFinance" :key="i"  :value="item.user_id" >{{item.user.name}}</option>
                                        </select>
+                                       <span class="text-danger" v-if="errors.approved_by_finance">{{ errors.approved_by_finance[0] }}</span>
                                     </td>
                                 </tr>
                             </table>
@@ -348,16 +342,7 @@
                                 <span class="text-danger" v-if="errors.transfer_department">{{ errors.transfer_department[0] }}</span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="role">Company</label> 
-                                <select class="form-control" v-model="transfer.transfer_company">
-                                    <option value="N/A">N/A</option>
-                                    <option v-for="(company,b) in companyOptions" v-bind:key="b" :value="company.name"> {{ company.name }}</option>
-                                </select>
-                                <span class="text-danger" v-if="errors.transfer_company">{{ errors.transfer_company[0] }}</span>
-                            </div>
-                        </div>
+                        
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="role">Date Requested</label> 
@@ -379,11 +364,21 @@
                                 <span class="text-danger" v-if="errors.date_of_transfer">{{ errors.date_of_transfer[0] }}</span>
                             </div>
                         </div>
-
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="role">Transfer Company</label> 
+                                <select class="form-control" v-model="transfer.transfer_company">
+                                    <option value="">Choose</option>
+                                    <option v-for="(company,b) in companyOptions" v-bind:key="b" :value="company.company"> {{ company.company }}</option>
+                                </select>
+                                <span class="text-danger" v-if="errors.transfer_company">{{ errors.transfer_company[0] }}</span>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="role">Transfer Location</label> 
                                 <select class="form-control" v-model="transfer.transfer_location">
+                                    <option value="">Choose</option>
                                     <option value="N/A">N/A</option>
                                     <option v-for="(location,b) in locationOptions" v-bind:key="b" :value="location.name"> {{ location.name }}</option>
                                 </select>
@@ -431,6 +426,7 @@
                                    <th class="text-center">Type</th>
                                     <th class="text-center">Model</th>
                                     <th class="text-center">Serial No.</th>
+                                    <th class="text-center">Company</th>
                                     <th class="text-center">Location</th>
                                     <th class="text-center">Action</th>
                                 </tr>
@@ -441,6 +437,7 @@
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
+                                    <td style="text-align: center; vertical-align: middle;"><small>{{item.company}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.location}}</small></td>
                                     <td style="text-align: center; vertical-align: middle;">
                                         <button v-if="validateTransferItem(item)" class="btn btn-md btn-primary" @click="addTransferEditItem(item)">Select</button>
@@ -463,6 +460,7 @@
                                         <th class="text-center">Type</th>
                                         <th class="text-center">Model</th>
                                         <th class="text-center">Serial No.</th>
+                                        <th class="text-center">Company</th>
                                         <th class="text-center">Location</th>
                                         <th class="text-center">Action</th>
                                     </tr>
@@ -473,6 +471,7 @@
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
+                                        <td style="text-align: center; vertical-align: middle;"><small>{{item.company}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;"><small>{{item.location}}</small></td>
                                         <td style="text-align: center; vertical-align: middle;">
                                             <button v-if="item.status == 'Received'" class="btn btn-md btn-danger" disabled>{{item.status}}</button>
@@ -541,6 +540,8 @@
                     date_of_transfer : '',
                     remarks : '',
                     effective_date : '',
+                    company : '',
+                    location : '',
                 },
                 errors : [],
                 selectedItems : [],
@@ -570,6 +571,7 @@
             }
         },
         created () {
+            this.getCurrentUser();
             this.getInventoryTransfers();
             this.getUsers();
             this.getDepartments();
@@ -577,7 +579,7 @@
             this.getLocations();
             this.getSystemApproversIT();
             this.getSystemApproversFinance();
-            this.getCurrentUser();
+            
         },
         methods: {
             getCurrentUser(){
@@ -731,6 +733,7 @@
                     serial_number : item.serial_number,
                     type : item.type,
                     location : item.location,
+                    company : item.company,
                     tag : 'new',
                     status : 'Pending'
                 });
@@ -762,6 +765,7 @@
                             serial_number : item.inventory_info.serial_number,
                             type : item.inventory_info.type,
                             location : item.inventory_info.location,
+                            company : item.inventory_info.company,
                             tag : 'edit',
                             status : item.status
                         });
@@ -812,13 +816,13 @@
                                 });      
                                 
                             }else{
-                                Swal.fire('Error: Cannot saved. Please try again.', '', 'error');
+                                Swal.fire('Error: Cannot saved. Check details and try again.', '', 'error');
                                 v.transferDisable = false;
                                 v.transferDisableLabel = 'Save';
                             }
                         })
                         .catch(error => {
-                            Swal.fire('Error: Cannot saved. Please try again.', '', 'error');
+                            Swal.fire('Error: Cannot saved. Check details and try again.', '', 'error');
                             this.errors = error.response.data.errors;
                             v.transferDisable = false;
                             v.transferDisableLabel = 'Save';
@@ -840,6 +844,7 @@
                     serial_number : item.serial_number,
                     type : item.type,
                     location : item.location,
+                    company : item.company,
                 });
                 this.items.splice(item, 1);
             },
@@ -913,13 +918,14 @@
             },
             getCompanies(){
                 let v = this;
-                axios.get('/setting-companies-data')
+                v.companyOptions = [];
+                axios.get('/setting-companies-data-options')
                 .then(response => { 
                     v.companyOptions = response.data;
                 })
                 .catch(error => { 
-                    this.errors = error.response.data.error;
-                }) 
+                    v.errors = error.response.data.error;
+                })
             },
             getLocations(){
                 let v = this;
@@ -953,6 +959,7 @@
                 v.transfer.date_of_transfer = '';
                 v.transfer.remarks = '';
                 v.transfer.effective_date = '';
+                v.transfer.transfer_location = '';
                 v.selectedItems = [];
                 $('#transfer-modal').modal('show');
             },

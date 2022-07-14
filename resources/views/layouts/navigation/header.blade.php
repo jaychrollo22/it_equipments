@@ -44,7 +44,7 @@
                                             @if(session('user_permissions.inventory_transfer_location') == 'true')
                                                 <li class="menu-item" aria-haspopup="true">
                                                     <a href="{{ url('inventory-transfer') }}" class="menu-link" disabled>
-                                                        <span class="menu-text">Transfer Location</span>
+                                                        <span class="menu-text">Transfer</span>
                                                         <span class="menu-desc"></span>
                                                     </a>
                                                 </li>

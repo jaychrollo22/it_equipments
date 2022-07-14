@@ -20,6 +20,6 @@ class InventoryTransferItem extends Model implements AuditableContract
     protected $auditTimestamps = true;
 
     public function inventory_info(){
-        return $this->belongsTo('App\Inventory','inventory_id','id')->select('id','model','serial_number','type','location');
+        return $this->belongsTo('App\Inventory','inventory_id','id')->select('id','model','serial_number','type','location','company');
     }
 }
