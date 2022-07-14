@@ -445,7 +445,7 @@
                                     </td>
                                 </tr>
                                 <tr v-if="items.length == 0">
-                                    <td colspan="6" align="center">No Items Found</td>
+                                    <td colspan="7" align="center">No Items Found</td>
                                 </tr>
                             </tbody>
                         </table>
