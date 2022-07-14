@@ -78,7 +78,7 @@
                                                 <strong>{{inventory.is_borrowed.validity_end_date}}</strong>
                                             </td>
                                         </tr>
-                                        
+
                                     </table>
                                 </div>
                             </div>
@@ -95,13 +95,13 @@
 
         <!-- Scanner/Camera Modal -->
         <div class="modal fade" id="qr-scanner-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered modal-md modal-fixed" role="document">
+            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2 class="col-12 modal-title text-center">QR SCANNER</h2>
                     </div>
                     <div class="modal-body">
-                        <div style="border:5px solid red;padding:5px 5px 5px;width:100%" v-if="scanStatusQr">
+                        <div style="border:5px solid red;padding:5px 5px 5px;width:100%;height:auto" v-if="scanStatusQr">
                             <qrcode-stream v-if="scanStatusQr" :camera="camera" @decode="onDecodeQR" @init="logErrors" />
                         </div>
                     </div>
