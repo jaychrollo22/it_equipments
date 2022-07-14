@@ -95,13 +95,13 @@
 
         <!-- Scanner/Camera Modal -->
         <div class="modal fade" id="qr-scanner-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-                <div class="modal-content">
+            <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-view" role="document">
+                <div class="modal-content modal-content-view">
                     <div class="modal-header">
                         <h2 class="col-12 modal-title text-center">QR SCANNER</h2>
                     </div>
-                    <div class="modal-body">
-                        <div style="border:5px solid red;padding:5px 5px 5px;width:100%;height:auto" v-if="scanStatusQr">
+                    <div class="modal-body modal-body-view">
+                        <div style="border:5px solid red;padding:5px 5px 5px;width:100%;" v-if="scanStatusQr">
                             <qrcode-stream v-if="scanStatusQr" :camera="camera" @decode="onDecodeQR" @init="logErrors" />
                         </div>
                     </div>
@@ -218,5 +218,17 @@
     .error {
         font-weight: bold;
         color: red;
+    }
+
+    .modal-dialog-view {
+        margin: 2.5vh auto!important;
+    }
+    .modal-content-view {
+        max-height: 95vh!important;
+        overflow: scroll!important;
+    }
+
+    .modal-body-view {
+        max-height: 90vh!important;
     }
 </style>
