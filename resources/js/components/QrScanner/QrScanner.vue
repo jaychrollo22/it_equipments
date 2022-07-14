@@ -102,6 +102,23 @@
                     </div>
                     <div class="modal-body modal-body-view">
                         <qrcode-stream v-if="scanStatusQr" :camera="camera" @decode="onDecodeQR" @init="logErrors" style="height:300px;border:5px solid red;padding:5px 5px 5px 5px;width:100%;"/>
+
+                        <hr>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    #
+                                </span>
+                            </div>
+                            <input id="inventory_id" type="text" class="form-control" v-model="inventory_id" placeholder="Type QR ID (optional)" @keyup.enter="onDecodeQR(inventory_id)">
+                            <div class="input-group-append">
+                                <a href="#" @click="onDecodeQR(inventory_id)" class="btn font-weight-bold btn-success btn-icon">
+                                    <i class="fas fa-search"></i>
+                                </a>
+                            </div>
+                        </div>
+                    
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success btn-round btn-fill btn-lg mt-4" @click="switchCamera"> SWITCH CAMERA ({{camera}})</button>
@@ -120,6 +137,7 @@
         components: { QrcodeStream },
         data() {
             return {
+                inventory_id: '',
                 inventory: '',
                 scan_qr : '',
                 camera: 'front',
@@ -174,6 +192,7 @@
                 this.scanStatusQr = true;
             },
             closeScan(){
+                this.inventory_id = '';
                 this.scan_qr = '';
                 this.scanStatusQr = false;
                 $('#qr-scanner-modal').modal('hide');
