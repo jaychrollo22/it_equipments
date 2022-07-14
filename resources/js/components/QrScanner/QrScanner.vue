@@ -101,9 +101,7 @@
                         <h2 class="col-12 modal-title text-center">QR SCANNER</h2>
                     </div>
                     <div class="modal-body modal-body-view">
-                        <div style="border:5px solid red;padding:5px 5px 5px;width:100%;" v-if="scanStatusQr">
-                            <qrcode-stream v-if="scanStatusQr" :camera="camera" @decode="onDecodeQR" @init="logErrors" />
-                        </div>
+                        <qrcode-stream v-if="scanStatusQr" :camera="camera" @decode="onDecodeQR" @init="logErrors" style="height:300px;border:5px solid red;padding:5px 5px 5px 5px;width:100%;"/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success btn-round btn-fill btn-lg mt-4" @click="switchCamera"> SWITCH CAMERA ({{camera}})</button>
