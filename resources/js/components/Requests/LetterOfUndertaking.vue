@@ -131,10 +131,11 @@
                             <table class="table table-bordered">
                                 
                                 <tr>
-                                    <td>Received by: _______________________________________            Date: ________________</td>
+                                    <td>Received by: <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></td>
+                                    <td>Date: </td>
                                 </tr>
                                 <tr>
-                                    <td>Remarks: ______________________________________________________________</td>
+                                    <td colspan="2">Remarks: </td>
                                 </tr>
                             </table>
                         </div>
