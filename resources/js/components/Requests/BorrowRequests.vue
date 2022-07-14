@@ -153,6 +153,7 @@
                                                 <th class="text-center">Type</th>
                                                 <th class="text-center">Model</th>
                                                 <th class="text-center">Serial No.</th>
+                                                <th class="text-center">Location</th>
                                                 <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
@@ -162,6 +163,7 @@
                                                 <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                                 <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                                 <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
+                                                <td style="text-align: center; vertical-align: middle;"><small>{{item.location}}</small></td>
                                                 <td style="text-align: center; vertical-align: middle;">
                                                     <button v-if="validateBorrowItem(item)" class="btn btn-light-primary btn-icon btn-sm" @click="addBorrowItem(item)"><i class="flaticon-plus"></i></button>
                                                     <button v-else class="btn btn-light-primary btn-icon btn-sm" disabled><i class="flaticon-plus"></i></button>
@@ -184,6 +186,7 @@
                                                     <th class="text-center">Type</th>
                                                     <th class="text-center">Model</th>
                                                     <th class="text-center">Serial No.</th>
+                                                    <th class="text-center">Location</th>
                                                     <th class="text-center">Assign/Borrow</th>
                                                     <th class="text-center">Validity Until</th>
                                                     <th class="text-center">Action</th>
@@ -195,6 +198,7 @@
                                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.type}}</small></td>
                                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.model}}</small></td>
                                                     <td style="text-align: center; vertical-align: middle;"><small>{{item.serial_number}}</small></td>
+                                                    <td style="text-align: center; vertical-align: middle;"><small>{{item.location}}</small></td>
                                                     <td style="text-align: center; vertical-align: middle;">
                                                         <div class="form-group mt-4">
                                                             <div class="form-check form-check-custom form-check-solid">
@@ -322,6 +326,7 @@
                     id : item.id,
                     model : item.model,
                     serial_number : item.serial_number,
+                    location : item.location,
                     type : item.type,
                     is_assigned : '',
                     validity_end_date : '',
@@ -345,7 +350,7 @@
                 let v = this;
                 v.items=[];
                 if(v.itemName){
-                    axios.get('/item-search?item_name=' + v.itemName)
+                    axios.get('/item-search?item_name=' + v.itemName + '&location='+v.request.location)
                     .then(response => { 
                         if(response.data){
                         v.items = response.data;

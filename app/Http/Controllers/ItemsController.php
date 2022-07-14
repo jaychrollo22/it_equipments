@@ -49,6 +49,11 @@ class ItemsController extends Controller
                                         ->orWhere('type', 'like','%'.$data['item_name'].'%')
                                         ->orWhere('id', '=',$data['item_name']);
                                 })
+                                ->when(isset($request->location),function($q) use($data){
+                                    if($data['location']){
+                                        $q->where('location',$data['location']);
+                                    }
+                                })
                                 ->take(5)
                                 ->get();
 
