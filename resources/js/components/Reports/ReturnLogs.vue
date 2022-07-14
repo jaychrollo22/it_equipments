@@ -79,22 +79,32 @@
                             <table class="table table-checkable" id="kt_datatable">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Date</th>
-                                        <th class="text-center">Employee Name</th>
-                                        <th class="text-center">Ticket No.</th>
-                                        <th class="text-center">Series No.</th>
-                                        <th class="text-center">Model</th>
-                                        <th class="text-center">Type</th>
+                                        <th>Return Date</th>
+                                        <th>Employee Name</th>
+                                        <th>ID</th>
+                                        <th>Series No.</th>
+                                        <th>Model</th>
+                                        <th>Type</th>
+                                        <th>Check By</th>
+                                        <th>Check Status</th>
+                                        <th>Defect Value Deduction</th>
+                                        <th>Remarks</th>
+                                        <th>Return Location</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, i) in filteredReturnLogs" :key="i" >
-                                       <td align="center"><small>{{item.return_date}}</small></td>
-                                       <td align="center"><small>{{item.employee_info.first_name + ' ' + item.employee_info.last_name}}</small></td>
-                                       <td align="center"><small>{{item.ticket_number}}</small></td>
-                                       <td align="center"><small>{{item.inventory_info.serial_number}}</small></td>
-                                       <td align="center"><small>{{item.inventory_info.model}}</small></td>
-                                       <td align="center"><small>{{item.inventory_info.type}}</small></td>
+                                       <td><small>{{item.return_date}}</small></td>
+                                       <td><small>{{item.employee_info.first_name + ' ' + item.employee_info.last_name}}</small></td>
+                                       <td><small>{{item.inventory_info.id}}</small></td>
+                                       <td><small>{{item.inventory_info.serial_number}}</small></td>
+                                       <td><small>{{item.inventory_info.model}}</small></td>
+                                       <td><small>{{item.inventory_info.type}}</small></td>
+                                       <td><small>{{ item.check_by_info ? item.check_by_info.name : ""}}</small></td>
+                                       <td><small>{{ item.check_status}}</small></td>
+                                       <td><small>{{ item.defect_value_deduction}}</small></td>
+                                       <td><small>{{ item.check_remarks}}</small></td>
+                                       <td><small>{{ item.return_location}}</small></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -134,7 +144,7 @@
                 currentPage: 0,
                 itemsPerPage: 10,
                 exportReturnLogs : {
-                    'Date' : 'return_date',
+                    'Return Date' : 'return_date',
                     'Employee Name' : {
                         callback: (value) => {
                             if(value.employee_info){
@@ -172,6 +182,19 @@
                             }
                         }
                     },
+                    'Check By' : {
+                        callback: (value) => {
+                            if(value.check_by_info){
+                                return value.check_by_info.name;
+                            }else{
+                                return '';
+                            }
+                        }
+                    },
+                    'Check Status' : 'check_status',
+                    'Defect Value Deduction' : 'defect_value_deduction',
+                    'Remarks' : 'check_remarks',
+                    'Location' : 'return_location',
                 },
             }
         },

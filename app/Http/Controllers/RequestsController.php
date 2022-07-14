@@ -196,6 +196,7 @@ class RequestsController extends Controller
                                 'is_assigned' => $item->is_assigned,
                                 'validity_end_date' => $item->validity_end_date ? $item->validity_end_date : null,
                                 'ticket_number' => $borrow_request->ticket_number,
+                                'borrow_location' => $borrow_request->location,
                             ];
                             UserInventory::create($newData);  
                             $borrow_request_item->update(['status'=>'Approved']);
@@ -356,7 +357,7 @@ class RequestsController extends Controller
     }
 
     public function returnRequestsData(Request $request){
-        return $return_requests = UserReturnRequest::with('user','employee','return_request_items.user_inventory.inventory_info')
+        return $return_requests = UserReturnRequest::with('user','employee','return_request_items.user_inventory.inventory_info','return_request_items.check_by_info')
                                                     ->orderBy('created_at','DESC')
                                                     ->get();
     }
@@ -383,8 +384,14 @@ class RequestsController extends Controller
 
                         UserInventory::where('id',$item['user_inventory_id'])
                                                 ->update([
-                                                    'return_date'=>$return_requests->return_date,
-                                                    'status'=>'Returned'
+                                                    'return_date'=>$return_requests->created_at,
+                                                    'status'=>'Returned',
+                                                    'check_status'=>$item['check_status'],
+                                                    'check_remarks'=>$item['check_remarks'],
+                                                    'check_by'=>Auth::user()->id,
+                                                    'check_acceptance'=>1,
+                                                    'defect_value_deduction'=>$item['defect_value_deduction'],
+                                                    'return_location'=>$return_requests->location,
                                                 ]);
                     }
                 }

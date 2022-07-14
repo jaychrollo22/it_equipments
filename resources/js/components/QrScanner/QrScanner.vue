@@ -72,6 +72,13 @@
                                                 <strong>{{inventory.is_borrowed.borrow_date}}</strong>
                                             </td>
                                         </tr>
+                                        <tr v-if="inventory.is_borrowed">
+                                            <td v-if="inventory.is_borrowed.validity_end_date" align="right"><strong>VALIDITY DATE</strong> </td>
+                                            <td v-if="inventory.is_borrowed.validity_end_date">
+                                                <strong>{{inventory.is_borrowed.validity_end_date}}</strong>
+                                            </td>
+                                        </tr>
+                                        
                                     </table>
                                 </div>
                             </div>

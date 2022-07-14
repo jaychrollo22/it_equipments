@@ -42,6 +42,7 @@
                                         <tr>
                                             <th>Request Details</th>
                                             <th class="text-center">Items to Return</th>
+                                            <th class="text-center">Location</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -74,6 +75,9 @@
                                                         <button v-if="item_return.status == 'For Checking' && item.return_request_items.length > 1" type="button" class="btn btn-light-danger btn-icon btn-sm" @click="deleteRequestItem(item,item_return)" title="Delete Item"><i class="flaticon-cancel"></i></button>
                                                     </td>
                                                 </tr>
+                                            </td>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <small>{{item.location}}</small><br>
                                             </td>
                                             <td style="text-align: center; vertical-align: middle;">
                                                 <button v-if="item.status == 'For Checking'" type="button" class="btn btn-light-danger btn-icon btn-sm" @click="deleteRequest(item)" title="Delete Request"><i class="flaticon-delete"></i></button>
@@ -128,6 +132,7 @@
                                             <th>Type</th>
                                             <th>Model</th>
                                             <th>Serial No.</th>
+                                            <th>Location</th>
                                             <th>Validity Date</th>
                                             <th>Action</th>
                                         </thead>
@@ -137,6 +142,7 @@
                                                 <td><small>{{item.inventory_info.type}}</small></td>
                                                 <td><small>{{item.inventory_info.model}}</small></td>
                                                 <td><small>{{item.inventory_info.serial_number}}</small></td>
+                                                <td><small>{{item.inventory_info.location}}</small></td>
                                                 <td><small>{{item.validity_end_date}}</small></td>
                                                 <td style="text-align: center; vertical-align: middle;">
                                                     <button v-if="validateBorrowItem(item.inventory_info)" class="btn btn-light-primary btn-icon btn-sm" @click="addBorrowItem(item)"><i class="flaticon-plus"></i></button>
@@ -192,6 +198,16 @@
                                     <span class="text-danger" v-if="errors.details">{{ errors.details[0] }}</span>
                                 </div>
                             </div>
+                            <div class="col-md-12 mt-2">
+                                <div class="form-group">
+                                    <label for="role">Location</label> 
+                                    <select class="form-control" v-model="request.location">
+                                        <option value="">Choose</option>
+                                        <option v-for="(location,b) in locations" v-bind:key="b" :value="location.name"> {{ location.name }}</option>
+                                    </select>
+                                    <span class="text-danger" v-if="errors.location">{{ errors.location[0] }}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -230,13 +246,26 @@
                 action : '',
 
                 selectedItems : [],
+                locations : [],
             }
         },
         created () {
             this.getReturnRequestsData();
             this.getBorrowedItems();
+            this.getLocations();
         },
         methods: {
+            getLocations() {
+                let v = this;
+                v.locations = [];
+                axios.get('/setting-locations-data')
+                .then(response => { 
+                    v.locations = response.data;
+                })
+                .catch(error => { 
+                    v.errors = error.response.data.error;
+                })
+            },
             getColorStatus(item){
                 if(item == 'For Checking'){
                     return 'label label-warning label-pill label-inline mr-2';
@@ -335,6 +364,7 @@
                         let formData = new FormData();
                         formData.append('details', v.request.details ? v.request.details : "");
                         formData.append('return_request_items', v.selectedItems ? JSON.stringify(v.selectedItems) : "");
+                        formData.append('location', v.request.location ? v.request.location : "");
                         axios.post(`/return-request-store`, formData)
                         .then(response =>{
                             if(response.data.status == "success"){

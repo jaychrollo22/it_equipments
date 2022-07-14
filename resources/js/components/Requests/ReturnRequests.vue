@@ -31,7 +31,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Search</label>
-                                        <input type="text" class="form-control" placeholder="Search Request No. | Ticket No. | Details | Location" v-model="keywords">
+                                        <input type="text" class="form-control" placeholder="Search Request No. | Employee | Ticket No. | Details | Location" v-model="keywords">
                                     </div>
                                 </div>
                             </div>
@@ -41,6 +41,7 @@
                                         <tr>
                                             <th class="text-center">Request No.</th>
                                             <th class="text-center">Request Details</th>
+                                            <th class="text-center">Location</th>
                                             <th class="text-center">Items</th>
                                         </tr>
                                     </thead>
@@ -63,6 +64,9 @@
                                                     <td align="left"><label :class="getColorStatus(item.status)">{{item.status}}</label></td>
                                                 </tr>
 
+                                            </td>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <small>{{item.location}}</small>
                                             </td>
                                             <td style="text-align: center; vertical-align: middle;">
                                                 <button type="button" class="btn btn-light-primary btn-icon btn-sm" @click="view(item)" title="View Items"><strong>{{item.return_request_items.length}}</strong></button>
@@ -116,6 +120,7 @@
                                             <small>Model : {{item.user_inventory.inventory_info.model}}</small><br>
                                             <small>Serial Number : {{item.user_inventory.inventory_info.serial_number}}</small><br>
                                             <small>Type : {{item.user_inventory.inventory_info.type}}</small><br>
+                                            <small>Location : {{item.user_inventory.inventory_info.location}}</small><br>
                                         </td>
                                         <td>
                                             <select class="form-control" v-model="item.check_status">
@@ -261,8 +266,11 @@
                 let self = this;
                 if(self.borrowRequestsData){
                     return Object.values(self.borrowRequestsData).filter(item => {
+                        let full_name = item.employee.first_name + ' ' + item.employee.last_name;
                         return item.details.toLowerCase().includes(this.keywords.toLowerCase()) 
                                 || item.request_number.toLowerCase().includes(this.keywords.toLowerCase())            
+                                || item.location.toLowerCase().includes(this.keywords.toLowerCase())            
+                                || full_name.toLowerCase().includes(this.keywords.toLowerCase())            
                     });
                 }else{
                     return [];

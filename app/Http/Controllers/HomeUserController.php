@@ -207,7 +207,8 @@ class HomeUserController extends Controller
         $user = User::select('id','name','email')->with('employee')->where('id',Auth::user()->id)->first();
 
         $this->validate($request, [
-            'details' => 'required'
+            'details' => 'required',
+            'location' => 'required',
         ]);
         DB::beginTransaction();
         try {
@@ -681,6 +682,12 @@ class HomeUserController extends Controller
                                     array(
                                         "type" => "TextBlock",
                                         "text" => "Details : " . $details->details,
+                                        "color" => "Lighter",
+                                        "spacing" => "Small"
+                                    ),
+                                    array(
+                                        "type" => "TextBlock",
+                                        "text" => "Location : " . $details->location,
                                         "color" => "Lighter",
                                         "spacing" => "Small"
                                     ),

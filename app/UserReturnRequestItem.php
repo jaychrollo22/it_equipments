@@ -22,6 +22,9 @@ class UserReturnRequestItem extends Model implements AuditableContract
     public function user_inventory(){
         return $this->belongsTo('App\UserInventory','user_inventory_id','id');
     }
+    public function check_by_info(){
+        return $this->belongsTo('App\User','check_by','id')->select('id','email','name');
+    }
 
     protected function serializeDate(DateTimeInterface $date)
     {

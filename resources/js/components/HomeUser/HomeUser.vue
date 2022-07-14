@@ -41,8 +41,8 @@
                             <table class="table table-checkable table-bordered" id="kt_datatable">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Ticket No.</th>
-                                        <th class="text-center">Item Details</th>
+                                        <th>Ticket No.</th>
+                                        <th>Item Details</th>
                                         <th class="text-center">Borrow Date</th>
                                         <th class="text-center">Validity End Date</th>
                                         <th class="text-center">Return Date</th>
@@ -51,7 +51,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, i) in filteredQueues" :key="i" >
-                                       <td align="center"><small>{{item.ticket_number}}</small></td>
+                                       <td><small>{{item.ticket_number}}</small></td>
                                        <td>
                                            <small>Model : {{item.inventory_info.model}}</small><br>
                                            <small>Serial No. : {{item.inventory_info.serial_number}}</small><br>
@@ -60,7 +60,14 @@
                                         <td align="center"><small>{{item.borrow_date}}</small></td>
                                         <td align="center"><small>{{item.validity_end_date}}</small></td>
                                         <td align="center"><small>{{item.return_date}}</small></td>
-                                        <td align="center"><small>{{item.is_assigned == 'true' ? 'Assigned' : item.status}}</small></td>
+                                        <td align="center">
+                                            <div v-if="item.status == 'Borrowed'">
+                                                <small>{{item.is_assigned == 'true' ? 'Assigned' : item.status}}</small>
+                                            </div>
+                                            <div v-else>
+                                                 <small>{{item.status}}</small>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

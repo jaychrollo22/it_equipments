@@ -31,4 +31,8 @@ class UserInventory extends Model implements AuditableContract
         return $this->hasOne('App\UserReturnRequestItem','user_inventory_id','id')->where('status','For Checking');
     }
 
+    public function check_by_info(){
+        return $this->belongsTo('App\User','check_by','id')->select('id','email','name');
+    }
+
 }
