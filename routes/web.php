@@ -245,6 +245,9 @@ Route::get('/', function () {
     Route::get('/return-requests-data', 'RequestsController@returnRequestsData');
     Route::post('/return-request-accept', 'RequestsController@returnRequestsAccept');
     
+    Route::get('/generate-gate-pass','GatePassController@generateGatePass');
+    Route::get('/print-gate-pass/{gate_pass}','GatePassController@printGatePass');
+
     //Home User
     Route::get('/home-user','HomeUserController@index');
     Route::get('/home-user-data','HomeUserController@indexData');
@@ -261,6 +264,8 @@ Route::get('/', function () {
     Route::post('/return-request-store','HomeUserController@returnedRequestStore');
     Route::post('/return-request-delete','HomeUserController@returnedRequestDelete');
     Route::post('/return-request-item-delete','HomeUserController@returnedRequestitemDelete');
+
+
     
 
 

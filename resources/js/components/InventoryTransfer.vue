@@ -92,6 +92,8 @@
                                                 <a v-else type="button" class="btn btn-light-default btn-icon btn-sm" title="Not Available" >
                                                     <i class="flaticon2-printer"></i>
                                                 </a>
+
+                                                <a v-if="transfer.status == 'Approved'" :href="'/generate-gate-pass?id=' + transfer.id + '&type=Transfer'" class="btn btn-light-success btn-icon btn-sm"  title="Generate Gate Pass"><i class="fas fa-key"></i></a>
                                             </div>
                                        </td>
                                     </tr>

@@ -88,14 +88,18 @@
                                                 </tr>
                                             </td>
                                             <td style="text-align: center; vertical-align: middle;">
-                                                <!-- <button type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button> -->
+                                                
                                                 <button v-if="item.status=='For Approval'" type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button>
                                                 <button v-else disabled type="button" :class="getColorSetupApprover(item)" @click="setupApprover(item)" title="Setup Approver"><i class="flaticon-user"></i></button>
 
                                                 <button v-if="item.status=='For Approval'" type="button" class="btn btn-light-danger btn-icon btn-sm" @click="showDisapprove(item)" title="Disapprove"><i class="flaticon-cancel"></i></button>
                                                 <button v-else disabled type="button" class="btn btn-light-danger btn-icon btn-sm" @click="showDisapprove(item)" title="Disapprove"><i class="flaticon-cancel"></i></button>
                                            
-                                                <a :href="'/borrow-request-for-approval?id='+item.id" class="btn btn-light-info btn-icon btn-sm" :title="item.status =='Approved' ? 'Approved' : 'For Approval'"><i class="flaticon-list"></i></a>
+                                                <a :href="'/borrow-request-for-approval?id='+item.id" class="btn btn-light-info btn-icon btn-sm" :title="item.status =='Approved' ? 'View Approved Details' : 'View For Approval Details'"><i class="flaticon-list-2"></i></a>
+
+                                                <a v-if="item.status == 'Approved'" :href="'/letter-of-undertaking?request_number='+item.request_number" target="_blank" class="btn btn-light-warning btn-icon btn-sm" title="Generate Letter Of Undertaking"><i class="flaticon2-printer"></i></a>
+
+                                                <a v-if="item.status == 'Approved'" :href="'/generate-gate-pass?id=' + item.id + '&type=Borrow'" class="btn btn-light-success btn-icon btn-sm"  title="Generate Gate Pass"><i class="fas fa-key"></i></a>
                                             </td>
                                         </tr>
                                     </tbody>
