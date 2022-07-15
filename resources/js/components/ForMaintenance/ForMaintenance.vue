@@ -31,7 +31,13 @@
                                 <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                             </div>
                             <div class="card-toolbar">
-                                <!-- <button class="btn btn-primary mr-2" @click="receiveItems">Receive Items</button> -->
+                                <download-excel
+                                    :data   = "filterForMaintenances"
+                                    :fields = "exportForMaintenance"
+                                    class   = "btn btn-success mr-2"
+                                    name    = "For Maintenances.xls">
+                                        Download Excel ({{ filterForMaintenances.length }})
+                                </download-excel>
                             </div>
                         </div>
 
@@ -64,7 +70,7 @@
                                             <th>Model</th>
                                             <th>Type</th>
                                             <th>Location</th>
-                                            <th class="text-center">Created At</th>
+                                            <th class="text-center">Date Created</th>
                                             <th class="text-center">Schedule</th>
                                             <th class="text-center">Status</th>
                                         </tr>
@@ -177,7 +183,11 @@
 </template>
 
 <script>
+    import JsonExcel from 'vue-json-excel'
     export default {
+        components: {
+            'downloadExcel': JsonExcel
+        },
         data() {
             return {
                 keywords: '',
@@ -189,6 +199,66 @@
 
                 for_maintenance : '',
                 saveDisable : false,
+
+                exportForMaintenance : {
+                    'ID' : {
+                        callback: (value) => {
+                            if(value.inventory){
+                                return value.inventory.id;
+                            }else{
+                                return '';
+                            }
+                        }
+                    },
+                    'Serial Number' : {
+                        callback: (value) => {
+                            if(value.inventory){
+                                return value.inventory.serial_number;
+                            }else{
+                                return '';
+                            }
+                        }
+                    },
+                    'Model' : {
+                        callback: (value) => {
+                            if(value.inventory){
+                                return value.inventory.model;
+                            }else{
+                                return '';
+                            }
+                        }
+                    },
+                    'Type' : {
+                        callback: (value) => {
+                            if(value.inventory){
+                                return value.inventory.type;
+                            }else{
+                                return '';
+                            }
+                        }
+                    },
+                    'Location' : {
+                        callback: (value) => {
+                            if(value.inventory){
+                                return value.inventory.type;
+                            }else{
+                                return '';
+                            }
+                        }
+                    },
+                    'Date Created' : 'created_at',
+                    'Schedule' : {
+                        callback: (value) => {
+                            if(value.maintenance_date && value.maintenance_date != '0000-00-00 00:00:00'){
+                               return value.maintenance_date;
+                            }else{
+                                return 'Set Schedule';
+                            }
+                        }
+                    },
+                    'Status' : 'status'
+                }
+
             }
         },
         created () {
