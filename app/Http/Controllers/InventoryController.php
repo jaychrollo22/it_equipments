@@ -641,7 +641,8 @@ class InventoryController extends Controller
                 //Update Location
                 $inventory = Inventory::where('id',$inventory_transfer_item['inventory_id'])->first();
                 $inventoryData = [
-                    'location'=> $inventory_transfer_item['location_to']
+                    'location'=> $inventory_transfer_item['location_to'],
+                    'company'=> $inventory_transfer_item['company_to']
                 ];
                 $inventory->update($inventoryData);
 
