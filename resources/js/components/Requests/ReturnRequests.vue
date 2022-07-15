@@ -123,19 +123,19 @@
                                             <small>Location : {{item.user_inventory.inventory_info.location}}</small><br>
                                         </td>
                                         <td>
-                                            <select class="form-control" v-model="item.check_status">
+                                            <select class="form-control" v-model="item.check_status" :disabled="disableInput">
                                                 <option value="Good">Good</option>
                                                 <option value="With Defects">With Defects</option>
                                             </select>
                                             <br>
                                             <div v-if="item.check_status == 'With Defects'">
                                                 <small for="">Defect Value Deduction</small><br>
-                                                <input type="number" class="form-control" v-model="item.defect_value_deduction">
+                                                <input type="number" class="form-control" v-model="item.defect_value_deduction" :disabled="disableInput">
                                             </div>
                                            
                                         </td>
                                         <td>
-                                            <textarea class="form-control" v-model="item.check_remarks" cols="30" rows="2" placeholder="Remarks"></textarea>
+                                            <textarea :disabled="disableInput" class="form-control" v-model="item.check_remarks" cols="30" rows="2" placeholder="Remarks"></textarea>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -169,12 +169,21 @@
                 
                 acceptDisable : false,
                 return_items : [],
+
+                disableInput : false,
             }
         },
         created () {
             this.getReturnRequestsData();
         },
         methods: {
+            forCheckingStatus(request){
+                if(request == 'For Checking'){
+                    return false;
+                }else{
+                    return 'disabled';
+                }
+            },
             getColorStatus(item){
                 if(item == 'For Checking'){
                     return 'label label-warning label-pill label-inline mr-2';
@@ -226,6 +235,11 @@
                 v.request = item;
                 v.return_items = item.return_request_items;
                 $('#return-items-modal').modal('show');
+                if(item.status == 'For Checking'){
+                    v.disableInput = false;
+                }else{
+                    v.disableInput = true;
+                }
             },
             refresh(){
                 window.location.href = '/return-requests';

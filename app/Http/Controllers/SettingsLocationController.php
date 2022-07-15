@@ -31,8 +31,10 @@ class SettingsLocationController extends Controller
     public function locationOptions()
     {
         return $locations = Inventory::select('location')
-                                        ->whereNotNull('location')
-                                        ->orWhere('location','!=','')
+                                        ->where(function($q){
+                                            $q->whereNotNull('location');
+                                            $q->orWhere('location','!=','');
+                                        })
                                         ->groupBy('location')
                                         ->orderBy('location','ASC')
                                         ->get();
