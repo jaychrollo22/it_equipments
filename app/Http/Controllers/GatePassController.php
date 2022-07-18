@@ -275,7 +275,7 @@ class GatePassController extends Controller
                 $pdf->MultiCell(130,5, 'CHECKED BY:' ,0,'L');
 
                 $pdf->SetXY(77,$footerY + 9);
-                $pdf->SetFont('Arial', '', 8);
+                $pdf->SetFont('Arial', 'B', 8);
                 $pdf->MultiCell(70,5, $gate_pass->guard_on_duty ,0,'C');
 
                 $pdf->SetXY(77,$footerY + 10);
