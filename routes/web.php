@@ -20,6 +20,9 @@ use App\Http\Middleware\HasRole;
 Route::get('/qr-scanner', 'QrScannerController@qrScanner');
 Route::get('/qr-scanner-data', 'QrScannerController@qrScannerData');
 
+Route::get('/print-gate-pass/{gate_pass}','GatePassController@printGatePass');
+Route::get('/gate-pass-data','GatePassController@gatePassData');
+
 Route::get('/qr-generator', 'QrScannerController@qrGenerator');
 
 Route::get('/', function () {
@@ -246,8 +249,7 @@ Route::get('/', function () {
     Route::post('/return-request-accept', 'RequestsController@returnRequestsAccept');
     
     Route::get('/generate-gate-pass','GatePassController@generateGatePass');
-    Route::get('/print-gate-pass/{gate_pass}','GatePassController@printGatePass');
-    Route::get('/gate-pass-data','GatePassController@gatePassData');
+    
 
     //Home User
     Route::get('/home-user','HomeUserController@index');
