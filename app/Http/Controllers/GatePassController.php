@@ -425,4 +425,24 @@ class GatePassController extends Controller
             ];
         }
     }
+
+    public function saveCheckGatePass(Request $request){
+        DB::beginTransaction();
+        try {
+            $gate_pass = GatePassLog::where('id',$request->id)->first();
+            if($gate_pass){
+                $gate_pass->update([
+                    'guard_on_duty'=> $request->guard_on_duty,
+                    'date_time_released'=> date('Y-m-d H:i:s')
+                ]);
+                DB::commit();
+                return $response = [
+                    'status' => 'success'
+                ];
+            }
+        }catch (Exception $e) {
+            DB::rollBack();
+            return 'error';
+        } 
+    }
 }

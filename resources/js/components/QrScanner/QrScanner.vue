@@ -29,7 +29,7 @@
                         </div>
 
                         <div class="card-body">
-                            <div class="row" v-if="inventory || gate_pass">
+                            <div class="row" v-if="inventory">
                                 <h4>Results</h4>
                                 <div v-if="inventory" class="table-responsive">
                                     <table class="table table-bordered">
@@ -82,16 +82,20 @@
 
                                     </table>
                                 </div>
-                                <div v-if="gate_pass" class="table-responsive">
-                                    <button class="btn btn-info float-right mb-2" @click="checkBy">Check</button>
+                            </div>
+                            <div class="row" v-if="gate_pass">
+                                <h4>Gate Pass</h4>
+                                <div v-if="gate_pass.gate_pass" class="table-responsive">
+                                    <button v-if="gate_pass.gate_pass.guard_on_duty == '' || gate_pass.gate_pass.guard_on_duty == null" class="btn btn-info float-right mb-2" @click="checkBy">Check</button>
+                                    <button v-else disabled class="btn btn-info float-right mb-2">Checked</button>
                                     <iframe id="id-frame" :src="'/print-gate-pass/'+gate_pass.gate_pass.id + '#page=1&scrollbar=1&toolbar=1&navpanes=1'" frameborder="0" width="100%" height="700px"></iframe>
                                 </div>
                             </div>
-                            <div v-else>
+                            <!-- <div v-if="inventory != null || gate_pass != null">
                                 <center>
                                     <h1 class="text-default" style="cursor:pointer" @click="scanQR">Click Here to Scan</h1>
                                 </center>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -168,6 +172,34 @@
             </div>
         </div>
 
+
+        <!-- Gate Pass / Check By Modal -->
+        <div class="modal fade" id="gate-pass-check-by-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-view" role="document">
+                <div class="modal-content modal-content-view">
+                    <div class="modal-header">
+                        <h2 class="col-12 modal-title text-center">GATE PASS</h2>
+                    </div>
+                    <div class="modal-body modal-body-view">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="role">Guard on Duty</label> 
+                                    <input type="text" class="form-control" placeholder="Input Name.." v-model="gate_pass_check.guard_on_duty">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-round btn-fill btn-lg mt-4" @click="saveCheckGatePass"> Check & Save</button>
+                        <button type="button" class="btn btn-danger btn-round btn-fill btn-lg mt-4" @click="closeGatePassCheck">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -188,6 +220,12 @@
                 gate_pass : '',
                 gate_pass_camera: 'front',
                 gatePassStatusQr : false,
+
+                gate_pass_check : {
+                    id : '',
+                    guard_on_duty : '',
+                },
+                checkSaveDisable : false
 
             }
         },    
@@ -318,7 +356,59 @@
                 })
             },
             checkBy(){
+                let v = this;
+                v.gate_pass_check.id = v.gate_pass.gate_pass.id;
+                v.gate_pass_check.guard_on_duty = "";
+                $('#gate-pass-check-by-modal').modal('show');
+                
+            },
+            closeGatePassCheck(){
+                let v = this;
+                v.gate_pass_check.id = "";
+                v.gate_pass_check.guard_on_duty = "";
+                $('#gate-pass-check-by-modal').modal('hide');
+            },
+            saveCheckGatePass(){
+                let v = this;
+                v.checkSaveDisable = true;
+                Swal.fire({
+                title: 'Are you sure you want to check & save this gate pass?',
+                icon: 'question',
+                showDenyButton: true,
+                confirmButtonText: `Yes`,
+                denyButtonText: `No`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let formData = new FormData();
+                        formData.append('id', v.gate_pass_check.id ? v.gate_pass_check.id : "");
+                        formData.append('guard_on_duty', v.gate_pass_check.guard_on_duty ? v.gate_pass_check.guard_on_duty : "");
+                        axios.post(`/save-check-gate-pass`, formData)
+                        .then(response =>{
+                            if(response.data.status=='success'){
+                                v.checkSaveDisable = false;
+                                Swal.fire('Gate Pass has been checked!', '', 'success')
+                                .then(okay => {
+                                    if (okay) {
+                                        this.onDecodeGatePassQR(v.gate_pass_check.id);
+                                        $('#gate-pass-check-by-modal').modal('hide');
+                                        document.getElementById('id-frame').contentWindow.location.reload();
 
+                                    }
+                                });
+                            }else{
+                                Swal.fire('Error: Cannot saved. Please try again.', '', 'error');   
+                                v.checkSaveDisable = false;
+                            }
+                        })
+                        .catch(error => {
+                            v.checkSaveDisable = false;
+                            v.errors = error.response.data.errors;
+                        })
+                    }else if (result.isDenied) {
+                        Swal.fire('Gate pass not saved', '', 'info');
+                        v.checkSaveDisable = false;
+                    }
+                })  
             }
         },
     }

@@ -22,6 +22,7 @@ Route::get('/qr-scanner-data', 'QrScannerController@qrScannerData');
 
 Route::get('/print-gate-pass/{gate_pass}','GatePassController@printGatePass');
 Route::get('/gate-pass-data','GatePassController@gatePassData');
+Route::post('/save-check-gate-pass','GatePassController@saveCheckGatePass');
 
 Route::get('/qr-generator', 'QrScannerController@qrGenerator');
 
