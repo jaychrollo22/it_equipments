@@ -201,6 +201,7 @@ class InventoryController extends Controller
                         'tab_name'=>  isset($item['tab_name']) ? $item['tab_name'] : "",
                         'area'=> isset($item['area']) ? $item['area'] : "",
                         'location'=> isset($item['location']) ? $item['location'] : "",
+                        'company'=> isset($item['company']) ? $item['company'] : "",
                         'building'=> isset($item['building']) ? $item['building'] : "",
                         'category'=> isset($item['category']) ? $item['category'] : "",
                         'status'=> isset($item['status']) ? $item['status'] : "",

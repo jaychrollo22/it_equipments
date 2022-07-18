@@ -261,7 +261,7 @@ class GatePassController extends Controller
                 $pdf->MultiCell(70,3, 'DEPARTMENT HEAD / SECTION SUPERVISOR' ,0,'C');
 
                 $pdf->SetXY(7,$footerY + 19);
-                $pdf->SetFont('Arial', '', 8);
+                $pdf->SetFont('Arial', '', 7);
                 $pdf->MultiCell(70,3, '(Printed Name and Signature)' ,0,'C');
 
                 $pdf->SetXY(7,$footerY);
@@ -312,7 +312,7 @@ class GatePassController extends Controller
                 $pdf->MultiCell(25,5, '_____________' ,0,'C');
 
                 $pdf->SetXY(182,$footerY + 15);
-                $pdf->SetFont('Arial', '', 8);
+                $pdf->SetFont('Arial', '', 7);
                 $pdf->MultiCell(25,3, 'Time Released' ,0,'C');
 
                 $pdf->SetXY(77,$footerY);
@@ -330,7 +330,7 @@ class GatePassController extends Controller
                 $pdf->MultiCell(70,5, '________________________________________' ,0,'C');
 
                 $pdf->SetXY(7,$box2Y + 15);
-                $pdf->SetFont('Arial', '', 8);
+                $pdf->SetFont('Arial', '', 7);
                 $pdf->MultiCell(70,3, '(Printed Name and Signature) ' ,0,'C');
 
                 $pdf->SetXY(7,$box2Y);
@@ -378,7 +378,7 @@ class GatePassController extends Controller
                 $pdf->MultiCell(25,5, '_____________' ,0,'C');
 
                 $pdf->SetXY(182,$box2Y + 15);
-                $pdf->SetFont('Arial', '', 8);
+                $pdf->SetFont('Arial', '', 7);
                 $pdf->MultiCell(25,3, 'Time Released' ,0,'C');
 
                 $pdf->SetXY(77,$box2Y);
