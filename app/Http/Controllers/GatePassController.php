@@ -91,8 +91,9 @@ class GatePassController extends Controller
                     $details['department'] = $user_borrow_request->employee->departments[0]->name;
                     $details['items'] = $user_borrow_request->borrow_request_items;
                     $details['approved_by'] = $user_borrow_request->approved_by_it_head_info->name;
-                    $details['effective_date'] = date('Y-m-d',strtotime($user_borrow_request->approved_by_it_head_date));
-                    $details['remarks'] = 'Borrow/Assigned Request';
+                    $details['effective_date'] = $user_borrow_request->approved_by_it_head_date ? date('Y-m-d',strtotime($user_borrow_request->approved_by_it_head_date)) : "";
+                    $details['acceptance_date'] = $user_borrow_request->acceptance_date ? date('Y-m-d',strtotime($user_borrow_request->acceptance_date)) : "";
+                    $details['remarks'] = 'Borrowed/Assigned Request';
                 }
             }
             if($gate_pass->type == 'Transfer'){
@@ -102,7 +103,8 @@ class GatePassController extends Controller
                     $details['department'] = 'ITD';
                     $details['items'] = $transfer->inventory_transfer_items;
                     $details['approved_by'] = $transfer->approved_by_it_head_info->name;
-                    $details['effective_date'] = date('Y-m-d',strtotime($transfer->date_of_transfer));
+                    $details['effective_date'] = $transfer->date_of_transfer ? date('Y-m-d',strtotime($transfer->date_of_transfer)) : "";
+                    $details['acceptance_date'] = $transfer->date_of_transfer ? date('Y-m-d',strtotime($transfer->date_of_transfer)) : "";
                     $details['remarks'] = 'For Transfer';
                 }
             }
@@ -337,8 +339,12 @@ class GatePassController extends Controller
 
                 $pdf->SetXY(7,$box2Y);
                 $pdf->SetFont('Arial', 'B', 8);
-                $pdf->MultiCell(70,25, '' ,1,'C');
+                $pdf->MultiCell(70,25, "" ,1,'C');
 
+
+                $pdf->SetXY(77,$box2Y + 9);
+                $pdf->SetFont('Arial', 'B', 8);
+                $pdf->MultiCell(70,5, $details['requester'] ,0,'C');
 
                 $pdf->SetXY(77,$box2Y + 10);
                 $pdf->SetFont('Arial', '', 8);
@@ -350,6 +356,10 @@ class GatePassController extends Controller
                 $pdf->MultiCell(70,3, 'Printed Name and Signature' ,0,'C');
 
 
+                $pdf->SetXY(147,$box2Y + 9);
+                $pdf->SetFont('Arial', '', 8);
+                $pdf->MultiCell(35,5, $details['acceptance_date'] ,0,'C');
+
                 $pdf->SetXY(147,$box2Y + 10);
                 $pdf->SetFont('Arial', '', 8);
                 $pdf->MultiCell(35,5, '___________________' ,0,'C');
@@ -357,6 +367,11 @@ class GatePassController extends Controller
                 $pdf->SetXY(147,$box2Y + 15);
                 $pdf->SetFont('Arial', '', 7);
                 $pdf->MultiCell(35,3, 'Date Released' ,0,'C');
+
+
+                $pdf->SetXY(182,$box2Y + 9);
+                $pdf->SetFont('Arial', '', 8);
+                $pdf->MultiCell(25,5, "" ,0,'C');
 
                 $pdf->SetXY(182,$box2Y + 10);
                 $pdf->SetFont('Arial', '', 8);
