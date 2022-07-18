@@ -247,6 +247,7 @@ Route::get('/', function () {
     
     Route::get('/generate-gate-pass','GatePassController@generateGatePass');
     Route::get('/print-gate-pass/{gate_pass}','GatePassController@printGatePass');
+    Route::get('/gate-pass-data','GatePassController@gatePassData');
 
     //Home User
     Route::get('/home-user','HomeUserController@index');

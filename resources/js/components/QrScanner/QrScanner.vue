@@ -23,14 +23,15 @@
                                 <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                             </div>
                             <div class="card-toolbar">
-                                <button class="btn btn-md btn-primary" @click="scanQR"> <i class="fa fa-barcode"></i> SCAN QR</button>
+                                <button class="btn btn-md btn-success mr-2" @click="scanGatePassQR"> <i class="fa fa-barcode"></i> GATE PASS</button>
+                                <button class="btn btn-md btn-primary" @click="scanQR"> <i class="fa fa-barcode"></i> SCAN ASSET QR</button>
                             </div>
                         </div>
 
                         <div class="card-body">
-                            <div class="row" v-if="inventory">
+                            <div class="row" v-if="inventory || gate_pass">
                                 <h4>Results</h4>
-                                <div class="table-responsive">
+                                <div v-if="inventory" class="table-responsive">
                                     <table class="table table-bordered">
                                         <tr>
                                             <td align="right"><strong>ID</strong></td>
@@ -81,6 +82,10 @@
 
                                     </table>
                                 </div>
+                                <div v-if="gate_pass" class="table-responsive">
+                                    <button class="btn btn-info float-right mb-2" @click="checkBy">Check</button>
+                                    <iframe id="id-frame" :src="'/print-gate-pass/'+gate_pass.gate_pass.id + '#page=1&scrollbar=1&toolbar=1&navpanes=1'" frameborder="0" width="100%" height="700px"></iframe>
+                                </div>
                             </div>
                             <div v-else>
                                 <center>
@@ -121,8 +126,43 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success btn-round btn-fill btn-lg mt-4" @click="switchCamera"> SWITCH CAMERA ({{camera}})</button>
+                        <button type="button" class="btn btn-info btn-round btn-fill btn-lg mt-4" @click="switchCamera"> SWITCH CAMERA ({{camera}})</button>
                         <button type="button" class="btn btn-danger btn-round btn-fill btn-lg mt-4" @click="closeScan">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gate Pass Modal -->
+        <div class="modal fade" id="gate-pass-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-view" role="document">
+                <div class="modal-content modal-content-view">
+                    <div class="modal-header">
+                        <h2 class="col-12 modal-title text-center">GATE PASS SCANNER</h2>
+                    </div>
+                    <div class="modal-body modal-body-view">
+                        <qrcode-stream v-if="gatePassStatusQr" :camera="gate_pass_camera" @decode="onDecodeGatePassQR" @init="logErrors" style="height:300px;border:5px solid red;padding:5px 5px 5px 5px;width:100%;"/>
+
+                        <hr>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    #
+                                </span>
+                            </div>
+                            <input id="inventory_id" type="text" class="form-control" v-model="gate_pass_id" placeholder="Type Gate Pass QR(optional)" @keyup.enter="onDecodeGatePassQR(gate_pass_id)">
+                            <div class="input-group-append">
+                                <a href="#" @click="onDecodeGatePassQR(gate_pass_id)" class="btn font-weight-bold btn-success btn-icon">
+                                    <i class="fas fa-search"></i>
+                                </a>
+                            </div>
+                        </div>
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-round btn-fill btn-lg mt-4" @click="switchGatePassCamera"> SWITCH CAMERA ({{gate_pass_camera}})</button>
+                        <button type="button" class="btn btn-danger btn-round btn-fill btn-lg mt-4" @click="closeGatePassScan">Close</button>
                     </div>
                 </div>
             </div>
@@ -143,6 +183,12 @@
                 camera: 'front',
                 errors : '',
                 scanStatusQr : false,
+
+                gate_pass_id: '',
+                gate_pass : '',
+                gate_pass_camera: 'front',
+                gatePassStatusQr : false,
+
             }
         },    
         methods: {
@@ -166,26 +212,26 @@
                     break
                 }
             },
-            async onInit (promise) {
-                try {
-                    await promise
-                } catch (error) {
-                    const triedFrontCamera = this.camera === 'front'
-                    const triedRearCamera = this.camera === 'rear'
+            // async onInit (promise) {
+            //     try {
+            //         await promise
+            //     } catch (error) {
+            //         const triedFrontCamera = this.camera === 'front'
+            //         const triedRearCamera = this.camera === 'rear'
 
-                    const cameraMissingError = error.name === 'OverconstrainedError'
+            //         const cameraMissingError = error.name === 'OverconstrainedError'
 
-                    if (triedRearCamera && cameraMissingError) {
-                    this.noRearCamera = true
-                    }
+            //         if (triedRearCamera && cameraMissingError) {
+            //         this.noRearCamera = true
+            //         }
 
-                    if (triedFrontCamera && cameraMissingError) {
-                    this.noFrontCamera = true
-                    }
+            //         if (triedFrontCamera && cameraMissingError) {
+            //         this.noFrontCamera = true
+            //         }
 
-                    console.error(error)
-                }
-            },
+            //         console.error(error)
+            //     }
+            // },
             scanQR(){
                 $('#qr-scanner-modal').modal('show');
                 this.scan_qr = '';
@@ -227,6 +273,53 @@
             refresh(){
                 location.reload();
             },
+            scanGatePassQR(){
+                $('#gate-pass-modal').modal('show');
+                this.gatePassStatusQr = true;
+            },
+            closeGatePassScan(){
+                this.gate_pass_id = '';
+                this.gatePassStatusQr = false;
+                $('#gate-pass-modal').modal('hide');
+            },
+            switchGatePassCamera() {
+                switch (this.gate_pass_camera) {
+                    case 'front':
+                    this.gate_pass_camera = 'rear'
+                    break
+                    case 'rear':
+                    this.gate_pass_camera = 'front'
+                    break
+                }
+            },
+            onDecodeGatePassQR(result){
+                let v = this;
+                axios.get('/gate-pass-data?id='+result)
+                .then(response => { 
+                    if(response.data.status == 'success'){
+                        v.gate_pass = response.data;
+                        v.closeGatePassScan();
+                    }else{
+                        Swal.fire({
+                            title: 'Warning!',
+                            text: 'No records found. Please try again. Thank you.',
+                            icon: 'warning',
+                            confirmButtonText: 'Okay'
+                        }).then(okay => {
+                            if (okay) {
+                                this.refresh();
+                            }
+                        });
+                    }
+                })
+                .catch(error => { 
+                    console.log(error);
+                    v.errors = error.response.data.error;
+                })
+            },
+            checkBy(){
+
+            }
         },
     }
 </script>

@@ -400,4 +400,44 @@ class GatePassController extends Controller
         
 
     }
+
+    public function gatePassData(Request $request){
+        $gate_pass = GatePassLog::where('id',$request->id)->first();
+        if($gate_pass){
+            $details = [];
+            if($gate_pass->type == 'Borrow'){
+                $user_borrow_request = UserBorrowRequest::with('approved_by_it_head_info.employee','employee.departments','borrow_request_items.inventory_info')->where('id',$gate_pass->borrow_request_id)->first();
+                if($user_borrow_request){
+                    
+                    $details['requester'] = $user_borrow_request->employee->first_name . ' ' . $user_borrow_request->employee->last_name;
+                    $details['department'] = $user_borrow_request->employee->departments[0]->name;
+                    $details['items'] = $user_borrow_request->borrow_request_items;
+                    $details['approved_by'] = $user_borrow_request->approved_by_it_head_info->name;
+                    $details['effective_date'] = date('Y-m-d',strtotime($user_borrow_request->approved_by_it_head_date));
+                    $details['remarks'] = 'Borrow/Assigned Request';
+                }
+            }
+            if($gate_pass->type == 'Transfer'){
+                $transfer = InventoryTransfer::with('approved_by_it_head_info.employee','requested_by_info','inventory_transfer_items.inventory_info')->where('id',$gate_pass->transfer_id)->first();
+                if($transfer){
+                    $details['requester'] = $transfer->requested_by_info->name;
+                    $details['department'] = 'ITD';
+                    $details['items'] = $transfer->inventory_transfer_items;
+                    $details['approved_by'] = $transfer->approved_by_it_head_info->name;
+                    $details['effective_date'] = date('Y-m-d',strtotime($transfer->date_of_transfer));
+                    $details['remarks'] = 'For Transfer';
+                }
+            }
+
+            return $response = [
+                'gate_pass' => $gate_pass,
+                'details' => $details,
+                'status' => 'success'
+            ];
+        }else{
+            return $response = [
+                'status' => 'error',
+            ];
+        }
+    }
 }
