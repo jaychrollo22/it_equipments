@@ -323,7 +323,7 @@ class GatePassController extends Controller
 
                 $pdf->SetXY(7,$box2Y + 9);
                 $pdf->SetFont('Arial', 'B', 8);
-                $pdf->MultiCell(70,5, "" ,0,'C');
+                $pdf->MultiCell(70,5, $gate_pass->carrier_by ,0,'C');
 
                 $pdf->SetXY(7,$box2Y + 10);
                 $pdf->SetFont('Arial', '', 8);
@@ -448,6 +448,7 @@ class GatePassController extends Controller
             if($gate_pass){
                 $gate_pass->update([
                     'guard_on_duty'=> $request->guard_on_duty,
+                    'carrier_by'=> $request->carrier_by,
                     'date_time_released'=> date('Y-m-d H:i:s')
                 ]);
                 DB::commit();

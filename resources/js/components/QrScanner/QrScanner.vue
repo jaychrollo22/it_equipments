@@ -185,6 +185,12 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
+                                    <label for="role">Carrier/Hauler</label> 
+                                    <input type="text" class="form-control" placeholder="Input Name.." v-model="gate_pass_check.carrier_by">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
                                     <label for="role">Guard on Duty</label> 
                                     <input type="text" class="form-control" placeholder="Input Name.." v-model="gate_pass_check.guard_on_duty">
                                 </div>
@@ -381,7 +387,10 @@
                     if (result.isConfirmed) {
                         let formData = new FormData();
                         formData.append('id', v.gate_pass_check.id ? v.gate_pass_check.id : "");
+                        
                         formData.append('guard_on_duty', v.gate_pass_check.guard_on_duty ? v.gate_pass_check.guard_on_duty : "");
+                        formData.append('carrier_by', v.gate_pass_check.carrier_by ? v.gate_pass_check.carrier_by : "");
+
                         axios.post(`/save-check-gate-pass`, formData)
                         .then(response =>{
                             if(response.data.status=='success'){
