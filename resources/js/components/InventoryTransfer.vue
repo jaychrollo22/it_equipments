@@ -169,7 +169,7 @@
                                 <select class="form-control" v-model="transfer.transfer_location">
                                     <option value="">Choose</option>
                                     <option value="N/A">N/A</option>
-                                    <option v-for="(location,b) in locationOptions" v-bind:key="b" :value="location.name"> {{ location.name }}</option>
+                                    <option v-for="(location,b) in locationOptions" v-bind:key="b" :value="location.location"> {{ location.location }}</option>
                                 </select>
                                 <span class="text-danger" v-if="errors.transfer_location">{{ errors.transfer_location[0] }}</span>
                             </div>
@@ -382,7 +382,7 @@
                                 <select class="form-control" v-model="transfer.transfer_location">
                                     <option value="">Choose</option>
                                     <option value="N/A">N/A</option>
-                                    <option v-for="(location,b) in locationOptions" v-bind:key="b" :value="location.name"> {{ location.name }}</option>
+                                    <option v-for="(location,b) in locationOptions" v-bind:key="b" :value="location.location"> {{ location.location }}</option>
                                 </select>
                                 <span class="text-danger" v-if="errors.transfer_location">{{ errors.transfer_location[0] }}</span>
                             </div>
@@ -931,7 +931,7 @@
             },
             getLocations(){
                 let v = this;
-                axios.get('/setting-locations-data')
+                axios.get('/setting-locations-data-options')
                 .then(response => { 
                     v.locationOptions = response.data;
                 })

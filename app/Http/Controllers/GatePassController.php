@@ -344,7 +344,7 @@ class GatePassController extends Controller
 
                 $pdf->SetXY(77,$box2Y + 9);
                 $pdf->SetFont('Arial', 'B', 8);
-                $pdf->MultiCell(70,5, $details['requester'] ,0,'C');
+                $pdf->MultiCell(70,5, "" ,0,'C');
 
                 $pdf->SetXY(77,$box2Y + 10);
                 $pdf->SetFont('Arial', '', 8);
@@ -358,7 +358,7 @@ class GatePassController extends Controller
 
                 $pdf->SetXY(147,$box2Y + 9);
                 $pdf->SetFont('Arial', '', 8);
-                $pdf->MultiCell(35,5, $details['acceptance_date'] ,0,'C');
+                $pdf->MultiCell(35,5, "" ,0,'C');
 
                 $pdf->SetXY(147,$box2Y + 10);
                 $pdf->SetFont('Arial', '', 8);
